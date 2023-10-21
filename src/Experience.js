@@ -7,7 +7,7 @@ import Camera from './Camera.js';
 import Renderer from './Renderer.js';
 import World from './World/World.js';
 import Resources from './utils/Resources.js';
-import PPEffectsManager from './managers/effects.js';
+import PPEffectsManager from './managers/Effects.js';
 
 import sources from './parameters/sources.js';
 
