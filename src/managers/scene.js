@@ -32,7 +32,7 @@ import {
     getDefaultUniforms,
 } from '../utils/core';
 
-import { handleFileDrop, blobFileTransformer } from '../utils/drag-drop';
+import { handleFileDrop, blobFileTransformer } from '../utils/DragDrop';
 import { PaneManager } from './pane';
 import { PPEffectsManager } from './effects';
 

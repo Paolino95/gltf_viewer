@@ -17,7 +17,6 @@
   },
   "dependencies": {
     "@tweakpane/plugin-essentials": "^0.2.0",
-    "@vitejs/plugin-vue": "^4.4.0",
     "await-to-js": "^3.0.0",
     "tweakpane": "^4.0.1"
   }

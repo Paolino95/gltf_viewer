@@ -1,8 +1,2 @@
-import { SceneManager } from './src/managers/scene';
-
-const container = document.querySelector('#container');
-const sceneManager = new SceneManager(container, {
-    useDracoCompression: true,
-});
-
-sceneManager.setupScene();
+import Experience from './src/Experience.js';
+const experience = new Experience(document.querySelector('#container'));
