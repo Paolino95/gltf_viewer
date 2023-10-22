@@ -1,90 +1,102 @@
-import * as THREE from 'three'
-import Experience from '../Experience.js'
+import { Box3, Vector3, Mesh, AnimationMixer } from 'three';
+import Experience from '../Experience.js';
 
-export default class Fox
-{
-    constructor()
-    {
-        this.experience = new Experience()
-        this.scene = this.experience.scene
-        this.resources = this.experience.resources
-        this.time = this.experience.time
-        this.debug = this.experience.debug
+export default class Fox {
+    constructor() {
+        this.experience = new Experience();
+        this.scene = this.experience.scene;
+        this.resources = this.experience.resources;
+        this.time = this.experience.time;
+        this.debug = this.experience.debug;
 
         // Debug
-        if(this.debug.active)
-        {
-            this.debugFolder = this.debug.ui.addFolder('fox')
+        if (this.debug.active) {
         }
 
         // Resource
-        this.resource = this.resources.items.foxModel
+        this.resource = this.resources.items.model;
 
-        this.setModel()
-        this.setAnimation()
+        this.setModel();
+        this.setAnimation();
     }
 
-    setModel()
-    {
-        this.model = this.resource.scene
-        this.model.scale.set(0.02, 0.02, 0.02)
-        this.scene.add(this.model)
+    setModel() {
+        this.model = this.resource.scene;
+        this.scene.add(this.model);
 
-        this.model.traverse((child) =>
-        {
-            if(child instanceof THREE.Mesh)
-            {
-                child.castShadow = true
+        this.model.traverse(child => {
+            if (child instanceof Mesh) {
+                child.castShadow = true;
             }
-        })
+        });
+
+        this.recenterModel(this.model);
     }
 
-    setAnimation()
-    {
-        this.animation = {}
-        
+    setAnimation() {
+        this.animation = {};
+
         // Mixer
-        this.animation.mixer = new THREE.AnimationMixer(this.model)
-        
+        this.animation.mixer = new AnimationMixer(this.model);
+
         // Actions
-        this.animation.actions = {}
-        
-        this.animation.actions.idle = this.animation.mixer.clipAction(this.resource.animations[0])
-        this.animation.actions.walking = this.animation.mixer.clipAction(this.resource.animations[1])
-        this.animation.actions.running = this.animation.mixer.clipAction(this.resource.animations[2])
-        
-        this.animation.actions.current = this.animation.actions.idle
-        this.animation.actions.current.play()
+        this.animation.actions = {};
+
+        for (let i = 0; this.resource.animations.length; i++) {
+            if (this.animation.actions[animation.name])
+                this.animation.actions[animation.name] =
+                    this.animation.mixer.clipAction(
+                        this.resource.animations[i]
+                    );
+        }
+
+        this.animation.actions.current = this.animation.actions[0]
+            ? this.animation.actions[0]
+            : undefined;
+        if (this.animation.actions.current)
+            this.animation.actions.current.play();
 
         // Play the action
-        this.animation.play = (name) =>
-        {
-            const newAction = this.animation.actions[name]
-            const oldAction = this.animation.actions.current
+        this.animation.play = name => {
+            const newAction = this.animation.actions[name];
+            const oldAction = this.animation.actions.current;
 
-            newAction.reset()
-            newAction.play()
-            newAction.crossFadeFrom(oldAction, 1)
+            newAction.reset();
+            newAction.play();
+            newAction.crossFadeFrom(oldAction, 1);
 
-            this.animation.actions.current = newAction
-        }
+            this.animation.actions.current = newAction;
+        };
 
         // Debug
-        if(this.debug.active)
-        {
+        if (this.debug.active) {
             const debugObject = {
-                playIdle: () => { this.animation.play('idle') },
-                playWalking: () => { this.animation.play('walking') },
-                playRunning: () => { this.animation.play('running') }
-            }
-            this.debugFolder.add(debugObject, 'playIdle')
-            this.debugFolder.add(debugObject, 'playWalking')
-            this.debugFolder.add(debugObject, 'playRunning')
+                playIdle: () => {
+                    this.animation.play('idle');
+                },
+                playWalking: () => {
+                    this.animation.play('walking');
+                },
+                playRunning: () => {
+                    this.animation.play('running');
+                },
+            };
+            this.debugFolder.add(debugObject, 'playIdle');
+            this.debugFolder.add(debugObject, 'playWalking');
+            this.debugFolder.add(debugObject, 'playRunning');
         }
     }
 
-    update()
-    {
-        this.animation.mixer.update(this.time.delta * 0.001)
+    update() {
+        this.animation.mixer.update(this.time.delta * 0.001);
+    }
+
+    recenterModel(modelScene) {
+        const modelBox = new Box3().setFromObject(modelScene);
+        const boxCenter = modelBox.getCenter(new Vector3());
+
+        modelScene.position.x += modelScene.position.x - boxCenter.x;
+        modelScene.position.y += modelScene.position.y - boxCenter.y;
+        modelScene.position.z += modelScene.position.z - boxCenter.z;
     }
 }

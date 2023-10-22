@@ -3,11 +3,11 @@ import { Scene, Mesh } from 'three';
 import Debug from './utils/Debug.js';
 import Sizes from './utils/Sizes.js';
 import Time from './utils/Time.js';
-import Camera from './Camera.js';
-import Renderer from './Renderer.js';
+import Camera from './managers/Camera.js';
+import Renderer from './managers/Renderer.js';
+import Composer from './managers/Renderer.js';
 import World from './World/World.js';
 import Resources from './utils/Resources.js';
-import PPEffectsManager from './managers/Effects.js';
 
 import sources from './parameters/sources.js';
 
@@ -36,7 +36,7 @@ export default class Experience {
         this.camera = new Camera();
         this.renderer = new Renderer();
         this.world = new World();
-        this.effects = new PPEffectsManager();
+        this.composer = new Composer(this.renderer, this.scene, this.camera);
 
         // Resize event
         this.sizes.on('resize', () => {
@@ -84,6 +84,7 @@ export default class Experience {
 
         this.camera.controls.dispose();
         this.renderer.instance.dispose();
+        this.composer.instance.dispose();
 
         if (this.debug.active) this.debug.ui.destroy();
     }

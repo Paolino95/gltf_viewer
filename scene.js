@@ -34,7 +34,7 @@ import {
 
 import { handleFileDrop, blobFileTransformer } from '../utils/DragDrop';
 import { PaneManager } from './pane';
-import { PPEffectsManager } from './effects';
+import { PPEffectsManager } from './src/managers/Composer';
 
 class SceneManager {
     constructor(container, options) {

@@ -23,7 +23,7 @@ export default class Resources extends EventEmitter {
         this.loaders.gltfLoader = new GLTFLoader();
         this.loaders.dracoLoader = new DRACOLoader();
         this.loaders.dracoLoader.setDecoderPath('draco/');
-        this.gltfloader.setDRACOLoader(this.loaders.dracoLoader);
+        this.loaders.gltfLoader.setDRACOLoader(this.loaders.dracoLoader);
         this.loaders.textureLoader = new TextureLoader();
         this.loaders.cubeTextureLoader = new CubeTextureLoader();
         this.loaders.rgbeLoader = new RGBELoader();
@@ -34,6 +34,10 @@ export default class Resources extends EventEmitter {
         for (const source of this.sources) {
             if (source.type === 'gltfModel') {
                 this.loaders.gltfLoader.load(source.path, file => {
+                    this.sourceLoaded(source, file);
+                });
+            } else if (source.type === 'hdrTexture') {
+                this.loaders.rgbeLoader.load(source.path, file => {
                     this.sourceLoaded(source, file);
                 });
             } else if (source.type === 'texture') {

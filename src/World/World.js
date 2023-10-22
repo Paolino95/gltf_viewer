@@ -1,6 +1,5 @@
 import Experience from '../Experience.js';
 import Environment from './Environment.js';
-import Floor from './Floor.js';
 import Model from './Model.js';
 
 export default class World {
@@ -12,7 +11,6 @@ export default class World {
         // Wait for resources
         this.resources.on('ready', () => {
             // Setup
-            this.floor = new Floor();
             this.model = new Model();
             this.environment = new Environment();
         });
