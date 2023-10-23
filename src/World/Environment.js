@@ -4,6 +4,7 @@ import {
     EquirectangularReflectionMapping,
 } from 'three';
 import Experience from '../Experience.js';
+import { sceneParams } from '../parameters/ui.js';
 
 export default class Environment {
     constructor() {
@@ -24,7 +25,7 @@ export default class Environment {
 
     setEnvironmentMap() {
         this.environmentMap = {};
-        this.environmentMap.intensity = 1;
+        this.environmentMap.intensity = sceneParams.envMapIntensity;
         this.environmentMap.texture = this.resources.items.default;
         this.environmentMap.texture.mapping = EquirectangularReflectionMapping;
 

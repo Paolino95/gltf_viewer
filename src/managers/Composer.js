@@ -31,6 +31,17 @@ export default class Composer {
             this.debugFolder = this.debug.pane.addFolder({
                 title: 'Post Processing Effects',
             });
+
+            this.effectsList = this.debugFolder.addBlade({
+                view: 'list',
+                label: 'effect',
+                options: [
+                    { text: 'Nessuno', value: 'Nessuno' },
+                    { text: 'Bloom', value: 'Bloom' },
+                    { text: 'FXAA', value: 'FXAA' },
+                ],
+                value: 'Nessuno',
+            });
         }
 
         this.setInstance();
@@ -59,21 +70,8 @@ export default class Composer {
         );
 
         // Debug
-        if (this.debug.active) {
+        if (this.debug.active && this.effectsList.value === 'Bloom') {
             // Parameters
-            this.bloomParamsFolder = null;
-            this.debugFolder
-                .addBinding(postProcessingEffects.bloomParams, 'active', {
-                    label: postProcessingEffects.bloomParams.title,
-                })
-                .on('change', e => {
-                    this.updateBloomPass(e.value);
-                    this.bloomParamsFolder.disabled =
-                        !this.bloomParamsFolder.disabled;
-                    this.bloomParamsFolder.expanded =
-                        !this.bloomParamsFolder.disabled;
-                });
-
             this.bloomParamsFolder = this.debugFolder.addFolder({
                 title: postProcessingEffects.bloomParams.parametersTitle,
                 disabled: !postProcessingEffects.bloomParams.active,

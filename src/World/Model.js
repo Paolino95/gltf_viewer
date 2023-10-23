@@ -1,5 +1,6 @@
 import { Box3, Vector3, Mesh, AnimationMixer } from 'three';
 import Experience from '../Experience.js';
+import { sceneParams } from '../parameters/ui.js';
 
 export default class Model {
     constructor() {
