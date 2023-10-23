@@ -1,7 +1,7 @@
 import { Box3, Vector3, Mesh, AnimationMixer } from 'three';
 import Experience from '../Experience.js';
 
-export default class Fox {
+export default class Model {
     constructor() {
         this.experience = new Experience();
         this.scene = this.experience.scene;
@@ -9,15 +9,27 @@ export default class Fox {
         this.time = this.experience.time;
         this.debug = this.experience.debug;
 
+        // Resource
+        this.resource = this.resources.items.model;
+
         // Debug
         if (this.debug.active) {
         }
 
-        // Resource
-        this.resource = this.resources.items.model;
-
         this.setModel();
         this.setAnimation();
+
+        // Drag&Drop event
+        this.experience.canvasContainer.addEventListener('drop', e => {
+            e.preventDefault();
+
+            const modelDataUrl = this.resources.handleFileDrop(e, 'glb');
+            this.updateModel(modelDataUrl);
+        });
+
+        this.experience.canvasContainer.addEventListener('dragover', e => {
+            e.preventDefault();
+        });
     }
 
     setModel() {
@@ -32,6 +44,22 @@ export default class Fox {
 
         this.recenterModel(this.model);
     }
+
+    updateModel = modelName => {
+        this.scene.remove(this.scene.children[0]);
+        const self = this;
+
+        this.resources.loaders.gltfloader.load(modelName, function (gltf) {
+            gltf.scene.traverse(function (child) {
+                if (child.isMesh) {
+                    child.material.envMapIntensity =
+                        sceneParams.envMapIntensity;
+                }
+            });
+
+            self.scene.add(gltf.scene);
+        });
+    };
 
     setAnimation() {
         this.animation = {};

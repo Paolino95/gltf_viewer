@@ -24,6 +24,10 @@ export const postProcessingEffects = {
             },
         },
     },
+    fxaaParams: {
+        title: 'FXAA',
+        active: false,
+    },
 };
 
 export const toneMappingParams = {

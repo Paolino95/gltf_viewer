@@ -1,16 +1,25 @@
 import { Vector2 } from 'three';
 
-// Effects
+// EffectComposer
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+
+// Effects
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+
+// Shaders
+import { ColorCorrectionShader } from 'three/addons/shaders/ColorCorrectionShader.js';
+import { FXAAShader } from 'three/addons/shaders/FXAAShader.js';
+
 import { postProcessingEffects } from '../parameters/ui';
 import Experience from '../Experience.js';
 
 export default class Composer {
     constructor() {
         this.experience = new Experience();
+        this.canvas = this.experience.canvas;
         this.scene = this.experience.scene;
         this.sizes = this.experience.sizes;
         this.camera = this.experience.camera.instance;
@@ -27,16 +36,17 @@ export default class Composer {
         this.setInstance();
 
         // Add other Post Processing Effects
+        this.setFXAAPass();
         this.setBloomPass();
     }
 
     setInstance() {
         this.instance = new EffectComposer(this.renderer);
         this.effects = {};
-        this.effects.renderScene = new RenderPass(this.scene, this.camera);
+        this.effects.renderPass = new RenderPass(this.scene, this.camera);
         this.effects.outputPass = new OutputPass();
 
-        this.instance.addPass(this.effects.renderScene);
+        this.instance.addPass(this.effects.renderPass);
         this.instance.addPass(this.effects.outputPass);
     }
 
@@ -101,12 +111,42 @@ export default class Composer {
     };
 
     updateBloomPass = toggle => {
-        toggle
-            ? this.instance.insertPass(
-                  this.effects.bloomPass,
-                  this.instance.passes.length - 1
-              )
-            : this.instance.removePass(this.effects.bloomPass);
+        if (toggle) {
+            this.instance.insertPass(
+                this.effects.bloomPass,
+                this.instance.passes.length
+            );
+        } else {
+            this.instance.removePass(this.effects.bloomPass);
+        }
+    };
+
+    setFXAAPass = () => {
+        this.effects.fxaaPass = new ShaderPass(FXAAShader);
+
+        this.effects.fxaaPass.material.uniforms['resolution'].value.x =
+            1 / (this.canvas.offsetWidth * this.sizes.pixelRatio);
+        this.effects.fxaaPass.material.uniforms['resolution'].value.y =
+            1 / (this.canvas.offsetHeight * this.sizes.pixelRatio);
+
+        // Debug
+        if (this.debug.active) {
+            this.debugFolder
+                .addBinding(postProcessingEffects.fxaaParams, 'active', {
+                    label: postProcessingEffects.fxaaParams.title,
+                })
+                .on('change', e => {
+                    this.updateFxaaPass(e.value);
+                });
+        }
+    };
+
+    updateFxaaPass = toggle => {
+        if (toggle) {
+            this.instance.addPass(this.effects.fxaaPass);
+        } else {
+            this.instance.removePass(this.effects.fxaaPass);
+        }
     };
 
     resize() {

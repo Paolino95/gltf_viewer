@@ -71,21 +71,6 @@ export default class Resources extends EventEmitter {
 
         if (!file) return;
 
-        this.normalizedFiles(files);
-        this.startLoading();
-    };
-
-    normalizedFiles = files => {
-        this.sources = files.forEach(file => {
-            const { name } = file;
-            const fileExtension = name.split('.').pop().toLowerCase();
-
-            return {
-                name,
-                type: fileExtension,
-                data: URL.createObjectURL(file),
-                path: undefined,
-            };
-        });
+        return URL.createObjectURL(file);
     };
 }

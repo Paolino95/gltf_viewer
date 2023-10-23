@@ -13,6 +13,12 @@ export default class Debug {
             });
 
             this.pane.registerPlugin(EssentialsPlugin);
+
+            // Add a FPS graph
+            this.fpsGraph = this.pane.addBlade({
+                view: 'fpsgraph',
+                label: 'fps',
+            });
         }
     }
 }

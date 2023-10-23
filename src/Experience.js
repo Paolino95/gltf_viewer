@@ -14,7 +14,7 @@ import sources from './parameters/sources.js';
 let instance = null;
 
 export default class Experience {
-    constructor(_canvas, _controlsContainer) {
+    constructor(_canvas, _canvasContainer, _controlsContainer) {
         // Singleton
         if (instance) {
             return instance;
@@ -26,6 +26,7 @@ export default class Experience {
 
         // Options
         this.canvas = _canvas;
+        this.canvasContainer = _canvasContainer;
 
         // Setup
         this.debug = new Debug(_controlsContainer);
@@ -56,18 +57,18 @@ export default class Experience {
     }
 
     update() {
-        // if (this.debug ) this.debug.pane.fpsGraph.begin();
+        if (this.debug.active) this.debug.fpsGraph.begin();
 
         this.camera.update();
         this.world.update();
-
-        // if (this.debug ) this.debug.pane.fpsGraph.end();
 
         if (this.composer === null) {
             this.renderer.update();
         } else {
             this.composer.update();
         }
+
+        if (this.debug.active) this.debug.fpsGraph.end();
     }
 
     destroy() {
