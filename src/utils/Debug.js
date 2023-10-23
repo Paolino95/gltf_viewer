@@ -8,24 +8,11 @@ export default class Debug {
 
         if (this.active) {
             this.pane = new Pane({
-                container: document.querySelector(containerElement),
+                container: containerElement,
                 title,
             });
 
             this.pane.registerPlugin(EssentialsPlugin);
-
-            // this.sceneParamsFolder = this.pane.addFolder({
-            //     title: 'Scene Params',
-            // });
-
-            // this.bloomParamsFolder = this.pane.addFolder({
-            //     disabled: !sceneParams.bloom,
-            //     title: 'Model Bloom Params',
-            // });
-
-            // this.toneMappingFolder = this.pane.addFolder({
-            //     title: 'Tone Mapping Params',
-            // });
         }
     }
 }

@@ -70,20 +70,16 @@ export default class Fox {
 
         // Debug
         if (this.debug.active) {
-            const debugObject = {
-                playIdle: () => {
-                    this.animation.play('idle');
-                },
-                playWalking: () => {
-                    this.animation.play('walking');
-                },
-                playRunning: () => {
-                    this.animation.play('running');
-                },
-            };
-            this.debugFolder.add(debugObject, 'playIdle');
-            this.debugFolder.add(debugObject, 'playWalking');
-            this.debugFolder.add(debugObject, 'playRunning');
+            const debugObject = {};
+
+            for (let i = 0; this.resource.animations.length; i++) {
+                if (this.animation.actions[animation.name])
+                    debugObject[animation.name] = this.animation.play(
+                        animation.name
+                    );
+
+                this.debugFolder.add(debugObject, animation.name);
+            }
         }
     }
 

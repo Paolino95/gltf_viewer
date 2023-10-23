@@ -11,9 +11,9 @@ body {
   display: block;
 }
 #tweakContainer {
-  width: 400px;
+  width: 20%;
   position: absolute;
   top: 0;
   right: 0;
-  padding: 30px;
+  padding: 20px;
 }

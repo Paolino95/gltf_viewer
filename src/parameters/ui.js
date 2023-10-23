@@ -1,7 +1,29 @@
-export const bloomParams = {
-    threshold: 1.0,
-    strength: 0.15,
-    radius: 0,
+export const postProcessingEffects = {
+    bloomParams: {
+        title: 'Bloom',
+        parametersTitle: 'Bloom Parameters',
+        active: false,
+        parameters: {
+            threshold: {
+                value: 1.0,
+                min: 0.0,
+                max: 1.0,
+                step: 0.1,
+            },
+            strength: {
+                value: 0.15,
+                min: 0.0,
+                max: 3.0,
+                step: 0.1,
+            },
+            radius: {
+                value: 0.0,
+                min: 0.0,
+                max: 1.0,
+                step: 0.1,
+            },
+        },
+    },
 };
 
 export const toneMappingParams = {

@@ -12,9 +12,11 @@ export default class Environment {
         this.resources = this.experience.resources;
         this.debug = this.experience.debug;
 
-        // Debug
+        // Debug Folder
         if (this.debug.active) {
-            // this.debugFolder = this.debug.ui.addFolder('environment');
+            this.debugFolder = this.debug.pane.addFolder({
+                title: 'environment',
+            });
         }
 
         this.setEnvironmentMap();
@@ -47,12 +49,12 @@ export default class Environment {
         // Debug
         if (this.debug.active) {
             this.debugFolder
-                .add(this.environmentMap, 'intensity')
-                .name('envMapIntensity')
-                .min(0)
-                .max(4)
-                .step(0.001)
-                .onChange(this.environmentMap.updateMaterials);
+                .addBinding(this.environmentMap, 'intensity', {
+                    min: 0,
+                    max: 4,
+                    step: 0.1,
+                })
+                .on('change', this.environmentMap.updateMaterials);
         }
     }
 }

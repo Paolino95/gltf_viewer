@@ -5,7 +5,7 @@ import Sizes from './utils/Sizes.js';
 import Time from './utils/Time.js';
 import Camera from './managers/Camera.js';
 import Renderer from './managers/Renderer.js';
-import Composer from './managers/Renderer.js';
+import Composer from './managers/Composer.js';
 import World from './World/World.js';
 import Resources from './utils/Resources.js';
 
@@ -14,7 +14,7 @@ import sources from './parameters/sources.js';
 let instance = null;
 
 export default class Experience {
-    constructor(_canvas) {
+    constructor(_canvas, _controlsContainer) {
         // Singleton
         if (instance) {
             return instance;
@@ -28,7 +28,7 @@ export default class Experience {
         this.canvas = _canvas;
 
         // Setup
-        this.debug = new Debug();
+        this.debug = new Debug(_controlsContainer);
         this.sizes = new Sizes();
         this.time = new Time();
         this.scene = new Scene();
@@ -52,12 +52,22 @@ export default class Experience {
     resize() {
         this.camera.resize();
         this.renderer.resize();
+        this.composer.resize();
     }
 
     update() {
+        // if (this.debug ) this.debug.pane.fpsGraph.begin();
+
         this.camera.update();
         this.world.update();
-        this.renderer.update();
+
+        // if (this.debug ) this.debug.pane.fpsGraph.end();
+
+        if (this.composer === null) {
+            this.renderer.update();
+        } else {
+            this.composer.update();
+        }
     }
 
     destroy() {
