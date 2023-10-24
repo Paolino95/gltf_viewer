@@ -4,7 +4,7 @@ import {
     PCFSoftShadowMap,
     WebGLRenderer,
 } from 'three';
-import Experience from '../Experience.js';
+import Experience from '@/Experience.js';
 
 export default class Renderer {
     constructor() {

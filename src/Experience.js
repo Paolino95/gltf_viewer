@@ -1,15 +1,15 @@
 import { Scene, Mesh } from 'three';
 
-import Debug from './utils/Debug.js';
-import Sizes from './utils/Sizes.js';
-import Time from './utils/Time.js';
-import Camera from './managers/Camera.js';
-import Renderer from './managers/Renderer.js';
-import Composer from './managers/Composer.js';
-import World from './World/World.js';
-import Resources from './utils/Resources.js';
+import Debug from '@/utils/Debug.js';
+import Sizes from '@/utils/Sizes.js';
+import Time from '@/utils/Time.js';
+import Camera from '@/managers/Camera.js';
+import Renderer from '@/managers/Renderer.js';
+import Composer from '@/managers/Composer.js';
+import World from '@/World/World.js';
+import Resources from '@/utils/Resources.js';
 
-import sources from './parameters/sources.js';
+import sources from '@/parameters/sources.js';
 
 let instance = null;
 

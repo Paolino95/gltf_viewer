@@ -3,8 +3,8 @@ import {
     MeshStandardMaterial,
     EquirectangularReflectionMapping,
 } from 'three';
-import Experience from '../Experience.js';
-import { sceneParams } from '../parameters/ui.js';
+import Experience from '@/Experience.js';
+import { sceneParams } from '@/parameters/ui.js';
 
 export default class Environment {
     constructor() {

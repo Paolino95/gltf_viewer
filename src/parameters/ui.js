@@ -1,5 +1,8 @@
+import { PP_EFFECT_BLOOM, PP_EFFECT_FXAA } from '@/constants';
+
 export const postProcessingEffects = {
     bloomParams: {
+        id: PP_EFFECT_BLOOM,
         title: 'Bloom',
         parametersTitle: 'Bloom Parameters',
         active: false,
@@ -25,6 +28,7 @@ export const postProcessingEffects = {
         },
     },
     fxaaParams: {
+        id: PP_EFFECT_FXAA,
         title: 'FXAA',
         active: false,
     },

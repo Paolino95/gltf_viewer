@@ -10,11 +10,11 @@ import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
 // Shaders
-import { ColorCorrectionShader } from 'three/addons/shaders/ColorCorrectionShader.js';
+// import { ColorCorrectionShader } from 'three/addons/shaders/ColorCorrectionShader.js';
 import { FXAAShader } from 'three/addons/shaders/FXAAShader.js';
 
-import { postProcessingEffects } from '../parameters/ui';
-import Experience from '../Experience.js';
+import { postProcessingEffects } from '@/parameters/ui';
+import Experience from '@/Experience.js';
 
 export default class Composer {
     constructor() {
@@ -26,22 +26,21 @@ export default class Composer {
         this.renderer = this.experience.renderer.instance;
         this.debug = this.experience.debug;
 
+        const effectsList = this.constructList(postProcessingEffects);
         // Debug Folder
         if (this.debug.active) {
             this.debugFolder = this.debug.pane.addFolder({
                 title: 'Post Processing Effects',
             });
 
-            this.effectsList = this.debugFolder.addBlade({
-                view: 'list',
-                label: 'effect',
-                options: [
-                    { text: 'Nessuno', value: 'Nessuno' },
-                    { text: 'Bloom', value: 'Bloom' },
-                    { text: 'FXAA', value: 'FXAA' },
-                ],
-                value: 'Nessuno',
-            });
+            this.effectsList = this.debugFolder
+                .addBlade({
+                    view: 'list',
+                    label: 'effect',
+                    options: effectsList,
+                    value: 'Nessuno',
+                })
+                .on('change', e => this.switchEffect(e.value));
         }
 
         this.setInstance();
@@ -50,6 +49,27 @@ export default class Composer {
         this.setFXAAPass();
         this.setBloomPass();
     }
+
+    constructList(list) {
+        const result = [];
+
+        result.push({ text: 'Nessuno', value: 'Nessuno' });
+
+        for (const effect in list)
+            result.push({ text: list[effect].id, value: list[effect].id });
+
+        return result;
+    }
+
+    switchEffect = effect => {
+        switch (effect) {
+            case value:
+                break;
+
+            default:
+                break;
+        }
+    };
 
     setInstance() {
         this.instance = new EffectComposer(this.renderer);
@@ -68,7 +88,9 @@ export default class Composer {
             postProcessingEffects.bloomParams.parameters.radius.value,
             postProcessingEffects.bloomParams.parameters.threshold.value
         );
+    };
 
+    setBloomPassParameters = () => {
         // Debug
         if (this.debug.active && this.effectsList.value === 'Bloom') {
             // Parameters
