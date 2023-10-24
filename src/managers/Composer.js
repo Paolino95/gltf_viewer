@@ -10,10 +10,14 @@ import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
 // Shaders
-// import { ColorCorrectionShader } from 'three/addons/shaders/ColorCorrectionShader.js';
 import { FXAAShader } from 'three/addons/shaders/FXAAShader.js';
 
 import { postProcessingEffects } from '@/parameters/ui';
+import {
+    PP_EFFECT_NO_EFFECTS,
+    PP_EFFECT_BLOOM,
+    PP_EFFECT_FXAA,
+} from '@/constants';
 import Experience from '@/Experience.js';
 
 export default class Composer {
@@ -38,7 +42,7 @@ export default class Composer {
                     view: 'list',
                     label: 'effect',
                     options: effectsList,
-                    value: 'Nessuno',
+                    value: PP_EFFECT_NO_EFFECTS,
                 })
                 .on('change', e => this.switchEffect(e.value));
         }
@@ -50,27 +54,6 @@ export default class Composer {
         this.setBloomPass();
     }
 
-    constructList(list) {
-        const result = [];
-
-        result.push({ text: 'Nessuno', value: 'Nessuno' });
-
-        for (const effect in list)
-            result.push({ text: list[effect].id, value: list[effect].id });
-
-        return result;
-    }
-
-    switchEffect = effect => {
-        switch (effect) {
-            case value:
-                break;
-
-            default:
-                break;
-        }
-    };
-
     setInstance() {
         this.instance = new EffectComposer(this.renderer);
         this.effects = {};
@@ -80,6 +63,41 @@ export default class Composer {
         this.instance.addPass(this.effects.renderPass);
         this.instance.addPass(this.effects.outputPass);
     }
+
+    constructList(list) {
+        const result = [];
+
+        result.push({
+            text: PP_EFFECT_NO_EFFECTS,
+            value: PP_EFFECT_NO_EFFECTS,
+        });
+
+        for (const effect in list)
+            result.push({ text: list[effect].id, value: list[effect].id });
+
+        return result;
+    }
+
+    switchEffect = effect => {
+        this.resetEffects();
+        this.setHiddenParameters();
+
+        switch (effect) {
+            case PP_EFFECT_BLOOM:
+                this.setBloomPassParameters();
+                this.instance.insertPass(
+                    this.effects.bloomPass,
+                    this.instance.passes.length - 1
+                );
+                break;
+
+            case PP_EFFECT_FXAA:
+                this.instance.addPass(this.effects.fxaaPass);
+                break;
+            default:
+                break;
+        }
+    };
 
     setBloomPass = () => {
         this.effects.bloomPass = new UnrealBloomPass(
@@ -91,13 +109,17 @@ export default class Composer {
     };
 
     setBloomPassParameters = () => {
+        if (this.bloomParamsFolder) this.bloomParamsFolder.hidden = false;
         // Debug
-        if (this.debug.active && this.effectsList.value === 'Bloom') {
+        if (
+            this.debug.active &&
+            this.effectsList.value === PP_EFFECT_BLOOM &&
+            !this.bloomParamsFolder
+        ) {
             // Parameters
             this.bloomParamsFolder = this.debugFolder.addFolder({
                 title: postProcessingEffects.bloomParams.parametersTitle,
-                disabled: !postProcessingEffects.bloomParams.active,
-                expanded: false,
+                expanded: true,
             });
 
             for (const parameter in postProcessingEffects.bloomParams
@@ -130,17 +152,6 @@ export default class Composer {
         }
     };
 
-    updateBloomPass = toggle => {
-        if (toggle) {
-            this.instance.insertPass(
-                this.effects.bloomPass,
-                this.instance.passes.length
-            );
-        } else {
-            this.instance.removePass(this.effects.bloomPass);
-        }
-    };
-
     setFXAAPass = () => {
         this.effects.fxaaPass = new ShaderPass(FXAAShader);
 
@@ -148,25 +159,16 @@ export default class Composer {
             1 / (this.canvas.offsetWidth * this.sizes.pixelRatio);
         this.effects.fxaaPass.material.uniforms['resolution'].value.y =
             1 / (this.canvas.offsetHeight * this.sizes.pixelRatio);
-
-        // Debug
-        if (this.debug.active) {
-            this.debugFolder
-                .addBinding(postProcessingEffects.fxaaParams, 'active', {
-                    label: postProcessingEffects.fxaaParams.title,
-                })
-                .on('change', e => {
-                    this.updateFxaaPass(e.value);
-                });
-        }
     };
 
-    updateFxaaPass = toggle => {
-        if (toggle) {
-            this.instance.addPass(this.effects.fxaaPass);
-        } else {
-            this.instance.removePass(this.effects.fxaaPass);
-        }
+    resetEffects = () => {
+        this.instance = new EffectComposer(this.renderer);
+        this.instance.addPass(this.effects.renderPass);
+        this.instance.addPass(this.effects.outputPass);
+    };
+
+    setHiddenParameters = () => {
+        if (this.bloomParamsFolder) this.bloomParamsFolder.hidden = true;
     };
 
     resize() {
