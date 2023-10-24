@@ -21,6 +21,10 @@ export default class Environment {
         }
 
         this.setEnvironmentMap();
+
+        this.resources.on('updateHdr', url => {
+            this.updateHdr(url);
+        });
     }
 
     setEnvironmentMap() {
@@ -58,4 +62,13 @@ export default class Environment {
                 .on('change', this.environmentMap.updateMaterials);
         }
     }
+
+    updateHdr = hdrName => {
+        this.resources.loaders.rgbeLoader.load(hdrName, texture => {
+            this.environmentMap.texture.mapping =
+                EquirectangularReflectionMapping;
+
+            this.scene.environment = texture;
+        });
+    };
 }
