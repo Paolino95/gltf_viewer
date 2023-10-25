@@ -20,16 +20,8 @@ export default class Model {
         this.setModel();
         this.setAnimation();
 
-        // Drag&Drop event
-        this.experience.canvasContainer.addEventListener('drop', e => {
-            e.preventDefault();
-
-            const modelDataUrl = this.resources.handleFileDrop(e, 'glb');
-            this.updateModel(modelDataUrl);
-        });
-
-        this.experience.canvasContainer.addEventListener('dragover', e => {
-            e.preventDefault();
+        this.resources.on('updateGlb', url => {
+            this.updateModel(url);
         });
     }
 
@@ -50,7 +42,7 @@ export default class Model {
         this.scene.remove(this.scene.children[0]);
         const self = this;
 
-        this.resources.loaders.gltfloader.load(modelName, function (gltf) {
+        this.resources.loaders.gltfLoader.load(modelName, function (gltf) {
             gltf.scene.traverse(function (child) {
                 if (child.isMesh) {
                     child.material.envMapIntensity =

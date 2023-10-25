@@ -36,6 +36,12 @@ export default class Environment {
                 })
                 .on('change', e => (this.scene.background = e.value));
         }
+
+        this.setEnvironmentMap();
+
+        this.resources.on('updateHdr', url => {
+            this.updateHdr(url);
+        });
     }
 
     setEnvironmentMap() {
@@ -60,6 +66,15 @@ export default class Environment {
                 child.material.envMapIntensity = this.environmentMap.intensity;
                 child.material.needsUpdate = true;
             }
+        });
+    };
+
+    updateHdr = hdrName => {
+        this.resources.loaders.rgbeLoader.load(hdrName, texture => {
+            this.environmentMap.texture.mapping =
+                EquirectangularReflectionMapping;
+
+            this.scene.environment = texture;
         });
     };
 }

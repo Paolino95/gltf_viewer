@@ -21,7 +21,6 @@ export default class Camera {
             100
         );
         this.instance.position.set(0, 0, 3.5);
-        this.scene.add(this.instance);
     }
 
     setControls() {

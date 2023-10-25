@@ -16,6 +16,18 @@ export default class Resources extends EventEmitter {
 
         this.setLoaders();
         this.startLoading();
+
+        // Drag&Drop event
+        window.addEventListener('drop', e => {
+            e.preventDefault();
+
+            const blobData = this.handleFileDrop(e);
+            this.notifyCorrectUpdate(blobData);
+        });
+
+        window.addEventListener('dragover', e => {
+            e.preventDefault();
+        });
     }
 
     setLoaders() {
@@ -71,6 +83,23 @@ export default class Resources extends EventEmitter {
 
         if (!file) return;
 
-        return URL.createObjectURL(file);
+        const type = file.name.split('.').pop();
+        return { url: URL.createObjectURL(file), type };
+    };
+
+    notifyCorrectUpdate = data => {
+        const { url, type } = data;
+
+        switch (type) {
+            case 'hdr':
+                this.trigger('updateHdr', [url]);
+                break;
+
+            case 'glb':
+                this.trigger('updateGlb', [url]);
+                break;
+            default:
+                break;
+        }
     };
 }
