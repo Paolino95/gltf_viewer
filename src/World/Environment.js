@@ -1,5 +1,6 @@
 import {
     Mesh,
+    Color,
     MeshStandardMaterial,
     EquirectangularReflectionMapping,
 } from 'three';
@@ -13,14 +14,28 @@ export default class Environment {
         this.resources = this.experience.resources;
         this.debug = this.experience.debug;
 
+        this.setEnvironmentMap();
+
         // Debug Folder
         if (this.debug.active) {
             this.debugFolder = this.debug.pane.addFolder({
                 title: 'environment',
             });
-        }
 
-        this.setEnvironmentMap();
+            this.debugFolder
+                .addBinding(this.environmentMap, 'intensity', {
+                    min: 0,
+                    max: 4,
+                    step: 0.1,
+                })
+                .on('change', this.updateMaterials);
+
+            this.debugFolder
+                .addBinding(this.scene, 'background', {
+                    label: 'Background Color',
+                })
+                .on('change', e => (this.scene.background = e.value));
+        }
     }
 
     setEnvironmentMap() {
@@ -29,33 +44,22 @@ export default class Environment {
         this.environmentMap.texture = this.resources.items.default;
         this.environmentMap.texture.mapping = EquirectangularReflectionMapping;
 
+        this.scene.background = new Color(0xff0000);
         this.scene.environment = this.environmentMap.texture;
 
-        this.environmentMap.updateMaterials = () => {
-            this.scene.traverse(child => {
-                if (
-                    child instanceof Mesh &&
-                    child.material instanceof MeshStandardMaterial
-                ) {
-                    child.material.envMap = this.environmentMap.texture;
-                    child.material.envMapIntensity =
-                        this.environmentMap.intensity;
-                    child.material.needsUpdate = true;
-                }
-            });
-        };
-
-        this.environmentMap.updateMaterials();
-
-        // Debug
-        if (this.debug.active) {
-            this.debugFolder
-                .addBinding(this.environmentMap, 'intensity', {
-                    min: 0,
-                    max: 4,
-                    step: 0.1,
-                })
-                .on('change', this.environmentMap.updateMaterials);
-        }
+        this.updateMaterials();
     }
+
+    updateMaterials = () => {
+        this.scene.traverse(child => {
+            if (
+                child instanceof Mesh &&
+                child.material instanceof MeshStandardMaterial
+            ) {
+                child.material.envMap = this.environmentMap.texture;
+                child.material.envMapIntensity = this.environmentMap.intensity;
+                child.material.needsUpdate = true;
+            }
+        });
+    };
 }

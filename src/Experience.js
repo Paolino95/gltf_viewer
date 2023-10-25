@@ -30,7 +30,7 @@ export default class Experience {
 
         // Setup
         this.debug = new Debug(_controlsContainer);
-        this.sizes = new Sizes();
+        this.sizes = new Sizes(this.canvasContainer);
         this.time = new Time();
         this.scene = new Scene();
         this.resources = new Resources(sources);

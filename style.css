@@ -1,17 +1,34 @@
-html,
+html {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
 body {
   width: 100%;
   height: 100%;
   margin: 0;
-  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: burlywood;
 }
-#container, #container3D {
+
+#container3D {
   width: 100%;
   height: 100%;
+  border-radius: 50px;
   display: block;
+  position: relative;
 }
+
+#container {
+  width: 80%;
+  height: 85%;
+}
+
 #tweakContainer {
-  width: 20%;
+  width: 360px;
   position: absolute;
   top: 0;
   right: 0;
