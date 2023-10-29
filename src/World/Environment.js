@@ -33,11 +33,13 @@ export default class Environment {
             this.debugFolder
                 .addBinding(this.scene, 'background', {
                     label: 'Background Color',
+                    color: { type: 'float' },
                 })
-                .on('change', e => (this.scene.background = e.value));
+                .on('change', e => {
+                    this.scene.background = e.value;
+                    this.updateMaterials();
+                });
         }
-
-        this.setEnvironmentMap();
 
         this.resources.on('updateHdr', url => {
             this.updateHdr(url);
@@ -50,7 +52,7 @@ export default class Environment {
         this.environmentMap.texture = this.resources.items.default;
         this.environmentMap.texture.mapping = EquirectangularReflectionMapping;
 
-        this.scene.background = new Color(0xff0000);
+        this.scene.background = new Color(0x000000);
         this.scene.environment = this.environmentMap.texture;
 
         this.updateMaterials();
