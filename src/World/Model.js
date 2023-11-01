@@ -32,6 +32,7 @@ export default class Model {
         this.model.traverse(child => {
             if (child instanceof Mesh) {
                 child.castShadow = true;
+                child.material.envMapIntensity = sceneParams.envMapIntensity;
             }
         });
 
@@ -39,18 +40,17 @@ export default class Model {
     }
 
     updateModel = modelName => {
-        this.scene.remove(this.scene.children[0]);
         const self = this;
 
-        this.resources.loaders.gltfLoader.load(modelName, function (gltf) {
-            gltf.scene.traverse(function (child) {
-                if (child.isMesh) {
-                    child.material.envMapIntensity =
-                        sceneParams.envMapIntensity;
-                }
-            });
+        this.scene.traverse(function (child) {
+            if (child.isMesh) {
+                self.scene.remove(child.parent);
+            }
+        });
 
-            self.scene.add(gltf.scene);
+        this.resources.loaders.gltfLoader.load(modelName, function (gltf) {
+            self.resource = gltf;
+            self.setModel();
         });
     };
 

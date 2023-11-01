@@ -43,3 +43,7 @@ export const sceneParams = {
     backgroundIntensity: 1,
     envMapIntensity: 1,
 };
+
+export const helpersParams = {
+    axesHelper: true,
+};

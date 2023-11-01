@@ -8,6 +8,7 @@ import Renderer from '@/managers/Renderer.js';
 import Composer from '@/managers/Composer.js';
 import World from '@/World/World.js';
 import Resources from '@/utils/Resources.js';
+import Helpers from '@/managers/Helpers';
 
 import sources from '@/parameters/sources.js';
 
@@ -38,6 +39,7 @@ export default class Experience {
         this.renderer = new Renderer();
         this.world = new World();
         this.composer = new Composer(this.renderer, this.scene, this.camera);
+        this.helpers = new Helpers();
 
         // Resize event
         this.sizes.on('resize', () => {
