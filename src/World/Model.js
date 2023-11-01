@@ -15,6 +15,11 @@ export default class Model {
 
         // Debug
         if (this.debug.active) {
+            this.debug.pane
+                .addButton({ title: 'update Model' })
+                .on('click', () => {
+                    this.resources.inputButton.click();
+                });
         }
 
         this.setModel();

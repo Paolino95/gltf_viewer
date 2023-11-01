@@ -14,6 +14,8 @@ export default class Resources extends EventEmitter {
         this.toLoad = this.sources.length;
         this.loaded = 0;
 
+        this.inputButton = document.querySelector('#file-input');
+
         this.setLoaders();
         this.startLoading();
 
@@ -27,6 +29,16 @@ export default class Resources extends EventEmitter {
 
         window.addEventListener('dragover', e => {
             e.preventDefault();
+        });
+
+        // Input event
+        this.inputButton.addEventListener('change', e => {
+            e.preventDefault();
+
+            const blobData = this.handleFileInput(e);
+            this.notifyCorrectUpdate(blobData);
+
+            this.inputButton.value = '';
         });
     }
 
@@ -83,6 +95,19 @@ export default class Resources extends EventEmitter {
             this.trigger('ready');
         }
     }
+
+    handleFileInput = e => {
+        const files = e.target.files;
+
+        if (!files) return;
+
+        const file = files[0];
+
+        if (!file) return;
+
+        const type = file.name.split('.').pop();
+        return { url: URL.createObjectURL(file), type };
+    };
 
     handleFileDrop = e => {
         const files = e.dataTransfer.files;

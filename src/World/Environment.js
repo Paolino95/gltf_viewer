@@ -14,6 +14,9 @@ export default class Environment {
         this.resources = this.experience.resources;
         this.debug = this.experience.debug;
 
+        this.environmentMap = {};
+        this.environmentMap.texture = this.resources.items.default;
+
         this.setEnvironmentMap();
 
         // Debug Folder
@@ -30,33 +33,46 @@ export default class Environment {
                 })
                 .on('change', this.updateMaterials);
 
+            // this.debugFolder
+            //     .addBinding(this.scene, 'background', {
+            //         label: 'Background Color',
+            //         color: { type: 'float' },
+            //     })
+            //     .on('change', e => {
+            //         this.scene.background = e.value;
+            //         this.updateMaterials();
+            //     });
+
             this.debugFolder
-                .addBinding(this.scene, 'background', {
-                    label: 'Background Color',
-                    color: { type: 'float' },
-                })
-                .on('change', e => {
-                    this.scene.background = e.value;
-                    this.updateMaterials();
+                .addButton({ title: 'update hdr' })
+                .on('click', () => {
+                    this.resources.inputButton.click();
                 });
         }
 
         this.resources.on('updateHdr', url => {
-            this.updateHdr(url);
+            this.updateEnvironmentMap(url);
         });
     }
 
     setEnvironmentMap() {
-        this.environmentMap = {};
         this.environmentMap.intensity = sceneParams.envMapIntensity;
-        this.environmentMap.texture = this.resources.items.default;
         this.environmentMap.texture.mapping = EquirectangularReflectionMapping;
 
-        this.scene.background = new Color(0x000000);
+        this.scene.background = this.environmentMap.texture;
         this.scene.environment = this.environmentMap.texture;
 
         this.updateMaterials();
     }
+
+    updateEnvironmentMap = hdrName => {
+        const self = this;
+
+        this.resources.loaders.rgbeLoader.load(hdrName, texture => {
+            self.environmentMap.texture = texture;
+            self.setEnvironmentMap();
+        });
+    };
 
     updateMaterials = () => {
         this.scene.traverse(child => {
@@ -68,15 +84,6 @@ export default class Environment {
                 child.material.envMapIntensity = this.environmentMap.intensity;
                 child.material.needsUpdate = true;
             }
-        });
-    };
-
-    updateHdr = hdrName => {
-        this.resources.loaders.rgbeLoader.load(hdrName, texture => {
-            this.environmentMap.texture.mapping =
-                EquirectangularReflectionMapping;
-
-            this.scene.environment = texture;
         });
     };
 }
