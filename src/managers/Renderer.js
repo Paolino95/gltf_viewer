@@ -17,6 +17,8 @@ import {
 } from 'three';
 import Experience from '@/Experience.js';
 
+import { DEBUG_EXPANDED_TAB } from '@/constants';
+
 export default class Renderer {
     constructor() {
         this.experience = new Experience();
@@ -32,6 +34,7 @@ export default class Renderer {
         if (this.debug.active) {
             this.debugFolder = this.debug.pane.addFolder({
                 title: 'Renderer Parameters',
+                expanded: DEBUG_EXPANDED_TAB['RENDERER_PARAMETERS'].expanded,
             });
 
             this.debugFolder

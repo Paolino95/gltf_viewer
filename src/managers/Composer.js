@@ -17,6 +17,7 @@ import {
     PP_EFFECT_NO_EFFECTS,
     PP_EFFECT_BLOOM,
     PP_EFFECT_FXAA,
+    DEBUG_EXPANDED_TAB,
 } from '@/constants';
 import { constructList } from '@/utils/functions';
 
@@ -36,6 +37,7 @@ export default class Composer {
         if (this.debug.active) {
             this.debugFolder = this.debug.pane.addFolder({
                 title: 'Post Processing Effects',
+                expanded: DEBUG_EXPANDED_TAB['PP_EFFECTS_PARAMETERS'].expanded,
             });
 
             this.effectsList = this.debugFolder

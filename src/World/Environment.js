@@ -5,10 +5,20 @@ import {
     EquirectangularReflectionMapping,
 } from 'three';
 import Experience from '@/Experience.js';
-import { sceneParams, backgroundOptionsList } from '@/parameters/ui.js';
+import {
+    sceneParams,
+    backgroundOptionsList,
+    hdrList,
+} from '@/parameters/ui.js';
 import { constructList } from '@/utils/functions';
 
-import { ENV_BACKGROUND_COLOR, ENV_BACKGROUND_TEXTURE } from '@/constants';
+import {
+    ENV_BACKGROUND_COLOR,
+    ENV_BACKGROUND_TEXTURE,
+    DEBUG_EXPANDED_TAB,
+    HDR_1,
+    HDR_2,
+} from '@/constants';
 
 export default class Environment {
     constructor() {
@@ -18,15 +28,31 @@ export default class Environment {
         this.debug = this.experience.debug;
 
         this.environmentMap = {};
-        this.environmentMap.texture = this.resources.items.default;
+        this.environmentMap.texture = this.defaultEnvironmentMap().hdr;
 
+        this.setBackgroundType(ENV_BACKGROUND_COLOR);
         this.setEnvironmentMap();
 
         // Debug Folder
         if (this.debug.active) {
             this.debugFolder = this.debug.pane.addFolder({
                 title: 'environment',
+                expanded: DEBUG_EXPANDED_TAB['ENVIRONMENT_PARAMETERS'].expanded,
             });
+
+            this.modelList = this.debugFolder
+                .addBlade({
+                    view: 'list',
+                    label: 'Select Hdr',
+                    options: constructList(hdrList),
+                    value: this.defaultEnvironmentMap().name,
+                })
+                .on('change', async e => {
+                    const path = this.resources.sources.filter(
+                        source => source.name === e.value
+                    )[0].path;
+                    this.updateEnvironmentMap(path);
+                });
 
             this.debugFolder
                 .addBinding(this.environmentMap, 'intensity', {
@@ -44,7 +70,7 @@ export default class Environment {
                     value: ENV_BACKGROUND_COLOR,
                 })
                 .on('change', e => {
-                    this.switchBackgroundType(e.value);
+                    this.setBackgroundType(e.value);
                     this.updateMaterials();
                 });
 
@@ -71,20 +97,36 @@ export default class Environment {
         });
     }
 
+    defaultEnvironmentMap() {
+        for (const source of this.resources.sources) {
+            if (
+                source.type === 'hdrTexture' &&
+                source.default &&
+                source.default === true &&
+                source.name === (HDR_1 || HDR_2)
+            ) {
+                return {
+                    name: source.name,
+                    hdr: this.resources.items[source.name],
+                };
+            }
+        }
+    }
+
     setEnvironmentMap() {
         this.environmentMap.intensity = sceneParams.envMapIntensity;
         this.environmentMap.texture.mapping = EquirectangularReflectionMapping;
 
-        this.scene.background = new Color(sceneParams.backgroundColor);
         this.scene.environment = this.environmentMap.texture;
 
         this.updateMaterials();
+        this.setTextureBackground();
     }
 
-    updateEnvironmentMap = hdrName => {
+    updateEnvironmentMap = path => {
         const self = this;
 
-        this.resources.loaders.rgbeLoader.load(hdrName, texture => {
+        this.resources.loaders.rgbeLoader.load(path, texture => {
             self.environmentMap.texture = texture;
             self.setEnvironmentMap();
         });
@@ -103,7 +145,7 @@ export default class Environment {
         });
     };
 
-    switchBackgroundType = type => {
+    setBackgroundType = type => {
         this.setHiddenParameters();
 
         switch (type) {
@@ -114,10 +156,19 @@ export default class Environment {
                 break;
 
             case ENV_BACKGROUND_TEXTURE:
-                this.scene.background = this.environmentMap.texture;
+                this.setTextureBackground();
                 break;
             default:
                 break;
+        }
+    };
+
+    setTextureBackground = () => {
+        if (
+            this.backgroundOptionsList &&
+            this.backgroundOptionsList.value === ENV_BACKGROUND_TEXTURE
+        ) {
+            this.scene.background = this.environmentMap.texture;
         }
     };
 

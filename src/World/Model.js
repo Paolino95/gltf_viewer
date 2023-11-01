@@ -1,6 +1,8 @@
 import { Box3, Vector3, Mesh, AnimationMixer } from 'three';
 import Experience from '@/Experience.js';
-import { sceneParams } from '@/parameters/ui.js';
+import { sceneParams, modelList } from '@/parameters/ui.js';
+import { DEBUG_EXPANDED_TAB, MOD_1, MOD_2, MOD_3 } from '@/constants';
+import { constructList } from '@/utils/functions';
 
 export default class Model {
     constructor() {
@@ -11,13 +13,28 @@ export default class Model {
         this.debug = this.experience.debug;
 
         // Resource
-        this.resource = this.resources.items.model;
+        this.resource = this.defaultModel().model;
 
         // Debug
         if (this.debug.active) {
             this.debugFolder = this.debug.pane.addFolder({
                 title: 'Model Parameters',
+                expanded: DEBUG_EXPANDED_TAB['MODEL_PARAMETERS'].expanded,
             });
+
+            this.modelList = this.debugFolder
+                .addBlade({
+                    view: 'list',
+                    label: 'Selected Model',
+                    options: constructList(modelList),
+                    value: this.defaultModel().name,
+                })
+                .on('change', e => {
+                    const path = this.resources.sources.filter(
+                        source => source.name === e.value
+                    )[0].path;
+                    this.updateModel(path);
+                });
 
             this.debugFolder
                 .addButton({ title: 'update Model' })
@@ -32,6 +49,22 @@ export default class Model {
         this.resources.on('updateGlb', url => {
             this.updateModel(url);
         });
+    }
+
+    defaultModel() {
+        for (const source of this.resources.sources) {
+            if (
+                source.type === 'gltfModel' &&
+                source.default &&
+                source.default === true &&
+                source.name === (MOD_1 || MOD_2 || MOD_3)
+            ) {
+                return {
+                    name: source.name,
+                    model: this.resources.items[source.name],
+                };
+            }
+        }
     }
 
     setModel() {

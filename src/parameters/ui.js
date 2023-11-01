@@ -3,6 +3,11 @@ import {
     PP_EFFECT_FXAA,
     ENV_BACKGROUND_COLOR,
     ENV_BACKGROUND_TEXTURE,
+    MOD_1,
+    MOD_2,
+    MOD_3,
+    HDR_1,
+    HDR_2,
 } from '@/constants';
 
 export const postProcessingEffects = {
@@ -58,6 +63,32 @@ export const backgroundOptionsList = {
     texture: {
         id: ENV_BACKGROUND_TEXTURE,
         text: 'Texture',
+    },
+};
+
+export const modelList = {
+    lampadario: {
+        id: MOD_1,
+        text: 'Lampadario',
+    },
+    iqos: {
+        id: MOD_2,
+        text: 'Iqos',
+    },
+    glass: {
+        id: MOD_3,
+        text: 'Glass',
+    },
+};
+
+export const hdrList = {
+    default: {
+        id: HDR_1,
+        text: 'Default',
+    },
+    graveyard: {
+        id: HDR_2,
+        text: 'Graveyard',
     },
 };
 

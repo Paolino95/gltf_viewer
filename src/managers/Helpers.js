@@ -3,6 +3,7 @@ import Experience from '@/Experience.js';
 
 // Params
 import { helpersParams } from '@/parameters/ui';
+import { DEBUG_EXPANDED_TAB } from '@/constants';
 
 export default class Helpers {
     constructor() {
@@ -14,6 +15,7 @@ export default class Helpers {
         if (this.debug.active) {
             this.debugFolder = this.debug.pane.addFolder({
                 title: 'Helpers',
+                expanded: DEBUG_EXPANDED_TAB['HELPERS'].expanded,
             });
 
             this.debugFolder
