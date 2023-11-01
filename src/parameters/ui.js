@@ -1,4 +1,9 @@
-import { PP_EFFECT_BLOOM, PP_EFFECT_FXAA } from '@/constants';
+import {
+    PP_EFFECT_BLOOM,
+    PP_EFFECT_FXAA,
+    ENV_BACKGROUND_COLOR,
+    ENV_BACKGROUND_TEXTURE,
+} from '@/constants';
 
 export const postProcessingEffects = {
     bloomParams: {
@@ -39,9 +44,21 @@ export const toneMappingParams = {
 };
 
 export const sceneParams = {
+    backgroundColor: 'rgb(0, 0, 0)',
     backgroundBlur: 0.5,
     backgroundIntensity: 1,
     envMapIntensity: 1,
+};
+
+export const backgroundOptionsList = {
+    color: {
+        id: ENV_BACKGROUND_COLOR,
+        text: 'Color',
+    },
+    texture: {
+        id: ENV_BACKGROUND_TEXTURE,
+        text: 'Texture',
+    },
 };
 
 export const helpersParams = {

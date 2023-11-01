@@ -18,6 +18,8 @@ import {
     PP_EFFECT_BLOOM,
     PP_EFFECT_FXAA,
 } from '@/constants';
+import { constructList } from '@/utils/functions';
+
 import Experience from '@/Experience.js';
 
 export default class Composer {
@@ -30,7 +32,6 @@ export default class Composer {
         this.renderer = this.experience.renderer.instance;
         this.debug = this.experience.debug;
 
-        const effectsList = this.constructList(postProcessingEffects);
         // Debug Folder
         if (this.debug.active) {
             this.debugFolder = this.debug.pane.addFolder({
@@ -41,7 +42,7 @@ export default class Composer {
                 .addBlade({
                     view: 'list',
                     label: 'effect',
-                    options: effectsList,
+                    options: this.constructEffectList(postProcessingEffects),
                     value: PP_EFFECT_NO_EFFECTS,
                 })
                 .on('change', e => this.switchEffect(e.value));
@@ -64,16 +65,13 @@ export default class Composer {
         this.instance.addPass(this.effects.outputPass);
     }
 
-    constructList(list) {
-        const result = [];
+    constructEffectList(list) {
+        const result = constructList(list);
 
         result.push({
             text: PP_EFFECT_NO_EFFECTS,
             value: PP_EFFECT_NO_EFFECTS,
         });
-
-        for (const effect in list)
-            result.push({ text: list[effect].id, value: list[effect].id });
 
         return result;
     }

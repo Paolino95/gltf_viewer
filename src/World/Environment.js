@@ -5,7 +5,10 @@ import {
     EquirectangularReflectionMapping,
 } from 'three';
 import Experience from '@/Experience.js';
-import { sceneParams } from '@/parameters/ui.js';
+import { sceneParams, backgroundOptionsList } from '@/parameters/ui.js';
+import { constructList } from '@/utils/functions';
+
+import { ENV_BACKGROUND_COLOR, ENV_BACKGROUND_TEXTURE } from '@/constants';
 
 export default class Environment {
     constructor() {
@@ -33,15 +36,28 @@ export default class Environment {
                 })
                 .on('change', this.updateMaterials);
 
-            // this.debugFolder
-            //     .addBinding(this.scene, 'background', {
-            //         label: 'Background Color',
-            //         color: { type: 'float' },
-            //     })
-            //     .on('change', e => {
-            //         this.scene.background = e.value;
-            //         this.updateMaterials();
-            //     });
+            this.backgroundOptionsList = this.debugFolder
+                .addBlade({
+                    view: 'list',
+                    label: 'background',
+                    options: constructList(backgroundOptionsList),
+                    value: ENV_BACKGROUND_COLOR,
+                })
+                .on('change', e => {
+                    this.switchBackgroundType(e.value);
+                    this.updateMaterials();
+                });
+
+            this.backgroundColorToggle = this.debugFolder
+                .addBinding(this.scene, 'background', {
+                    label: 'Background Color',
+                    color: { type: 'float' },
+                })
+                .on('change', e => {
+                    sceneParams.backgroundColor = e.value;
+                    this.scene.background = e.value;
+                    this.updateMaterials();
+                });
 
             this.debugFolder
                 .addButton({ title: 'update hdr' })
@@ -59,7 +75,7 @@ export default class Environment {
         this.environmentMap.intensity = sceneParams.envMapIntensity;
         this.environmentMap.texture.mapping = EquirectangularReflectionMapping;
 
-        this.scene.background = this.environmentMap.texture;
+        this.scene.background = new Color(sceneParams.backgroundColor);
         this.scene.environment = this.environmentMap.texture;
 
         this.updateMaterials();
@@ -85,5 +101,28 @@ export default class Environment {
                 child.material.needsUpdate = true;
             }
         });
+    };
+
+    switchBackgroundType = type => {
+        this.setHiddenParameters();
+
+        switch (type) {
+            case ENV_BACKGROUND_COLOR:
+                if (this.backgroundColorToggle)
+                    this.backgroundColorToggle.hidden = false;
+                this.scene.background = new Color(sceneParams.backgroundColor);
+                break;
+
+            case ENV_BACKGROUND_TEXTURE:
+                this.scene.background = this.environmentMap.texture;
+                break;
+            default:
+                break;
+        }
+    };
+
+    setHiddenParameters = () => {
+        if (this.backgroundColorToggle)
+            this.backgroundColorToggle.hidden = true;
     };
 }

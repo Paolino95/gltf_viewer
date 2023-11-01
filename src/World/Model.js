@@ -15,7 +15,11 @@ export default class Model {
 
         // Debug
         if (this.debug.active) {
-            this.debug.pane
+            this.debugFolder = this.debug.pane.addFolder({
+                title: 'Model Parameters',
+            });
+
+            this.debugFolder
                 .addButton({ title: 'update Model' })
                 .on('click', () => {
                     this.resources.inputButton.click();
