@@ -180,6 +180,8 @@ export default class Model {
             this.animation.actions.current = newAction;
         };
 
+        const self = this;
+
         // Debug
         if (
             this.debug.active &&
@@ -197,16 +199,16 @@ export default class Model {
                     this.animation.play(currentAnimation.name);
                 };
 
-                this.animationsSelector.options.push({
+                self.animationsSelector.options.push({
                     text: currentAnimation.name,
                     value: debugObject[currentAnimation.name],
                 });
 
-                this.animationsSelector.value =
+                self.animationsSelector.value =
                     debugObject[currentAnimation.name];
             }
 
-            // this.debug.pane.refresh();
+            this.debug.pane.refresh();
         } else {
             if (this.animationsSelector) this.animationsSelector.hidden = true;
         }

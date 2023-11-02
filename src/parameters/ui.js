@@ -99,5 +99,5 @@ export const hdrList = {
 };
 
 export const helpersParams = {
-    axesHelper: true,
+    axesHelper: false,
 };

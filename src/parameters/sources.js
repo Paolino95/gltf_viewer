@@ -22,12 +22,12 @@ export default [
         name: MOD_2,
         type: 'gltfModel',
         path: 'assets/models/iqos_model.glb',
-        default: true,
     },
     {
         name: MOD_3,
         type: 'gltfModel',
         path: 'assets/models/Glass_Holder.glb',
+        default: true,
     },
     {
         name: MOD_4,
