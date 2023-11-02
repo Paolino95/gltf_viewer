@@ -9,7 +9,7 @@ import Composer from '@/managers/Composer.js';
 import World from '@/World/World.js';
 import Resources from '@/utils/Resources.js';
 import Helpers from '@/managers/Helpers';
-
+// import PathTracer from '@/managers/PathTracer';
 import sources from '@/parameters/sources.js';
 
 let instance = null;
@@ -39,6 +39,8 @@ export default class Experience {
         this.renderer = new Renderer();
         this.world = new World();
         this.composer = new Composer(this.renderer, this.scene, this.camera);
+        this.pathTracer = undefined;
+        // this.pathTracer = new PathTracer();
         this.helpers = new Helpers();
 
         // Resize event
@@ -56,6 +58,7 @@ export default class Experience {
         this.camera.resize();
         this.renderer.resize();
         this.composer.resize();
+        if (this.pathTracer) this.pathTracer.resize();
     }
 
     update() {
@@ -64,10 +67,14 @@ export default class Experience {
         this.camera.update();
         this.world.update();
 
-        if (this.composer === null) {
-            this.renderer.update();
-        } else {
+        if (this.pathTracer) {
+            this.pathTracer.update();
+        }
+
+        if (this.composer) {
             this.composer.update();
+        } else {
+            this.renderer.update();
         }
 
         if (this.debug.active) this.debug.fpsGraph.end();

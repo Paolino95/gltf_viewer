@@ -26,11 +26,14 @@ export default class Environment {
         this.scene = this.experience.scene;
         this.resources = this.experience.resources;
         this.debug = this.experience.debug;
+        this.pathTracer = this.experience.pathTracer;
 
         this.environmentMap = {};
         this.environmentMap.texture = this.defaultEnvironmentMap().hdr;
 
-        this.setBackgroundType(ENV_BACKGROUND_COLOR);
+        this.defualtBackground = ENV_BACKGROUND_TEXTURE;
+
+        this.setBackgroundType(this.defualtBackground);
         this.setEnvironmentMap();
 
         // Debug Folder
@@ -67,21 +70,10 @@ export default class Environment {
                     view: 'list',
                     label: 'background',
                     options: constructList(backgroundOptionsList),
-                    value: ENV_BACKGROUND_COLOR,
+                    value: this.defualtBackground,
                 })
                 .on('change', e => {
                     this.setBackgroundType(e.value);
-                    this.updateMaterials();
-                });
-
-            this.backgroundColorToggle = this.debugFolder
-                .addBinding(this.scene, 'background', {
-                    label: 'Background Color',
-                    color: { type: 'float' },
-                })
-                .on('change', e => {
-                    sceneParams.backgroundColor = e.value;
-                    this.scene.background = e.value;
                     this.updateMaterials();
                 });
 
@@ -119,6 +111,11 @@ export default class Environment {
 
         this.scene.environment = this.environmentMap.texture;
 
+        if (this.pathTracer && this.pathTracer.instance)
+            this.pathTracer.instance.material.envMapInfo.updateFrom(
+                this.environmentMap.texture
+            );
+
         this.updateMaterials();
         this.setTextureBackground();
     }
@@ -153,6 +150,20 @@ export default class Environment {
                 if (this.backgroundColorToggle)
                     this.backgroundColorToggle.hidden = false;
                 this.scene.background = new Color(sceneParams.backgroundColor);
+
+                if (this.debug.active && !this.backgroundColorToggle) {
+                    this.backgroundColorToggle = this.debugFolder
+                        .addBinding(this.scene, 'background', {
+                            label: 'Background Color',
+                            color: { type: 'float' },
+                        })
+                        .on('change', e => {
+                            sceneParams.backgroundColor = e.value;
+                            this.scene.background = e.value;
+                            this.updateMaterials();
+                        });
+                }
+
                 break;
 
             case ENV_BACKGROUND_TEXTURE:
@@ -168,6 +179,8 @@ export default class Environment {
             this.backgroundOptionsList &&
             this.backgroundOptionsList.value === ENV_BACKGROUND_TEXTURE
         ) {
+            this.scene.background = this.environmentMap.texture;
+        } else if (!this.backgroundOptionsList) {
             this.scene.background = this.environmentMap.texture;
         }
     };

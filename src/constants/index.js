@@ -8,6 +8,7 @@ export const ENV_BACKGROUND_TEXTURE = 'texture';
 export const MOD_1 = 'lampadario';
 export const MOD_2 = 'iqos';
 export const MOD_3 = 'glass';
+export const MOD_4 = 'fox';
 
 export const HDR_1 = 'default';
 export const HDR_2 = 'graveyard';

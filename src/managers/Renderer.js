@@ -118,8 +118,6 @@ export default class Renderer {
         });
         this.instance.toneMapping = LinearToneMapping;
         this.instance.toneMappingExposure = 1;
-        this.instance.shadowMap.enabled = true;
-        this.instance.shadowMap.type = PCFSoftShadowMap;
         this.instance.outputColorSpace = SRGBColorSpace;
         this.instance.setSize(this.sizes.width, this.sizes.height);
         this.instance.setPixelRatio(this.sizes.pixelRatio);

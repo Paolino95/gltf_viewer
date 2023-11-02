@@ -6,6 +6,7 @@ import {
     MOD_1,
     MOD_2,
     MOD_3,
+    MOD_4,
     HDR_1,
     HDR_2,
 } from '@/constants';
@@ -78,6 +79,11 @@ export const modelList = {
     glass: {
         id: MOD_3,
         text: 'Glass',
+    },
+
+    fox: {
+        id: MOD_4,
+        text: 'Fox',
     },
 };
 

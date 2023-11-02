@@ -1,4 +1,4 @@
-import { MOD_1, MOD_2, MOD_3, HDR_1, HDR_2 } from '../constants';
+import { MOD_1, MOD_2, MOD_3, MOD_4, HDR_1, HDR_2 } from '../constants';
 
 export default [
     {
@@ -17,16 +17,21 @@ export default [
         name: MOD_1,
         type: 'gltfModel',
         path: 'assets/models/Lampadario.glb',
-        default: true,
     },
     {
         name: MOD_2,
         type: 'gltfModel',
         path: 'assets/models/iqos_model.glb',
+        default: true,
     },
     {
         name: MOD_3,
         type: 'gltfModel',
         path: 'assets/models/Glass_Holder.glb',
+    },
+    {
+        name: MOD_4,
+        type: 'gltfModel',
+        path: 'assets/models/Fox.glb',
     },
 ];
