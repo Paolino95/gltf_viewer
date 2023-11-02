@@ -17,13 +17,9 @@ export default class PathTracer {
         this.renderer = this.experience.renderer;
 
         this.tiles = 2;
+        this.samples = document.getElementById('samples');
 
-        // Wait for resources
-        this.resources.on('ready', () => {
-            // Setup
-
-            this.setInstance();
-        });
+        this.setInstance();
     }
 
     setInstance() {
@@ -51,15 +47,23 @@ export default class PathTracer {
     }
 
     update() {
-        this.instance.update();
+        const self = this;
 
-        if (this.instance.samples < 1) {
-            this.renderer.update();
-        }
+        setTimeout(() => {
+            self.instance.update();
 
-        this.renderer.instance.autoClear = false;
-        this.blitQuad.material.map = this.instance.target.texture;
-        this.blitQuad.render(this.renderer.instance);
-        this.renderer.instance.autoClear = true;
+            if (self.instance.samples < 1) {
+                self.renderer.update();
+            }
+
+            self.renderer.instance.autoClear = false;
+            self.blitQuad.material.map = self.instance.target.texture;
+            self.blitQuad.render(self.renderer.instance);
+            self.renderer.instance.autoClear = true;
+
+            self.samples.innerText = `Samples: ${Math.floor(
+                self.instance.samples
+            )}`;
+        }, 1000);
     }
 }

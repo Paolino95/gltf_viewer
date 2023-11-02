@@ -1,7 +1,7 @@
 // import { PerspectiveCamera } from 'three';
 import { PhysicalCamera } from 'three-gpu-pathtracer';
 import Experience from '@/Experience.js';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 export default class Camera {
     constructor() {

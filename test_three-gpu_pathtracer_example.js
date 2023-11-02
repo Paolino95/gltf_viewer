@@ -1,8 +1,8 @@
 import * as THREE from 'three';
-import { FullScreenQuad } from 'three/examples/jsm/postprocessing/Pass.js';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { FullScreenQuad } from 'three/addons/postprocessing/Pass.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import {
     PathTracingRenderer,
     PhysicalPathTracingMaterial,
@@ -10,7 +10,7 @@ import {
     PathTracingSceneGenerator,
 } from 'three-gpu-pathtracer';
 
-import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
+import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
 
 let renderer, controls, pathTracer, blitQuad, camera, scene, samplesEl;
 
@@ -36,7 +36,7 @@ async function init() {
     renderer.setClearColor(0, 0);
     document.body.appendChild(renderer.domElement);
 
-    camera = new PhysicalCamera(75, 1, 0.025, 500);
+    camera = new PhysicalCamera(75, aspectRatio, 0.025, 500);
     camera.position.set(0, 0, 1);
 
     controls = new OrbitControls(camera, renderer.domElement);
@@ -88,7 +88,6 @@ async function init() {
             return generator.generate(gltf.scene);
         })
         .then(result => {
-            // recenterModel(result.scene);
             console.log({ result });
             scene.add(result.scene);
 

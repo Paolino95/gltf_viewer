@@ -71,16 +71,10 @@ export default class Experience {
             this.pathTracer.update();
         }
 
-        if (this.composer && this.composer.instance) {
-            this.composer.update();
-        } else {
-            this.renderer.update();
-        }
-
         if (this.debug.active) this.debug.fpsGraph.end();
     }
 
-    destroy() {
+    dispose() {
         this.sizes.off('resize');
         this.time.off('tick');
 
