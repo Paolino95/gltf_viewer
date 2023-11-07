@@ -61,12 +61,12 @@ async function init() {
     );
 
     controls.addEventListener('change', () => {
+        console.log('change');
         pathTracer.reset();
     });
 
     // load the envmap and model
     const envMapPromise = new RGBELoader()
-        .setDataType(THREE.FloatType)
         .loadAsync('/assets/environment/default.hdr')
         .then(texture => {
             texture.mapping = THREE.EquirectangularReflectionMapping;

@@ -2,9 +2,12 @@
 import { PhysicalCamera } from 'three-gpu-pathtracer';
 import Experience from '@/Experience.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import EventEmitter from '@/utils/EventEmitter.js';
 
-export default class Camera {
+export default class Camera extends EventEmitter {
     constructor() {
+        super();
+
         this.experience = new Experience();
         this.sizes = this.experience.sizes;
         this.scene = this.experience.scene;
@@ -15,7 +18,7 @@ export default class Camera {
         this.setControls();
 
         this.controls.addEventListener('change', () => {
-            if (this.pathTracer) this.pathTracer.reset();
+            this.trigger('OrbitsChange');
         });
     }
 

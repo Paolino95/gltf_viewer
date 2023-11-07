@@ -12,6 +12,7 @@ export default class PathTracer {
         this.experience = new Experience();
         this.sizes = this.experience.sizes;
         this.scene = this.experience.scene;
+        this.world = this.experience.world;
         this.camera = this.experience.camera;
         this.resources = this.experience.resources;
         this.renderer = this.experience.renderer;
@@ -30,6 +31,16 @@ export default class PathTracer {
         this.instance.tiles.set(this.tiles, this.tiles);
         this.instance.camera = this.camera.instance;
 
+        this.instance.setSize(
+            this.sizes.width *
+                this.sizes.resolutionScale *
+                this.sizes.pixelRatio,
+            this.sizes.height *
+                this.sizes.resolutionScale *
+                this.sizes.pixelRatio
+        );
+        this.instance.reset();
+
         this.blitQuad = new FullScreenQuad(
             new MeshBasicMaterial({
                 map: this.instance.target.texture,
@@ -39,31 +50,33 @@ export default class PathTracer {
     }
 
     resize() {
-        this.instance.setSize(
-            this.sizes.width * this.resolutionScale * this.sizes.pixelRatio,
-            this.sizes.height * this.resolutionScale * this.sizes.pixelRatio
-        );
-        this.instance.reset();
+        if (this.instance) {
+            this.instance.setSize(
+                this.sizes.width *
+                    this.sizes.resolutionScale *
+                    this.sizes.pixelRatio,
+                this.sizes.height *
+                    this.sizes.resolutionScale *
+                    this.sizes.pixelRatio
+            );
+            this.instance.reset();
+        }
     }
 
     update() {
-        const self = this;
+        this.instance.update();
 
-        setTimeout(() => {
-            self.instance.update();
+        if (this.instance.samples < 1) {
+            this.renderer.update();
+        }
 
-            if (self.instance.samples < 1) {
-                self.renderer.update();
-            }
+        this.renderer.instance.autoClear = false;
+        this.blitQuad.material.map = this.instance.target.texture;
+        this.blitQuad.render(this.renderer.instance);
+        this.renderer.instance.autoClear = true;
 
-            self.renderer.instance.autoClear = false;
-            self.blitQuad.material.map = self.instance.target.texture;
-            self.blitQuad.render(self.renderer.instance);
-            self.renderer.instance.autoClear = true;
-
-            self.samples.innerText = `Samples: ${Math.floor(
-                self.instance.samples
-            )}`;
-        }, 1000);
+        this.samples.innerText = `Samples: ${Math.floor(
+            this.instance.samples
+        )}`;
     }
 }

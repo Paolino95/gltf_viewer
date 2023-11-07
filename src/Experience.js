@@ -39,7 +39,6 @@ export default class Experience {
         this.renderer = new Renderer();
         this.world = new World();
         this.composer = new Composer(this.renderer, this.scene, this.camera);
-        this.pathTracer = undefined;
         this.pathTracer = new PathTracer();
         this.helpers = new Helpers();
 
@@ -52,13 +51,17 @@ export default class Experience {
         this.time.on('tick', () => {
             this.update();
         });
+
+        this.camera.on('OrbitsChange', () => {
+            this.pathTracer.instance.reset();
+        });
     }
 
     resize() {
         this.camera.resize();
         this.renderer.resize();
         this.composer.resize();
-        if (this.pathTracer) this.pathTracer.resize();
+        this.pathTracer.resize();
     }
 
     update() {
@@ -66,10 +69,7 @@ export default class Experience {
 
         this.camera.update();
         this.world.update();
-
-        if (this.pathTracer && this.pathTracer.instance) {
-            this.pathTracer.update();
-        }
+        this.pathTracer.update();
 
         if (this.debug.active) this.debug.fpsGraph.end();
     }

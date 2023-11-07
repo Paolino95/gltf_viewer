@@ -13,6 +13,8 @@ export default class World {
             // Setup
             this.model = new Model();
             this.environment = new Environment();
+
+            this.resources.trigger('isWorldUploadEnded');
         });
     }
 
