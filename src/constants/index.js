@@ -13,6 +13,9 @@ export const MOD_4 = 'fox';
 export const HDR_1 = 'default';
 export const HDR_2 = 'graveyard';
 
+export const RENDERER_COMPOSER = 'composer';
+export const RENDERER_PATH_TRACER = 'path_tracer';
+
 export const DEBUG_EXPANDED_TAB = {
     RENDERER_PARAMETERS: { expanded: false },
     PP_EFFECTS_PARAMETERS: { expanded: false },

@@ -12,6 +12,8 @@ import Helpers from '@/managers/Helpers';
 import PathTracer from '@/managers/PathTracer';
 import sources from '@/parameters/sources.js';
 
+import { RENDERER_COMPOSER, RENDERER_PATH_TRACER } from '@/constants';
+
 let instance = null;
 
 export default class Experience {
@@ -42,6 +44,8 @@ export default class Experience {
         this.pathTracer = new PathTracer();
         this.helpers = new Helpers();
 
+        this.rendererInUse = RENDERER_COMPOSER;
+
         // Resize event
         this.sizes.on('resize', () => {
             this.resize();
@@ -53,7 +57,8 @@ export default class Experience {
         });
 
         this.camera.on('OrbitsChange', () => {
-            this.pathTracer.instance.reset();
+            if (this.pathTracer && this.rendererInUse === RENDERER_PATH_TRACER)
+                this.pathTracer.instance.reset();
         });
     }
 
@@ -61,7 +66,8 @@ export default class Experience {
         this.camera.resize();
         this.renderer.resize();
         this.composer.resize();
-        this.pathTracer.resize();
+        if (this.pathTracer && this.rendererInUse === RENDERER_PATH_TRACER)
+            this.pathTracer.resize();
     }
 
     update() {
@@ -69,7 +75,18 @@ export default class Experience {
 
         this.camera.update();
         this.world.update();
-        this.pathTracer.update();
+
+        if (
+            this.composer.instance &&
+            this.rendererInUse === RENDERER_COMPOSER
+        ) {
+            this.composer.update();
+        } else {
+            this.renderer.update();
+        }
+
+        if (this.pathTracer && this.rendererInUse === RENDERER_PATH_TRACER)
+            this.pathTracer.update();
 
         if (this.debug.active) this.debug.fpsGraph.end();
     }
