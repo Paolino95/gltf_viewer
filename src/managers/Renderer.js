@@ -16,6 +16,8 @@ import {
     WebGLRenderer,
 } from 'three';
 import Experience from '@/Experience.js';
+import { OutlinePass } from 'three/addons/postprocessing/OutlinePass.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 
 import { DEBUG_EXPANDED_TAB } from '@/constants';
 
@@ -27,8 +29,14 @@ export default class Renderer {
         this.scene = this.experience.scene;
         this.camera = this.experience.camera;
         this.debug = this.experience.debug;
+        this.raycaster = this.experience.raycaster;
 
         this.setInstance();
+
+        // post processing
+        this.composer = new EffectComposer( this.instance );
+
+        this.outlineMesh();
 
         // Debug Folder
         if (this.debug.active) {
@@ -123,6 +131,8 @@ export default class Renderer {
         this.instance.outputColorSpace = SRGBColorSpace;
         this.instance.setSize(this.sizes.width, this.sizes.height);
         this.instance.setPixelRatio(this.sizes.pixelRatio);
+
+       
     }
 
     resize() {
@@ -132,5 +142,14 @@ export default class Renderer {
 
     update() {
         this.instance.render(this.scene, this.camera.instance);
+    }
+
+    outlineMesh() {
+        let outlinePass, selectedObject;
+        outlinePass = new OutlinePass( new THREE.Vector2( window.innerWidth, window.innerHeight), this.scene, this.camera);
+        outlinePass.visibleEdgeColor.set(0x00ff00);
+        this.composer.addPass(outlinePass);
+        this.outlinePass.selectedObject = this.raycaster.selectedMesh;
+        console.log(this.raycaster.selectedMesh);
     }
 }
