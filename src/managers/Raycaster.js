@@ -115,48 +115,62 @@ export default class Raycast {
                         });
 
                     // console.log(SELECTABLE_CAR_MESHES[this.selectedMesh.name].name);
-                    // this.sendMessage(SELECTABLE_CAR_MESHES[this.selectedMesh.name].name);
+                    this.sendMessage(SELECTABLE_CAR_MESHES[this.selectedMesh.name].name);
                 }
             }
         }
     }
 
     sendMessage(meshName) {
-        const uuid = uuidv4(); // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
+        // const uuid = uuidv4(); // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
+        // const data = JSON.stringify({
+        // data: {
+        //     IDQueryParameter: uuid,
+        //     JsonData: '{"FTS":null,"NluQuestion":"' + meshName + '"}',
+        //     ConnectionToken: CONNECTION_TOKEN,
+        //     ConnectionExecuted: 'true',
+        // },
+        // customParameters: {
+        //         ClientName: CLIENT_NAME,
+        //         Token: CONNECTION_PARAMETER_TOKEN,
+        //     }
+        // });
 
-        const instance = axios.create({
-            baseURL: BACKEND_URL,
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json',
-            },
-        });
+        window.open(BACKEND_URL + "?fts=" + btoa(JSON.stringify('null')) + "&nlu=" + btoa(JSON.stringify('{"FTS":null,"NluQuestion":"' + meshName + '"}')));
 
-        instance
-            .post(BACKEND_URL, {
-                data: {
-                    IDQueryParameter: uuid,
-                    JsonData: '{"FTS":null,"NluQuestion":"' + meshName + '"}',
-                    ConnectionToken: CONNECTION_TOKEN,
-                    ConnectionExecuted: 'true',
-                },
+        // const instance = axios.create({
+        //     baseURL: BACKEND_URL,
+        //     headers: {
+        //         'Access-Control-Allow-Origin': '*',
+        //         'Content-Type': 'application/json',
+        //     },
+        // });
 
-                customParameters: {
-                    ClientName: CLIENT_NAME,
-                    Token: CONNECTION_PARAMETER_TOKEN,
-                },
-            })
-            .then(function (response) {
-                // handle success
-                console.log(response);
-            })
-            .catch(function (error) {
-                // handle error
-                console.log(error);
-            })
-            .finally(function () {
-                // always executed
-            });
+        // instance
+        //     .post(BACKEND_URL, {
+        //         data: {
+        //             IDQueryParameter: uuid,
+        //             JsonData: '{"FTS":null,"NluQuestion":"' + meshName + '"}',
+        //             ConnectionToken: CONNECTION_TOKEN,
+        //             ConnectionExecuted: 'true',
+        //         },
+        //         customParameters: {
+        //             ClientName: CLIENT_NAME,
+        //             Token: CONNECTION_PARAMETER_TOKEN,
+        //         },
+        //     })
+        //     .then(function (response) {
+        //         // handle success
+        //         console.log(response);
+        //     })
+        //     .catch(function (error) {
+        //         // handle error
+        //         console.log(error);
+        //     })
+        //     .finally(function () {
+        //         // always executed
+        //         console.log('end');
+        //     });
     }
 
     // outlineMesh() {
