@@ -41,7 +41,7 @@ export default class Experience {
         this.world = new World();
         this.composer = new Composer(this.renderer, this.scene, this.camera);
         this.helpers = new Helpers();
-        this.raycaster = new Raycast(this);
+        this.raycaster = new Raycast();
 
         // Resize event
         this.sizes.on('resize', () => {
@@ -100,6 +100,7 @@ export default class Experience {
         this.camera.controls.dispose();
         this.renderer.instance.dispose();
         this.composer.instance.dispose();
+        this.raycaster.instance.dispose();
 
         if (this.debug.active) this.debug.ui.destroy();
     }

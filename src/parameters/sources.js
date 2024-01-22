@@ -1,4 +1,4 @@
-import { MOD_1, MOD_2, MOD_3, HDR_1, HDR_2 } from '../constants';
+import { MOD_1, MOD_2, MOD_3, MOD_4, HDR_1, HDR_2 } from '../constants';
 
 export default [
     {
@@ -16,7 +16,6 @@ export default [
     {
         name: MOD_1,
         type: 'gltfModel',
-        // temporary changed Lampadario to fiat for performance issues
         path: 'assets/models/fiat_500_modified.glb',
         default: true,
     },
@@ -29,5 +28,11 @@ export default [
         name: MOD_3,
         type: 'gltfModel',
         path: 'assets/models/Glass_Holder.glb',
+    },
+    {
+        name: MOD_4,
+        type: 'gltfModel',
+        path: 'assets/models/Lampadario.glb',
+        default: true,
     },
 ];
