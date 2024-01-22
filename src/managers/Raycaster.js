@@ -96,7 +96,8 @@ export default class Raycast {
                     // change new mesh material
                     intersects[meshCounter].object.material = new MeshStandardMaterial({color: 0x00ff00, wireframe: true});
 
-                    this.sendMessage(SELECTABLE_CAR_MESHES[this.selectedMesh.name].name);
+                    // console.log(SELECTABLE_CAR_MESHES[this.selectedMesh.name].name);
+                    // this.sendMessage(SELECTABLE_CAR_MESHES[this.selectedMesh.name].name);
                 }    
             }   
         }

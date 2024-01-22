@@ -23,31 +23,31 @@ export const DEBUG_EXPANDED_TAB = {
 export const SELECTABLE_CAR_MESHES = {
     GEO_Cofano_CAR_Livrea_0: {
         id: "GEO_Cofano_CAR_Livrea_0",
-        name: "GEO_Cofano_CAR_Livrea_0"
+        name: "cofano"
     }, // cofano
     polymsh_SUB4_CAR_Livrea_0001_1: {
         id: "polymsh_SUB4_CAR_Livrea_0001_1",
-        name: "polymsh_SUB4_CAR_Livrea_0001_1"
+        name: "specchietto retrovisore lato conducente"
     }, // specchietto conducente
     GEO_damage_glass_8_DAMAGE_GLASS_0001_2: {
         id: "GEO_damage_glass_8_DAMAGE_GLASS_0001_2",
-        name: "GEO_damage_glass_8_DAMAGE_GLASS_0001_2"
+        name: "specchietto retrovisore lato passeggero"
     }, // specchietto passeggero
     Geometry107_CAR_Cerchione_0: {
         id: "Geometry107_CAR_Cerchione_0",
-        name: "Geometry107_CAR_Cerchione_0"
+        name: "controllo della pressione dei pneumatici"
     }, // cerchione Avanti - Destra
     Geometry66_CAR_Cerchione_0: {
         id: "Geometry66_CAR_Cerchione_0",
-        name: "Geometry66_CAR_Cerchione_0"
+        name: "controllo della pressione dei pneumatici"
     }, // cerchione Avanti - Sinistra
     Geometry71_CAR_Cerchione_0: {
         id: "Geometry71_CAR_Cerchione_0",
-        name: "Geometry71_CAR_Cerchione_0"
+        name: "controllo della pressione dei pneumatici"
     }, // cerchione Dietro - Sinistra
     Geometry58_CAR_Cerchione_0: {
         id: "Geometry58_CAR_Cerchione_0",
-        name: "Geometry58_CAR_Cerchione_0"
+        name: "controllo della pressione dei pneumatici"
     }, // cerchione Dietro - Destra
 }
 
