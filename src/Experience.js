@@ -1,4 +1,4 @@
-import { Scene, Mesh } from 'three';
+import { Scene, Mesh, Vector2 } from 'three';
 
 import Debug from '@/utils/Debug.js';
 import Sizes from '@/utils/Sizes.js';
@@ -9,6 +9,7 @@ import Composer from '@/managers/Composer.js';
 import World from '@/World/World.js';
 import Resources from '@/utils/Resources.js';
 import Helpers from '@/managers/Helpers';
+import Raycast from '@/managers/Raycaster.js';
 
 import sources from '@/parameters/sources.js';
 
@@ -40,6 +41,7 @@ export default class Experience {
         this.world = new World();
         this.composer = new Composer(this.renderer, this.scene, this.camera);
         this.helpers = new Helpers();
+        this.raycaster = new Raycast(this);
 
         // Resize event
         this.sizes.on('resize', () => {

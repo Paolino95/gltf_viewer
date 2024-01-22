@@ -16,7 +16,8 @@ export default [
     {
         name: MOD_1,
         type: 'gltfModel',
-        path: 'assets/models/Lampadario.glb',
+        // temporary changed Lampadario to fiat for performance issues
+        path: 'assets/models/fiat_500_modified.glb',
         default: true,
     },
     {
