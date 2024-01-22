@@ -1,10 +1,12 @@
 import { defineConfig } from 'vite';
 import path from 'path';
+import mkcert from'vite-plugin-mkcert';
 
 export default defineConfig({
     server: {
-        watch: { usePolling: true },
+        https: true
     },
+    plugins: [mkcert()],
     resolve: {
         alias: {
             '@': path.resolve(__dirname, './src'),

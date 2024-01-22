@@ -36,8 +36,6 @@ export default class Renderer {
         // post processing
         this.composer = new EffectComposer( this.instance );
 
-        this.outlineMesh();
-
         // Debug Folder
         if (this.debug.active) {
             this.debugFolder = this.debug.pane.addFolder({
@@ -142,14 +140,5 @@ export default class Renderer {
 
     update() {
         this.instance.render(this.scene, this.camera.instance);
-    }
-
-    outlineMesh() {
-        let outlinePass, selectedObject;
-        outlinePass = new OutlinePass( new THREE.Vector2( window.innerWidth, window.innerHeight), this.scene, this.camera);
-        outlinePass.visibleEdgeColor.set(0x00ff00);
-        this.composer.addPass(outlinePass);
-        this.outlinePass.selectedObject = this.raycaster.selectedMesh;
-        console.log(this.raycaster.selectedMesh);
     }
 }
