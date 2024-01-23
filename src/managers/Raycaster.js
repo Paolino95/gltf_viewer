@@ -1,5 +1,4 @@
 import {
-    MeshBasicMaterial,
     MeshStandardMaterial,
     Raycaster,
     Vector2,
@@ -67,15 +66,15 @@ export default class Raycast {
 
     onDocumentMouseDown(e) {
         e.preventDefault();
-        console.log('Click down...');
+        // console.log('Click down...');
         this.clickStart = Date.now();
     }
 
     onDocumentMouseUp(e) {
         e.preventDefault();
-        console.log('... CLICK UP');
+        // console.log('... CLICK UP');
         let delay = Date.now() - this.clickStart;
-        console.log(delay);
+        // console.log(delay);
         if (delay <= 300) {
             this.instance.setFromCamera(this.pointer, this.camera.instance);
             var intersects = this.instance.intersectObjects(
@@ -114,8 +113,7 @@ export default class Raycast {
                             wireframe: true,
                         });
 
-                    // console.log(SELECTABLE_CAR_MESHES[this.selectedMesh.name].name);
-                    this.sendMessage(SELECTABLE_CAR_MESHES[this.selectedMesh.name].name);
+                    // this.sendMessage(SELECTABLE_CAR_MESHES[this.selectedMesh.name].name);
                 }
             }
         }
@@ -172,15 +170,6 @@ export default class Raycast {
         //         console.log('end');
         //     });
     }
-
-    // outlineMesh() {
-    //     let outlinePass, selectedObject;
-    //     outlinePass = new OutlinePass( new THREE.Vector2( window.innerWidth, window.innerHeight), this.scene, this.camera);
-    //     outlinePass.visibleEdgeColor.set(0x00ff00);
-    //     this.composer.addPass(outlinePass);
-    //     this.outlinePass.selectedObject = this.raycaster.selectedMesh;
-    //     console.log(this.raycaster.selectedMesh);
-    // }
 
     dispose() {
         window.removeEventListener('mousemove', this.onPointerMove);

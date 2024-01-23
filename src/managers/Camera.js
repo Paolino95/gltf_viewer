@@ -1,4 +1,4 @@
-import { PerspectiveCamera } from 'three';
+import { PerspectiveCamera, Vector3 } from 'three';
 import Experience from '@/Experience.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
@@ -20,7 +20,8 @@ export default class Camera {
             0.1,
             100
         );
-        this.instance.position.set(0, 0, 3.5);
+        this.instance.position.set(3, 2, 5.5);
+        this.instance.lookAt(0,0,0);
     }
 
     setControls() {

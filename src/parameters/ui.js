@@ -6,6 +6,7 @@ import {
     MOD_1,
     MOD_2,
     MOD_3,
+    MOD_4,
     HDR_1,
     HDR_2,
 } from '@/constants';
@@ -49,7 +50,7 @@ export const toneMappingParams = {
 };
 
 export const sceneParams = {
-    backgroundColor: 'rgb(0, 0, 0)',
+    backgroundColor: 'rgb(255, 255, 255)',
     backgroundBlur: 0.5,
     backgroundIntensity: 1,
     envMapIntensity: 1,
@@ -67,9 +68,9 @@ export const backgroundOptionsList = {
 };
 
 export const modelList = {
-    lampadario: {
+    Fiat: {
         id: MOD_1,
-        text: 'Lampadario',
+        text: 'Fiat 500',
     },
     iqos: {
         id: MOD_2,
@@ -78,6 +79,10 @@ export const modelList = {
     glass: {
         id: MOD_3,
         text: 'Glass',
+    },
+    lampadario: {
+        id: MOD_4,
+        text: 'Lampadario',
     },
 };
 

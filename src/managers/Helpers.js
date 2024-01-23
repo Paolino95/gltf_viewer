@@ -29,6 +29,6 @@ export default class Helpers {
     setInstance() {
         this.helpers = {};
         this.helpers.axesHelper = new AxesHelper(1);
-        this.experience.scene.add(this.helpers.axesHelper);
+        // this.experience.scene.add(this.helpers.axesHelper);
     }
 }
