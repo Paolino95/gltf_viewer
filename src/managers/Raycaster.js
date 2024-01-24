@@ -114,7 +114,13 @@ export default class Raycast {
                         });
 
                     // this.sendMessage(SELECTABLE_CAR_MESHES[this.selectedMesh.name].name);
+                } else {
+                    if (this.lastMaterial !== null)
+                        this.lastSelectedMesh.material = this.lastMaterial;
                 }
+            } else {
+                if (this.lastMaterial !== null)
+                        this.lastSelectedMesh.material = this.lastMaterial;
             }
         }
     }
