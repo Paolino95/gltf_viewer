@@ -15,7 +15,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(135, 158, 222);
+  // background-color: red;
+  background: linear-gradient(60deg, #33353ae5, #b81a1ae5);
 }
 
 #container3D {
@@ -29,6 +30,19 @@ body {
 #container {
   width: 80%;
   height: 85%;
+  position: relative;
+}
+
+#instructions {
+  position: absolute;
+  z-index: 100;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: .2rem;
+  top: 0%;
+  left: 0%;
+  user-select: none;
 }
 
 #tweakContainer {

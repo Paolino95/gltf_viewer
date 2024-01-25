@@ -27,6 +27,7 @@ export default class Raycast {
 
         // mouse click time tracking
         this.clickStart = null;
+        this.singleClick = 
 
         // variables buffers
         this.lastSelectedMesh = null;
@@ -36,12 +37,10 @@ export default class Raycast {
         this.setPointer();
 
         this.onPointerMove = this.onPointerMove.bind(this);
-        this.onDocumentMouseDown = this.onDocumentMouseDown.bind(this);
-        this.onDocumentMouseUp = this.onDocumentMouseUp.bind(this);
+        this.onDocumentDoubleClick = this.onDocumentDoubleClick.bind(this);
 
         // listeners
-        document.addEventListener('mousedown', this.onDocumentMouseDown, false);
-        document.addEventListener('mouseup', this.onDocumentMouseUp, false);
+        document.addEventListener('dblclick', this.onDocumentDoubleClick, false);
 
         this.canvasRect = this.canvas.getBoundingClientRect();
         window.addEventListener('pointermove', this.onPointerMove);
@@ -64,65 +63,57 @@ export default class Raycast {
         this.pointer.y = -(mouseY / this.sizes.height) * 2 + 1;
     }
 
-    onDocumentMouseDown(e) {
-        e.preventDefault();
-        // console.log('Click down...');
-        this.clickStart = Date.now();
-    }
+    // onDocumentMouseDown(e) {
+    //     e.preventDefault();
+    //     // console.log('Click down...');
+    //     this.clickStart = Date.now();
+    // }
 
-    onDocumentMouseUp(e) {
+    onDocumentDoubleClick(e) {
         e.preventDefault();
-        // console.log('... CLICK UP');
-        let delay = Date.now() - this.clickStart;
-        // console.log(delay);
-        if (delay <= 300) {
-            this.instance.setFromCamera(this.pointer, this.camera.instance);
-            var intersects = this.instance.intersectObjects(
-                this.scene.children
-            );
-            if (intersects.length > 0) {
-                let meshCounter = 0;
-                // take the first intersected mesh
+       
+        this.instance.setFromCamera(this.pointer, this.camera.instance);
+        var intersects = this.instance.intersectObjects(
+            this.scene.children
+        );
+        if (intersects.length > 0) {
+            let meshCounter = 0;
+            // take the first intersected mesh
+            this.selectedMesh = intersects[meshCounter].object;
+            const scm = Object.keys(SELECTABLE_CAR_MESHES);
+            // find the first compatible mesh among the first N intersected
+            while (
+                scm.includes(this.selectedMesh.name) === false &&
+                meshCounter < 5
+            ) {
+                meshCounter++;
                 this.selectedMesh = intersects[meshCounter].object;
-
-                const scm = Object.keys(SELECTABLE_CAR_MESHES);
-
-                // find the first compatible mesh among the first N intersected
-                while (
-                    scm.includes(this.selectedMesh.name) === false &&
-                    meshCounter < 5
-                ) {
-                    meshCounter++;
-                    this.selectedMesh = intersects[meshCounter].object;
-                }
-
-                // if such a compatible mesh is found...
-                if (scm.includes(this.selectedMesh.name)) {
-                    // console.log(intersects[meshCounter].object.name);
-                    // if old material is not null, give old mesh the old material
-                    if (this.lastMaterial !== null)
-                        this.lastSelectedMesh.material = this.lastMaterial;
-                    // store old mesh
-                    this.lastSelectedMesh = intersects[meshCounter].object;
-                    // store old mesh material
-                    this.lastMaterial = intersects[meshCounter].object.material;
-                    // change new mesh material
-                    intersects[meshCounter].object.material =
-                        new MeshStandardMaterial({
-                            color: 0x00ff00,
-                            wireframe: true,
-                        });
-
-                    // this.sendMessage(SELECTABLE_CAR_MESHES[this.selectedMesh.name].name);
-                } else {
-                    if (this.lastMaterial !== null)
-                        this.lastSelectedMesh.material = this.lastMaterial;
-                }
+            }
+            // if such a compatible mesh is found...
+            if (scm.includes(this.selectedMesh.name)) {
+                // console.log(intersects[meshCounter].object.name);
+                // if old material is not null, give old mesh the old material
+                if (this.lastMaterial !== null)
+                    this.lastSelectedMesh.material = this.lastMaterial;
+                // store old mesh
+                this.lastSelectedMesh = intersects[meshCounter].object;
+                // store old mesh material
+                this.lastMaterial = intersects[meshCounter].object.material;
+                // change new mesh material
+                intersects[meshCounter].object.material =
+                    new MeshStandardMaterial({
+                    color: 0x00ff00,
+                    wireframe: true,
+                   });
+               // this.sendMessage(SELECTABLE_CAR_MESHES[this.selectedMesh.name].name);
             } else {
                 if (this.lastMaterial !== null)
-                        this.lastSelectedMesh.material = this.lastMaterial;
+                this.lastSelectedMesh.material = this.lastMaterial;
             }
-        }
+            } else {
+                if (this.lastMaterial !== null)
+                       this.lastSelectedMesh.material = this.lastMaterial;
+            }
     }
 
     sendMessage(meshName) {

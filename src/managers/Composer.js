@@ -74,7 +74,6 @@ export default class Composer {
             text: PP_EFFECT_NO_EFFECTS,
             value: PP_EFFECT_NO_EFFECTS,
         });
-
         return result;
     }
 

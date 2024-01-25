@@ -14,7 +14,7 @@ import {
 export const postProcessingEffects = {
     bloomParams: {
         id: PP_EFFECT_BLOOM,
-        title: 'Bloom',
+        text: 'Bloom',
         parametersTitle: 'Bloom Parameters',
         active: false,
         parameters: {
@@ -40,7 +40,7 @@ export const postProcessingEffects = {
     },
     fxaaParams: {
         id: PP_EFFECT_FXAA,
-        title: 'FXAA',
+        text: 'FXAA',
         active: false,
     },
 };
@@ -98,5 +98,5 @@ export const hdrList = {
 };
 
 export const helpersParams = {
-    axesHelper: true,
+    axesHelper: false,
 };
