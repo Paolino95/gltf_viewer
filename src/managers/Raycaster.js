@@ -27,11 +27,16 @@ export default class Raycast {
 
         // mouse click time tracking
         this.clickStart = null;
-        this.singleClick = 
 
         // variables buffers
         this.lastSelectedMesh = null;
         this.lastMaterial = null;
+
+        // connection variables
+        this.hostUrl;
+        this.host;  // host will be received in base 64
+        this.token;  // custom received token parameter
+        this.fts = "null";
 
         this.setInstance();
         this.setPointer();
@@ -41,6 +46,9 @@ export default class Raycast {
         this.onDocumentDoubleClick = this.onDocumentDoubleClick.bind(this);
         this.highlightMesh = this.highlightMesh.bind(this);
         this.restoreMeshMaterial = this.restoreMeshMaterial.bind(this);
+        // this.catchHostCall = this.catchHostCall.bind(this);
+        this.getURLParameter = this.getURLParameter.bind(this);
+        this.catchHostCall();
 
         // listeners
         document.addEventListener('dblclick', this.onDocumentDoubleClick, false);
@@ -81,13 +89,14 @@ export default class Raycast {
             const scm = Object.keys(SELECTABLE_CAR_MESHES);
             // find the first compatible mesh among the first N intersected
             while (
-                scm.includes(this.selectedMesh.name) === false &&
-                meshCounter < 5
+                meshCounter < intersects.length - 1 &&
+                meshCounter < 5 &&
+                scm.includes(this.selectedMesh.name) === false                 
             ) {
                 meshCounter++;
                 this.selectedMesh = intersects[meshCounter].object;
             }
-
+            
             // if such a compatible mesh is found...
             if (scm.includes(this.selectedMesh.name)) {
                 // if old material is not null, give old mesh the old material
@@ -101,17 +110,19 @@ export default class Raycast {
                     this.highlightMesh(intersects[meshCounter]);
 
                 // notify BOK of selected mesh
-                // this.sendMessage(SELECTABLE_CAR_MESHES[this.selectedMesh.name].name);
+                // 
+                this.sendMessage(SELECTABLE_CAR_MESHES[this.selectedMesh.name].name);
+                // 
             } else {
                 // if doubleclicked on no compatible mesh, restore material
                 if (this.lastMaterial !== null)
                 this.lastSelectedMesh.material = this.lastMaterial;
             }
-            } else {
-                // if doubleclicked outside of 3d model, restore material
-                if (this.lastMaterial !== null)
-                       this.lastSelectedMesh.material = this.lastMaterial;
-            }
+        } else {
+            // if doubleclicked outside of 3d model, restore material
+            if (this.lastMaterial !== null)
+                   this.lastSelectedMesh.material = this.lastMaterial;
+        }
     }
 
     highlightMesh(mesh) {
@@ -139,7 +150,7 @@ export default class Raycast {
         //     }
         // });
 
-        window.open(BACKEND_URL + "?fts=" + btoa(JSON.stringify('null')) + "&nlu=" + btoa(JSON.stringify('{"FTS":null,"NluQuestion":"' + meshName + '"}')));
+        window.open(window.location.origin + "?token=" + this.token + "&fts=" + btoa(JSON.stringify(this.fts)) + "&nlu=" + btoa(JSON.stringify(meshName)));
 
         // const instance = axios.create({
         //     baseURL: BACKEND_URL,
@@ -174,6 +185,23 @@ export default class Raycast {
         //         // always executed
         //         console.log('end');
         //     });
+    }
+
+    catchHostCall() {
+        this.token = this.getURLParameter("token");
+        this.host = atob(this.getURLParameter("host"));
+        console.log(this.host, this.token)
+    }
+
+    getURLParameter(sParam) {
+        var sPageURL = window.location.search.substring(1);
+        var sURLVariables = sPageURL.split('&');
+        for (var i = 0; i < sURLVariables.length; i++) {
+            var sParameterName = sURLVariables[i].split('=');
+            if (sParameterName[0] == sParam) {
+                return sParameterName[1];
+            }
+        }
     }
 
     dispose() {
