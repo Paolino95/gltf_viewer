@@ -5,10 +5,11 @@ export const PP_EFFECT_FXAA = 'FXAA';
 export const ENV_BACKGROUND_COLOR = 'color';
 export const ENV_BACKGROUND_TEXTURE = 'texture';
 
-export const MOD_1 = 'fiat_500';
+export const MOD_1 = 'laser_genius';
 export const MOD_2 = 'iqos';
 export const MOD_3 = 'glass';
 export const MOD_4 = 'lampadario';
+export const MOD_5 = 'fiat_500';
 
 export const HDR_1 = 'default';
 export const HDR_2 = 'graveyard';
