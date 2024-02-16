@@ -152,7 +152,7 @@ export default class Environment {
             case ENV_BACKGROUND_COLOR:
                 if (this.backgroundColorToggle)
                     this.backgroundColorToggle.hidden = false;
-                this.scene.background = new Color(sceneParams.backgroundColor);
+                this.scene.background = sceneParams.backgroundColor == 'transparent' ? null : new Color(sceneParams.backgroundColor);
                 break;
 
             case ENV_BACKGROUND_TEXTURE:

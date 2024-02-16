@@ -121,6 +121,8 @@ export default class Renderer {
         this.instance = new WebGLRenderer({
             canvas: this.canvas,
             antialias: true,
+            alpha: true,
+            premultipliedAlpha: false,
         });
         this.instance.toneMapping = LinearToneMapping;
         this.instance.toneMappingExposure = 1;
@@ -129,7 +131,6 @@ export default class Renderer {
         this.instance.outputColorSpace = SRGBColorSpace;
         this.instance.setSize(this.sizes.width, this.sizes.height);
         this.instance.setPixelRatio(this.sizes.pixelRatio);
-
        
     }
 

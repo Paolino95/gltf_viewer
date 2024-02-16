@@ -3,6 +3,7 @@ export const PP_EFFECT_BLOOM = 'bloom';
 export const PP_EFFECT_FXAA = 'FXAA';
 
 export const ENV_BACKGROUND_COLOR = 'color';
+export const ENV_BACKGROUND_TRANSPARENT = 'transparent';
 export const ENV_BACKGROUND_TEXTURE = 'texture';
 
 export const MOD_1 = 'laser_genius';
