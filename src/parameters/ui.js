@@ -50,7 +50,7 @@ export const toneMappingParams = {
 };
 
 export const sceneParams = {
-    backgroundColor: 'rgb(255, 255, 255)',
+    backgroundColor: '#bbbbbb',
     backgroundBlur: 0.5,
     backgroundIntensity: 1,
     envMapIntensity: 1,
