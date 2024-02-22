@@ -104,20 +104,25 @@ export default class Model {
 
         // Actions
         this.animation.actions = {};
+        for (let i = 0; i < this.resource.animations.length; i++) {
+            const animation = this.resource.animations[i];
 
-        for (let i = 0; this.resource.animations.length; i++) {
-            if (this.animation.actions[animation.name])
+            if (animation && !this.animation.actions[animation.name]) {
                 this.animation.actions[animation.name] =
                     this.animation.mixer.clipAction(
                         this.resource.animations[i]
                     );
+            }
         }
 
-        this.animation.actions.current = this.animation.actions[0]
-            ? this.animation.actions[0]
+        this.animation.actions.current = Object.values(
+            this.animation.actions
+        )[0]
+            ? Object.values(this.animation.actions)[0]
             : undefined;
-        if (this.animation.actions.current)
+        if (this.animation.actions.current) {
             this.animation.actions.current.play();
+        }
 
         // Play the action
         this.animation.play = name => {
@@ -135,13 +140,15 @@ export default class Model {
         if (this.debug.active) {
             const debugObject = {};
 
-            for (let i = 0; this.resource.animations.length; i++) {
-                if (this.animation.actions[animation.name])
-                    debugObject[animation.name] = this.animation.play(
-                        animation.name
-                    );
+            for (let i = 0; i < this.resource.animations.length; i++) {
+                const animation = this.resource.animations[i];
 
-                this.debugFolder.add(debugObject, animation.name);
+                if (animation && !debugObject[animation.name]) {
+                    debugObject[animation.name] = () =>
+                        this.animation.play(animation.name);
+                }
+
+                // this.debugFolder.addBinding(debugObject, animation.name);
             }
         }
     }
