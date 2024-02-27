@@ -111,7 +111,7 @@ export default class Raycast {
 
                 // notify BOK of selected mesh
                 // 
-                // this.sendMessage(SELECTABLE_CAR_MESHES[this.selectedMesh.name].name);
+                this.sendMessage(SELECTABLE_CAR_MESHES[this.selectedMesh.name].name);
                 // 
             } else {
                 // if doubleclicked on no compatible mesh, restore material
@@ -150,7 +150,7 @@ export default class Raycast {
         //     }
         // });
 
-        window.open(window.location.origin + "?token=" + this.token + "&fts=" + btoa(JSON.stringify(this.fts)) + "&nlu=" + btoa(JSON.stringify(meshName)));
+        window.open(this.host + "?token=" + this.token + "&fts=" + "&nlu=" + btoa(meshName));
 
         // const instance = axios.create({
         //     baseURL: BACKEND_URL,
@@ -189,22 +189,30 @@ export default class Raycast {
 
     catchHostCall() {
         this.token = this.getURLParameter("token");
-        this.host = this.getURLParameter("host") ? atob(this.getURLParameter("host")) : "null";
-        console.log(this.host, this.token)
+        this.host = this.getURLParameter("host") ? atob(this.getURLParameter("host")) : window.location.origin + "/progetto-leonardo-web/";
+        console.log("Host: ", this.host);
+        console.log("Token: ", this.token);
+    }
+
+    checkFtsFormat(curretnFts) {
+        if(curretnFts !== null) {
+            this.fts = btoa(curretnFts)
+        }
     }
 
     getURLParameter(sParam) {
         var sPageURL = window.location.search.substring(1);
         var sURLVariables = sPageURL.split('&');
         let output = false;
+        let sParameterName = null;
         for (var i = 0; i < sURLVariables.length; i++) {
-            var sParameterName = sURLVariables[i].split('=');
+            sParameterName = sURLVariables[i].split('=');
             if (sParameterName[0] == sParam) {
-                let output =  sParameterName[1];
+                return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
             }
         }
 
-        return output;
+        return false;
     }
 
     dispose() {
