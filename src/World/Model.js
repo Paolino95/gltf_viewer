@@ -69,6 +69,7 @@ export default class Model {
 
     setModel() {
         this.model = this.resource.scene;
+        this.model.rotation.y = Math.PI;
         this.scene.add(this.model);
 
         this.model.traverse(child => {
@@ -120,9 +121,14 @@ export default class Model {
         )[0]
             ? Object.values(this.animation.actions)[0]
             : undefined;
-        if (this.animation.actions.current) {
-            this.animation.actions.current.play();
-        }
+        // if (this.animation.actions.current) {
+        //     this.animation.actions.current.play();
+        // }
+
+
+        this.animation.actions.current.clampWhenFinished = true;
+        this.animation.actions.current.setLoop(1, 1);
+        setTimeout(() => {  this.animation.actions.current.play()}, 800);
 
         // Play the action
         this.animation.play = name => {

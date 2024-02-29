@@ -14,6 +14,7 @@ export const MOD_5 = 'fiat_500';
 
 export const HDR_1 = 'default';
 export const HDR_2 = 'graveyard';
+export const HDR_3 = 'industrial';
 
 export const DEBUG_EXPANDED_TAB = {
     RENDERER_PARAMETERS: { expanded: false },

@@ -18,6 +18,7 @@ import {
     DEBUG_EXPANDED_TAB,
     HDR_1,
     HDR_2,
+    HDR_3,
 } from '@/constants';
 
 export default class Environment {
@@ -103,7 +104,7 @@ export default class Environment {
                 source.type === 'hdrTexture' &&
                 source.default &&
                 source.default === true &&
-                source.name === (HDR_1 || HDR_2)
+                source.name === (HDR_1 || HDR_2 || HDR_3)
             ) {
                 return {
                     name: source.name,

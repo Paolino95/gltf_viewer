@@ -7,8 +7,10 @@ import {
     MOD_2,
     MOD_3,
     MOD_4,
+    MOD_5,
     HDR_1,
     HDR_2,
+    HDR_3,
 } from '@/constants';
 
 export const postProcessingEffects = {
@@ -53,7 +55,7 @@ export const sceneParams = {
     backgroundColor: 'transparent',
     backgroundBlur: 0.5,
     backgroundIntensity: 1,
-    envMapIntensity: 1,
+    envMapIntensity: 1.3,
 };
 
 export const backgroundOptionsList = {
@@ -68,9 +70,9 @@ export const backgroundOptionsList = {
 };
 
 export const modelList = {
-    Fiat: {
+    LaserGenius: {
         id: MOD_1,
-        text: 'Fiat 500',
+        text: 'LaserGenius',
     },
     iqos: {
         id: MOD_2,
@@ -84,16 +86,24 @@ export const modelList = {
         id: MOD_4,
         text: 'Lampadario',
     },
+    Fiat: {
+        id: MOD_5,
+        text: 'Fiat 500',
+    },
 };
 
 export const hdrList = {
     default: {
         id: HDR_1,
-        text: 'Default',
+        text: 'Graveyard',
     },
     graveyard: {
         id: HDR_2,
-        text: 'Graveyard',
+        text: 'Default',
+    },
+    industrial: {
+        id: HDR_3,
+        text: 'industrial',
     },
 };
 

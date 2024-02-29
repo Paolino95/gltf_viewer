@@ -21,7 +21,7 @@ export default class Camera {
             100
         );
         // starting position
-        this.instance.position.set(-5, 2, 10);
+        this.instance.position.set(-7, 1.5, 10);
         this.instance.lookAt(0,0,0);
     }
 
