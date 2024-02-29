@@ -24,15 +24,15 @@ export const DEBUG_EXPANDED_TAB = {
 export const SELECTABLE_CAR_MESHES = {
     GEO_Cofano_CAR_Livrea_0: {
         id: 'GEO_Cofano_CAR_Livrea_0',
-        name: 'cofano',
+        name: 'Leva di apertura del cofano motore',
     }, // cofano
     polymsh_SUB4_CAR_Livrea_0001_1: {
         id: 'polymsh_SUB4_CAR_Livrea_0001_1',
-        name: 'specchietto retrovisore lato conducente',
+        name: 'Specchietto retrovisore esterno',
     }, // specchietto conducente
     GEO_damage_glass_8_DAMAGE_GLASS_0001_2: {
         id: 'GEO_damage_glass_8_DAMAGE_GLASS_0001_2',
-        name: 'specchietto retrovisore lato passeggero',
+        name: 'Specchietto retrovisore esterno',
     }, // specchietto passeggero
     Geometry107_CAR_Cerchione_0: {
         id: 'Geometry107_CAR_Cerchione_0',
