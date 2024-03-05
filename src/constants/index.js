@@ -55,6 +55,25 @@ export const SELECTABLE_CAR_MESHES = {
     }, // cerchione Dietro - Destra
 };
 
+export const SELECTABLE_LASER_GENIUS_MESHES = {
+    Monitor_interno: {
+        id: 'Monitor_interno',
+        name: 'Monitor interno',
+    }, // Monitor interno
+    Monitor_statistiche: {
+        id: 'Monitor_statistiche',
+        name: 'Monitor statistiche',
+    }, // Monitor statistiche
+    Monitor_control: {
+        id: 'Monitor_control',
+        name: 'Monitor_control',
+    }, // Monitor control
+    Mandrino: {
+        id: 'Mandrino',
+        name: 'Mandrino',
+    }, // Mandrino
+};
+
 export const BACKEND_URL =
     'https://demoapi.itsb2b.net/api/QueryParameters/update';
 export const CONNECTION_TOKEN = '60563C03-F7C6-4E4F-8C89-0E0CAEAF528C';

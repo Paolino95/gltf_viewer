@@ -1,15 +1,12 @@
 import {
+    DoubleSide,
     MeshStandardMaterial,
     Raycaster,
     Vector2,
 } from 'three';
 import Experience from '@/Experience.js';
 import {
-    BACKEND_URL,
-    CLIENT_NAME,
-    CONNECTION_PARAMETER_TOKEN,
-    CONNECTION_TOKEN,
-    SELECTABLE_CAR_MESHES,
+    SELECTABLE_LASER_GENIUS_MESHES
 } from '../constants';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
@@ -86,7 +83,7 @@ export default class Raycast {
             let meshCounter = 0;
             // take the first intersected mesh
             this.selectedMesh = intersects[meshCounter].object;
-            const scm = Object.keys(SELECTABLE_CAR_MESHES);
+            const scm = Object.keys(SELECTABLE_LASER_GENIUS_MESHES);
             // find the first compatible mesh among the first N intersected
             while (
                 meshCounter < intersects.length - 1 &&
@@ -126,7 +123,7 @@ export default class Raycast {
     }
 
     highlightMesh(mesh) {
-        mesh.object.material = new MeshStandardMaterial({color: 0x00ff00, wireframe: true });
+        mesh.object.material = new MeshStandardMaterial({color: 0x00ff00, transparent: true, opacity: 0.4, side: DoubleSide });
     }
 
     restoreMeshMaterial(mesh, oldMaterial) {

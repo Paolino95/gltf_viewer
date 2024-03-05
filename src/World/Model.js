@@ -1,9 +1,11 @@
-import { Box3, Vector3, Mesh, AnimationMixer } from 'three';
+import { Box3, Vector3, Mesh, AnimationMixer, SpriteMaterial, TextureLoader, Sprite, AdditiveBlending } from 'three';
 import Experience from '@/Experience.js';
 import { sceneParams, modelList } from '@/parameters/ui.js';
 import { DEBUG_EXPANDED_TAB, MOD_1, MOD_2, MOD_3 } from '@/constants';
 import { constructList } from '@/utils/functions';
-
+import {
+    SELECTABLE_LASER_GENIUS_MESHES
+} from '../constants';
 export default class Model {
     constructor() {
         this.experience = new Experience();
@@ -44,6 +46,7 @@ export default class Model {
         }
 
         this.setModel();
+        // this.highlightSelectablesMeshes();
         this.setAnimation();
 
         this.resources.on('updateGlb', url => {
@@ -161,6 +164,33 @@ export default class Model {
 
     update() {
         this.animation.mixer.update(this.time.delta * 0.001);
+    }
+
+    // WIP - highlight of selectable meshes in the rendered model
+    highlightSelectablesMeshes() {
+        var spriteMaterial = new SpriteMaterial( 
+            { 
+                map: new TextureLoader().load( 'assets/images/glow.png' ), 
+                color: 0x00ff00, transparent: false, blending: AdditiveBlending
+            });
+        var sprite = new Sprite( spriteMaterial );
+        sprite.scale.set(0.5, 0.5, 1.0);
+
+        this.scene.add(sprite);
+        
+        let sprites = [];
+        
+        this.model.traverse(object => {
+            if(object.isMesh && Object.keys(SELECTABLE_LASER_GENIUS_MESHES).includes(object.name)) {
+                console.log(object.name, object);
+
+                // NOT WORKING !!   -->   position is not retreived correctly?
+                var mySprite = new Sprite(spriteMaterial);
+                mySprite.position.copy(object.position);
+                this.scene.add(mySprite);
+                sprites.push(mySprite);
+            }
+        })
     }
 
     recenterModel(modelScene) {
