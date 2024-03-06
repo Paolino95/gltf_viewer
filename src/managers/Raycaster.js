@@ -133,55 +133,7 @@ export default class Raycast {
     }
 
     sendMessage(meshName) {
-        // const uuid = uuidv4(); // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
-        // const data = JSON.stringify({
-        // data: {
-        //     IDQueryParameter: uuid,
-        //     JsonData: '{"FTS":null,"NluQuestion":"' + meshName + '"}',
-        //     ConnectionToken: CONNECTION_TOKEN,
-        //     ConnectionExecuted: 'true',
-        // },
-        // customParameters: {
-        //         ClientName: CLIENT_NAME,
-        //         Token: CONNECTION_PARAMETER_TOKEN,
-        //     }
-        // });
-
         window.open(this.host + "?token=" + this.token + "&fts=" + "&nlu=" + btoa(meshName));
-
-        // const instance = axios.create({
-        //     baseURL: BACKEND_URL,
-        //     headers: {
-        //         'Access-Control-Allow-Origin': '*',
-        //         'Content-Type': 'application/json',
-        //     },
-        // });
-
-        // instance
-        //     .post(BACKEND_URL, {
-        //         data: {
-        //             IDQueryParameter: uuid,
-        //             JsonData: '{"FTS":null,"NluQuestion":"' + meshName + '"}',
-        //             ConnectionToken: CONNECTION_TOKEN,
-        //             ConnectionExecuted: 'true',
-        //         },
-        //         customParameters: {
-        //             ClientName: CLIENT_NAME,
-        //             Token: CONNECTION_PARAMETER_TOKEN,
-        //         },
-        //     })
-        //     .then(function (response) {
-        //         // handle success
-        //         console.log(response);
-        //     })
-        //     .catch(function (error) {
-        //         // handle error
-        //         console.log(error);
-        //     })
-        //     .finally(function () {
-        //         // always executed
-        //         console.log('end');
-        //     });
     }
 
     catchHostCall() {
@@ -199,40 +151,6 @@ export default class Raycast {
             this.fts = btoa(curretnFts)
         }
     }
-
-    // getURLParameter(sParam) {
-    //     var sPageURL = window.location.search.substring(1);
-    //     var sURLVariables = sPageURL.split('&');
-    //     let output = false;
-    
-    //     for (var i = 0; i < sURLVariables.length; i++) {
-    //         var sParameter = sURLVariables[i];
-    
-    //         // Check if the parameter starts with the desired name followed by '=' and ends with "=="
-    //         if (sParameter.startsWith(sParam + '=') && sParameter.endsWith("==")) {
-    //             output = sParameter.substring(sParam.length + 1); 
-    //             break; // Exit the loop if a matching parameter is found
-    //         }
-    //     }
-    
-    //     return output;
-    // }
-
-    // |--- OLD ---|
-    // 
-    // getURLParameter(sParam) {
-    //     var sPageURL = window.location.search.substring(1);
-    //     var sURLVariables = sPageURL.split('&');
-    //     let output = false;
-    //     for (var i = 0; i < sURLVariables.length; i++) {
-    //         var sParameterName = sURLVariables[i].split('=');
-    //         if (sParameterName[0] == sParam) {
-    //             let output =  sParameterName[1];
-    //         }
-    //     }
-
-    //     return output;
-    // }
 
     dispose() {
         window.removeEventListener('mousemove', this.onPointerMove);

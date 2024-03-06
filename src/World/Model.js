@@ -78,6 +78,7 @@ export default class Model {
         this.model.traverse(child => {
             if (child instanceof Mesh) {
                 child.castShadow = true;
+                child.receiveShadow = true;
                 child.material.envMapIntensity = sceneParams.envMapIntensity;
             }
         });
