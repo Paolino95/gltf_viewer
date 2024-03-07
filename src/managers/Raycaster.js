@@ -95,9 +95,12 @@ export default class Raycast {
                 this.highlightMesh(intersects[meshCounter]);
 
                 // notify BOK of selected mesh
-                this.bok.sendMessage(
-                    SELECTABLE_LASER_GENIUS_MESHES[this.selectedMesh.name].name
-                );
+                if (!this.debug) {
+                    this.bok.sendMessage(
+                        SELECTABLE_LASER_GENIUS_MESHES[this.selectedMesh.name]
+                            .name
+                    );
+                }
             } else {
                 // if doubleclicked on no compatible mesh, restore material
                 if (this.lastMaterial !== null)
