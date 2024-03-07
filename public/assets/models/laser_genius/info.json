@@ -1,0 +1,31 @@
+{
+    "annotations": {
+        "animations": [
+
+        ],
+        "infos": [
+
+        ]
+    },
+    "bokInteraction": {
+        "Monitor_interno": {
+            "id": "Monitor_interno",
+            "name": "Come ridurre il tempo di piercing"
+        },
+        "Monitor_statistiche": {
+            "id": "Monitor_statistiche",
+            "name": "Procedure necessarie all'accensione ed avvio della macchina"
+        },
+        "Monitor_control": {
+            "id": "Monitor_control",
+            "name": "Tipi di materiali che si possono tagliare con il laser"
+        },
+        "Mandrino": {
+            "id": "Mandrino",
+            "name": "Pulizia della Testa del Cono sensore e del Tip"
+        }
+    },
+    "animations": {
+        "Mandrino": {}
+    }
+}
