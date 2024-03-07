@@ -60,19 +60,19 @@ export const SELECTABLE_CAR_MESHES = {
 export const SELECTABLE_LASER_GENIUS_MESHES = {
     Monitor_interno: {
         id: 'Monitor_interno',
-        name: 'Monitor interno',
+        name: 'Come ridurre il tempo di piercing',
     }, // Monitor interno
     Monitor_statistiche: {
         id: 'Monitor_statistiche',
-        name: 'Monitor statistiche',
+        name: 'Procedure necessarie all\'accensione ed avvio della macchina',
     }, // Monitor statistiche
     Monitor_control: {
         id: 'Monitor_control',
-        name: 'Monitor_control',
+        name: 'Tipi di materiali che si possono tagliare con il laser',
     }, // Monitor control
     Mandrino: {
         id: 'Mandrino',
-        name: 'Mandrino',
+        name: 'Pulizia della Testa del Cono sensore e del Tip',
     }, // Mandrino
 };
 

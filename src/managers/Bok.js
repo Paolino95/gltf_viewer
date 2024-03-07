@@ -28,7 +28,7 @@ export default class Bok {
         this.host =
             searchParams.get('host') !== null
                 ? atob(searchParams.get('host'))
-                : window.location.origin + '/progetto-leonardo-web/';
+                : window.location.origin + '/primaindustrie/';
         console.log('Host: ', this.host);
         console.log('Token: ', this.token);
     }
