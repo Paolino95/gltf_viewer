@@ -46,8 +46,8 @@ export default class Experience {
         this.world = new World();
         this.composer = new Composer(PP_EFFECT_FXAA);
         this.helpers = new Helpers();
-        this.raycaster = new Raycast();
         this.bok = new Bok();
+        this.raycaster = new Raycast();
 
         // Resize event
         this.sizes.on('resize', () => {

@@ -24,6 +24,7 @@
     "@vitejs/plugin-vue": "^5.0.4",
     "await-to-js": "^3.0.0",
     "axios": "^1.6.7",
+    "ci": "^2.3.0",
     "tweakpane": "^4.0.1",
     "uuid": "^9.0.1"
   }
