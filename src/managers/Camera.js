@@ -1,16 +1,21 @@
 import { PerspectiveCamera, Vector3 } from 'three';
 import Experience from '@/Experience.js';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 export default class Camera {
     constructor() {
         this.experience = new Experience();
         this.sizes = this.experience.sizes;
         this.scene = this.experience.scene;
+        this.interactionEvents = this.experience.interactionEvents;
         this.canvas = this.experience.canvas;
 
         this.setInstance();
         this.setControls();
+
+        this.interactionEvents.on('onDoubleClick', () => {
+            this.moveCameraOn();
+        });
     }
 
     setInstance() {
@@ -22,7 +27,7 @@ export default class Camera {
         );
         // starting position
         this.instance.position.set(-7, 1.5, 10);
-        this.instance.lookAt(0,0,0);
+        this.instance.lookAt(0, 0, 0);
     }
 
     setControls() {
@@ -37,5 +42,9 @@ export default class Camera {
 
     update() {
         this.controls.update();
+    }
+
+    moveCameraOn() {
+        //
     }
 }

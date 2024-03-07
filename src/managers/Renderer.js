@@ -34,7 +34,7 @@ export default class Renderer {
         this.setInstance();
 
         // post processing
-        this.composer = new EffectComposer( this.instance );
+        this.composer = new EffectComposer(this.instance);
 
         // Debug Folder
         if (this.debug.active) {
@@ -131,7 +131,6 @@ export default class Renderer {
         this.instance.outputColorSpace = SRGBColorSpace;
         this.instance.setSize(this.sizes.width, this.sizes.height);
         this.instance.setPixelRatio(this.sizes.pixelRatio);
-       
     }
 
     resize() {

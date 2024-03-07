@@ -3,6 +3,7 @@ import { Scene, Mesh, Vector2 } from 'three';
 import Debug from '@/utils/Debug.js';
 import Sizes from '@/utils/Sizes.js';
 import Time from '@/utils/Time.js';
+import InteractionEvents from '@/utils/InteractionEvents.js';
 import Camera from '@/managers/Camera.js';
 import Renderer from '@/managers/Renderer.js';
 import Composer from '@/managers/Composer.js';
@@ -10,8 +11,11 @@ import World from '@/World/World.js';
 import Resources from '@/utils/Resources.js';
 import Helpers from '@/managers/Helpers';
 import Raycast from '@/managers/Raycaster.js';
+import Bok from '@/managers/Bok.js';
 
 import sources from '@/parameters/sources.js';
+
+import { PP_EFFECT_FXAA } from '@/constants';
 
 let instance = null;
 
@@ -34,14 +38,16 @@ export default class Experience {
         this.debug = new Debug(_controlsContainer);
         this.sizes = new Sizes(this.canvasContainer);
         this.time = new Time();
+        this.interactionEvents = new InteractionEvents();
         this.scene = new Scene();
         this.resources = new Resources(sources);
         this.camera = new Camera();
         this.renderer = new Renderer();
         this.world = new World();
-        this.composer = new Composer(this.renderer, this.scene, this.camera);
+        this.composer = new Composer(PP_EFFECT_FXAA);
         this.helpers = new Helpers();
         this.raycaster = new Raycast();
+        this.bok = new Bok();
 
         // Resize event
         this.sizes.on('resize', () => {
@@ -75,7 +81,7 @@ export default class Experience {
         if (this.debug.active) this.debug.fpsGraph.end();
     }
 
-    destroy() {
+    dispose() {
         this.sizes.off('resize');
         this.time.off('tick');
 

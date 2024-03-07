@@ -1,4 +1,13 @@
-import { MOD_1, MOD_2, MOD_3, MOD_4, MOD_5, HDR_1, HDR_2, HDR_3 } from '../constants';
+import {
+    MOD_1,
+    MOD_2,
+    MOD_3,
+    MOD_4,
+    MOD_5,
+    HDR_1,
+    HDR_2,
+    HDR_3,
+} from '../constants';
 
 export default [
     {

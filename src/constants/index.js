@@ -24,6 +24,8 @@ export const DEBUG_EXPANDED_TAB = {
     ENVIRONMENT_PARAMETERS: { expanded: false },
 };
 
+export const RAYCASTER_MAX_DISTANCE = 4;
+
 export const SELECTABLE_CAR_MESHES = {
     GEO_Cofano_CAR_Livrea_0: {
         id: 'GEO_Cofano_CAR_Livrea_0',

@@ -24,7 +24,7 @@ import { constructList } from '@/utils/functions';
 import Experience from '@/Experience.js';
 
 export default class Composer {
-    constructor() {
+    constructor(initialValue) {
         this.experience = new Experience();
         this.canvas = this.experience.canvas;
         this.scene = this.experience.scene;
@@ -45,7 +45,7 @@ export default class Composer {
                     view: 'list',
                     label: 'effect',
                     options: this.constructEffectList(postProcessingEffects),
-                    value: PP_EFFECT_NO_EFFECTS,
+                    value: initialValue,
                 })
                 .on('change', e => this.switchEffect(e.value));
         }
@@ -55,6 +55,7 @@ export default class Composer {
         // Add other Post Processing Effects
         this.setFXAAPass();
         this.setBloomPass();
+        this.switchEffect(initialValue);
     }
 
     setInstance() {
