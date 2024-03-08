@@ -36,6 +36,8 @@ export default class Camera {
         this.interactionEvents = experience.interactionEvents;
         this.canvas = experience.canvas;
 
+        this.raycaster = null;
+
         this.setInstance();
         this.setControls();
 
@@ -58,7 +60,7 @@ export default class Camera {
 
     setControls() {
         this.controls = new CameraControls(this.instance, this.canvas);
-        this.controls.smoothTime = 0.3;
+        this.controls.smoothTime = 0.8;
         this.controls.azimuthRotateSpeed = 0.5;
         this.controls.draggingSmoothTime = 0.4;
     }
@@ -73,6 +75,26 @@ export default class Camera {
     }
 
     moveCameraOn() {
-        //
+        this.raycaster = this.experience.raycaster;
+        const intersects = this.raycaster.getIntersects();
+
+        if (intersects.length === 0) return;
+
+        console.log('name', intersects[0].object.name);
+        const object = intersects[0].object;
+
+        const target = object.getWorldPosition(new Vector3());
+
+        console.log(target);
+
+        this.controls.setLookAt(
+            target.x,
+            target.y,
+            target.z + 3,
+            target.x,
+            target.y,
+            target.z,
+            true
+        );
     }
 }
