@@ -61,7 +61,7 @@ export default class Camera {
         this.controls = new CameraControls(this.instance, this.canvas);
         this.controls.smoothTime = 0.3;
         this.controls.azimuthRotateSpeed = 0.5;
-        this.controls.draggingSmoothTime = 0.2;
+        this.controls.draggingSmoothTime = 0.4;
     }
 
     resize() {
@@ -70,7 +70,7 @@ export default class Camera {
     }
 
     update() {
-        this.controls.update(this.time.delta);
+        this.controls.update(1 / this.time.delta);
     }
 
     moveCameraOn() {
