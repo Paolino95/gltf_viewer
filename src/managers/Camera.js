@@ -75,22 +75,37 @@ export default class Camera {
     }
 
     moveCameraOn() {
-        this.raycaster = this.experience.raycaster;
+
+        // TEMP - ASSEGNAMENTO DEL RAYCASTER
+        // 
+        // NEXT  -->  moveCameraOn( selectedMesh )  -->  la funzione moveCameraOn sarà chiamata solo con la mesh da inquadrare come argomento
+        //   
+        this.raycaster = experience.raycaster;
         const intersects = this.raycaster.getIntersects();
 
         if (intersects.length === 0) return;
 
         console.log('name', intersects[0].object.name);
         const object = intersects[0].object;
+        // 
+        // TEMP - FINE
 
         const target = object.getWorldPosition(new Vector3());
 
-        console.log(target);
+        const cameraOffsetDirection =
+            this.instance.getWorldDirection(new Vector3()).multiplyScalar(-1);
+
+        const cameraDistance = 2.5;
+
+        const position = new Vector3().addVectors(
+            target,
+            cameraOffsetDirection.multiplyScalar(cameraDistance)
+        );
 
         this.controls.setLookAt(
-            target.x,
-            target.y,
-            target.z + 3,
+            position.x,
+            position.y,
+            position.z,
             target.x,
             target.y,
             target.z,
