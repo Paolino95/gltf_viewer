@@ -1,4 +1,4 @@
-import { DoubleSide, MeshStandardMaterial, Raycaster, Vector2 } from 'three';
+import { DoubleSide, MeshStandardMaterial, Raycaster } from 'three';
 import Experience from '@/Experience.js';
 import { RAYCASTER_MAX_DISTANCE } from '../constants';
 
@@ -11,6 +11,7 @@ export default class Raycast {
         this.scene = this.experience.scene;
         this.sizes = this.experience.sizes;
         this.canvas = this.experience.canvas;
+        this.mouse = this.experience.mouse;
         this.interactionEvents = this.experience.interactionEvents;
         this.resources = this.experience.resources;
         this.bok = this.experience.bok;
@@ -21,19 +22,12 @@ export default class Raycast {
         this.lastMaterial = null;
 
         this.setInstance();
-        this.setPointer();
 
         this.highlightMesh = this.highlightMesh.bind(this);
         this.restoreMeshMaterial = this.restoreMeshMaterial.bind(this);
 
-        this.canvasRect = this.canvas.getBoundingClientRect();
-
         this.interactionEvents.on('onDoubleClick', () => {
             this.sendBok();
-        });
-
-        this.interactionEvents.on('onPointerMove', e => {
-            this.updatePointer(e);
         });
     }
 
@@ -41,21 +35,9 @@ export default class Raycast {
         this.instance = new Raycaster();
     }
 
-    setPointer() {
-        this.pointer = new Vector2();
-    }
-
-    updatePointer(e) {
-        const mouseX = e.clientX - this.canvasRect.left;
-        const mouseY = e.clientY - this.canvasRect.top;
-        // calculate pointer position in normalized device coordinates (-1 to +1) for both components
-        this.pointer.x = (mouseX / this.sizes.width) * 2 - 1;
-        this.pointer.y = -(mouseY / this.sizes.height) * 2 + 1;
-    }
-
     sendBok() {
         // raycast to pick intersected meshes
-        this.instance.setFromCamera(this.pointer, this.camera.instance);
+        this.instance.setFromCamera(this.mouse.pointer, this.camera.instance);
         const intersects = this.instance.intersectObjects(this.scene.children);
 
         if (intersects.length > 0) {

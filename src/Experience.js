@@ -4,6 +4,7 @@ import Debug from '@/utils/Debug.js';
 import Sizes from '@/utils/Sizes.js';
 import Time from '@/utils/Time.js';
 import InteractionEvents from '@/utils/InteractionEvents.js';
+import Mouse from '@/utils/Mouse.js';
 import Camera from '@/managers/Camera.js';
 import Renderer from '@/managers/Renderer.js';
 import Composer from '@/managers/Composer.js';
@@ -37,6 +38,7 @@ export default class Experience {
         // Setup
         this.debug = new Debug(_controlsContainer);
         this.sizes = new Sizes(this.canvasContainer);
+        this.mouse = new Mouse(this.canvasContainer);
         this.time = new Time();
         this.interactionEvents = new InteractionEvents();
         this.scene = new Scene();
