@@ -1,15 +1,14 @@
 import { Vector2 } from 'three';
 import EventEmitter from './EventEmitter';
-import Experience from '../Experience';
+import { experience } from '@/Experience.js';
 
 export default class Mouse extends EventEmitter {
     constructor(container) {
         super();
 
         this.pointer = new Vector2();
-        this.experience = new Experience();
-        this.sizes = this.experience.sizes;
-        this.canvas = this.experience.canvas;
+        this.sizes = experience.sizes;
+        this.canvas = experience.canvas;
 
         this.canvasRect = this.canvas.getBoundingClientRect();
 

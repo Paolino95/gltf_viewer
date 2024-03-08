@@ -1,4 +1,4 @@
-import { Scene, Mesh, Vector2 } from 'three';
+import { Scene, Mesh } from 'three';
 
 import Debug from '@/utils/Debug.js';
 import Sizes from '@/utils/Sizes.js';
@@ -17,26 +17,19 @@ import Bok from '@/managers/Bok.js';
 import sources from '@/parameters/sources.js';
 
 import { PP_EFFECT_FXAA } from '@/constants';
+import isTouchDevice from 'is-touch-device';
 
-let instance = null;
-
-export default class Experience {
-    constructor(_canvas, _canvasContainer, _controlsContainer) {
-        // Singleton
-        if (instance) {
-            return instance;
-        }
-        instance = this;
-
-        // Global access
-        window.experience = this;
+class Experience {
+    setup(data) {
+        const { canvas, container, controlsContainer } = data;
 
         // Options
-        this.canvas = _canvas;
-        this.canvasContainer = _canvasContainer;
+        this.canvas = canvas;
+        this.canvasContainer = container;
 
         // Setup
-        this.debug = new Debug(_controlsContainer);
+        this.isTouch = isTouchDevice();
+        this.debug = new Debug(controlsContainer);
         this.sizes = new Sizes(this.canvasContainer);
         this.mouse = new Mouse(this.canvasContainer);
         this.time = new Time();
@@ -113,3 +106,5 @@ export default class Experience {
         if (this.debug.active) this.debug.ui.destroy();
     }
 }
+
+export const experience = new Experience();

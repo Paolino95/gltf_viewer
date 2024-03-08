@@ -8,18 +8,17 @@ import {
     Sprite,
     AdditiveBlending,
 } from 'three';
-import Experience from '@/Experience.js';
+import { experience } from '@/Experience.js';
 import { sceneParams, modelList } from '@/parameters/ui.js';
 import { DEBUG_EXPANDED_TAB, MOD_1, MOD_2, MOD_3 } from '@/constants';
 import { constructList } from '@/utils/functions';
 
 export default class Model {
     constructor() {
-        this.experience = new Experience();
-        this.scene = this.experience.scene;
-        this.resources = this.experience.resources;
-        this.time = this.experience.time;
-        this.debug = this.experience.debug;
+        this.scene = experience.scene;
+        this.resources = experience.resources;
+        this.time = experience.time;
+        this.debug = experience.debug;
 
         // Resource
         this.resource = this.defaultModel().model;

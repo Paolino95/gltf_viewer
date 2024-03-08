@@ -1,17 +1,10 @@
-import {
-    CircleGeometry,
-    ShadowMaterial,
-    SRGBColorSpace,
-    RepeatWrapping,
-    Mesh,
-} from 'three';
-import Experience from '@/Experience.js';
+import { CircleGeometry, ShadowMaterial, Mesh } from 'three';
+import { experience } from '@/Experience.js';
 
 export default class Floor {
     constructor() {
-        this.experience = new Experience();
-        this.scene = this.experience.scene;
-        this.resources = this.experience.resources;
+        this.scene = experience.scene;
+        this.resources = experience.resources;
 
         this.setGeometry();
         this.setMaterial();

@@ -1,4 +1,4 @@
-import Experience from '@/Experience.js';
+import { experience } from '@/Experience.js';
 import Environment from './Environment.js';
 import Model from './Model.js';
 import Floor from './Floor.js';
@@ -6,9 +6,8 @@ import Lights from './Lights.js';
 
 export default class World {
     constructor() {
-        this.experience = new Experience();
-        this.scene = this.experience.scene;
-        this.resources = this.experience.resources;
+        this.scene = experience.scene;
+        this.resources = experience.resources;
 
         // Wait for resources
         this.resources.on('ready', () => {

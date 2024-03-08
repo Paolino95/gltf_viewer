@@ -1,20 +1,18 @@
 import { DoubleSide, MeshStandardMaterial, Raycaster } from 'three';
-import Experience from '@/Experience.js';
+import { experience } from '@/Experience.js';
 import { RAYCASTER_MAX_DISTANCE } from '../constants';
 
 export default class Raycast {
     constructor() {
-        // imported parameters
-        this.experience = new Experience();
-        this.camera = this.experience.camera;
-        this.debug = this.experience.debug;
-        this.scene = this.experience.scene;
-        this.sizes = this.experience.sizes;
-        this.canvas = this.experience.canvas;
-        this.mouse = this.experience.mouse;
-        this.interactionEvents = this.experience.interactionEvents;
-        this.resources = this.experience.resources;
-        this.bok = this.experience.bok;
+        this.camera = experience.camera;
+        this.debug = experience.debug;
+        this.scene = experience.scene;
+        this.sizes = experience.sizes;
+        this.canvas = experience.canvas;
+        this.mouse = experience.mouse;
+        this.interactionEvents = experience.interactionEvents;
+        this.resources = experience.resources;
+        this.bok = experience.bok;
         this.selectedMesh = null;
 
         // variables buffers

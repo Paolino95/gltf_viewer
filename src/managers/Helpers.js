@@ -1,5 +1,5 @@
 import { AxesHelper } from 'three';
-import Experience from '@/Experience.js';
+import { experience } from '@/Experience.js';
 
 // Params
 import { helpersParams } from '@/parameters/ui';
@@ -7,9 +7,8 @@ import { DEBUG_EXPANDED_TAB } from '@/constants';
 
 export default class Helpers {
     constructor() {
-        this.experience = new Experience();
-        this.scene = this.experience.scene;
-        this.debug = this.experience.debug;
+        this.scene = experience.scene;
+        this.debug = experience.debug;
 
         // Debug Folder
         if (this.debug.active) {
@@ -29,7 +28,7 @@ export default class Helpers {
     setInstance() {
         this.helpers = {};
         this.helpers.axesHelper = new AxesHelper(1);
-        this.experience.scene.add(this.helpers.axesHelper);
+        this.scene.add(this.helpers.axesHelper);
         this.helpers.axesHelper.visible = helpersParams.axesHelper;
     }
 }

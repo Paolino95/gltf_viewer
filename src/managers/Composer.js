@@ -21,17 +21,16 @@ import {
 } from '@/constants';
 import { constructList } from '@/utils/functions';
 
-import Experience from '@/Experience.js';
+import { experience } from '@/Experience.js';
 
 export default class Composer {
     constructor(initialValue) {
-        this.experience = new Experience();
-        this.canvas = this.experience.canvas;
-        this.scene = this.experience.scene;
-        this.sizes = this.experience.sizes;
-        this.camera = this.experience.camera.instance;
-        this.renderer = this.experience.renderer.instance;
-        this.debug = this.experience.debug;
+        this.canvas = experience.canvas;
+        this.scene = experience.scene;
+        this.sizes = experience.sizes;
+        this.camera = experience.camera.instance;
+        this.renderer = experience.renderer.instance;
+        this.debug = experience.debug;
 
         // Debug Folder
         if (this.debug.active) {

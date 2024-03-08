@@ -1,4 +1,4 @@
-import Experience from '@/Experience.js';
+import { experience } from '@/Experience.js';
 import CameraControls from 'camera-controls';
 
 import {
@@ -30,12 +30,11 @@ CameraControls.install({ THREE: subsetOfTHREE });
 
 export default class Camera {
     constructor() {
-        this.experience = new Experience();
-        this.sizes = this.experience.sizes;
-        this.scene = this.experience.scene;
-        this.time = this.experience.time;
-        this.interactionEvents = this.experience.interactionEvents;
-        this.canvas = this.experience.canvas;
+        this.sizes = experience.sizes;
+        this.scene = experience.scene;
+        this.time = experience.time;
+        this.interactionEvents = experience.interactionEvents;
+        this.canvas = experience.canvas;
 
         this.setInstance();
         this.setControls();

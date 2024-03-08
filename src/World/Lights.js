@@ -1,10 +1,9 @@
-import { CameraHelper, DirectionalLight, AmbientLight } from 'three';
-import Experience from '@/Experience.js';
+import { DirectionalLight, AmbientLight } from 'three';
+import { experience } from '@/Experience.js';
 
 export default class Floor {
     constructor() {
-        this.experience = new Experience();
-        this.scene = this.experience.scene;
+        this.scene = experience.scene;
 
         this.addDirectionalLight();
         this.addAmbientLight();

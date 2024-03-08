@@ -15,21 +15,20 @@ import {
     VSMShadowMap,
     WebGLRenderer,
 } from 'three';
-import Experience from '@/Experience.js';
-import { OutlinePass } from 'three/addons/postprocessing/OutlinePass.js';
+import { experience } from '@/Experience.js';
+// import { OutlinePass } from 'three/addons/postprocessing/OutlinePass.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 
 import { DEBUG_EXPANDED_TAB } from '@/constants';
 
 export default class Renderer {
     constructor() {
-        this.experience = new Experience();
-        this.canvas = this.experience.canvas;
-        this.sizes = this.experience.sizes;
-        this.scene = this.experience.scene;
-        this.camera = this.experience.camera;
-        this.debug = this.experience.debug;
-        this.raycaster = this.experience.raycaster;
+        this.canvas = experience.canvas;
+        this.sizes = experience.sizes;
+        this.scene = experience.scene;
+        this.camera = experience.camera;
+        this.debug = experience.debug;
+        this.raycaster = experience.raycaster;
 
         this.setInstance();
 
