@@ -35,6 +35,13 @@ export default class Raycast {
         this.instance = new Raycaster();
     }
 
+    getIntersects() {
+        this.instance.setFromCamera(this.mouse.pointer, this.camera.instance);
+        const intersects = this.instance.intersectObjects(this.scene.children);
+
+        return intersects;
+    }
+
     sendBok() {
         // raycast to pick intersected meshes
         this.instance.setFromCamera(this.mouse.pointer, this.camera.instance);
