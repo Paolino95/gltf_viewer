@@ -12,7 +12,7 @@ import Experience from '@/Experience.js';
 import { sceneParams, modelList } from '@/parameters/ui.js';
 import { DEBUG_EXPANDED_TAB, MOD_1, MOD_2, MOD_3 } from '@/constants';
 import { constructList } from '@/utils/functions';
-import { SELECTABLE_LASER_GENIUS_MESHES } from '../constants';
+
 export default class Model {
     constructor() {
         this.experience = new Experience();
@@ -192,7 +192,7 @@ export default class Model {
         this.model.traverse(object => {
             if (
                 object.isMesh &&
-                Object.keys(SELECTABLE_LASER_GENIUS_MESHES).includes(
+                Object.keys(this.resources.items.info?.bokInteraction).includes(
                     object.name
                 )
             ) {

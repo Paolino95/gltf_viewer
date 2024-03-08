@@ -1,0 +1,41 @@
+{
+    "annotations": {
+        "animations": [
+
+        ],
+        "infos": [
+
+        ]
+    },
+    "bokInteraction": {
+        "GEO_Cofano_CAR_Livrea_0": {
+            "id": "GEO_Cofano_CAR_Livrea_0",
+            "name": "Leva di apertura del cofano motore"
+        },
+        "polymsh_SUB4_CAR_Livrea_0001_1": {
+            "id": "polymsh_SUB4_CAR_Livrea_0001_1",
+            "name": "Specchietto retrovisore esterno"
+        },
+        "GEO_damage_glass_8_DAMAGE_GLASS_0001_2": {
+            "id": "GEO_damage_glass_8_DAMAGE_GLASS_0001_2",
+            "name": "Specchietto retrovisore esterno"
+        },
+        "Geometry107_CAR_Cerchione_0": {
+            "id": "Geometry107_CAR_Cerchione_0",
+            "name": "controllo della pressione dei pneumatici"
+        },
+        "Geometry66_CAR_Cerchione_0": {
+            "id": "Geometry66_CAR_Cerchione_0",
+            "name": "controllo della pressione dei pneumatici"
+        },
+        "Geometry71_CAR_Cerchione_0": {
+            "id": "Geometry71_CAR_Cerchione_0",
+            "name": "controllo della pressione dei pneumatici"
+        },
+        "Geometry58_CAR_Cerchione_0": {
+            "id": "Geometry58_CAR_Cerchione_0",
+            "name": "controllo della pressione dei pneumatici"
+        }
+    },
+    "animations": {}
+}

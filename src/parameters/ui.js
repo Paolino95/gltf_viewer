@@ -7,7 +7,6 @@ import {
     MOD_2,
     MOD_3,
     MOD_4,
-    MOD_5,
     HDR_1,
     HDR_2,
     HDR_3,
@@ -74,20 +73,16 @@ export const modelList = {
         id: MOD_1,
         text: 'LaserGenius',
     },
-    iqos: {
-        id: MOD_2,
-        text: 'Iqos',
-    },
     glass: {
-        id: MOD_3,
+        id: MOD_2,
         text: 'Glass',
     },
     lampadario: {
-        id: MOD_4,
+        id: MOD_3,
         text: 'Lampadario',
     },
     Fiat: {
-        id: MOD_5,
+        id: MOD_4,
         text: 'Fiat 500',
     },
 };

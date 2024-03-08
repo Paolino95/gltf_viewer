@@ -1,12 +1,39 @@
-import { PerspectiveCamera, Vector3 } from 'three';
 import Experience from '@/Experience.js';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import CameraControls from 'camera-controls';
+
+import {
+    Vector2,
+    Vector3,
+    Vector4,
+    Quaternion,
+    Matrix4,
+    Spherical,
+    Box3,
+    Sphere,
+    Raycaster,
+    PerspectiveCamera,
+} from 'three';
+
+const subsetOfTHREE = {
+    Vector2: Vector2,
+    Vector3: Vector3,
+    Vector4: Vector4,
+    Quaternion: Quaternion,
+    Matrix4: Matrix4,
+    Spherical: Spherical,
+    Box3: Box3,
+    Sphere: Sphere,
+    Raycaster: Raycaster,
+};
+
+CameraControls.install({ THREE: subsetOfTHREE });
 
 export default class Camera {
     constructor() {
         this.experience = new Experience();
         this.sizes = this.experience.sizes;
         this.scene = this.experience.scene;
+        this.time = this.experience.time;
         this.interactionEvents = this.experience.interactionEvents;
         this.canvas = this.experience.canvas;
 
@@ -31,8 +58,10 @@ export default class Camera {
     }
 
     setControls() {
-        this.controls = new OrbitControls(this.instance, this.canvas);
-        this.controls.enableDamping = true;
+        this.controls = new CameraControls(this.instance, this.canvas);
+        this.controls.smoothTime = 0.3;
+        this.controls.azimuthRotateSpeed = 0.5;
+        this.controls.draggingSmoothTime = 0.2;
     }
 
     resize() {
@@ -41,7 +70,7 @@ export default class Camera {
     }
 
     update() {
-        this.controls.update();
+        this.controls.update(this.time.delta);
     }
 
     moveCameraOn() {

@@ -2,6 +2,10 @@ import { TextureLoader, CubeTextureLoader } from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
+
+import to from 'await-to-js';
+import axios from 'axios';
+
 import EventEmitter from './EventEmitter.js';
 
 export default class Resources extends EventEmitter {
@@ -13,6 +17,7 @@ export default class Resources extends EventEmitter {
         this.items = {};
         this.toLoad = this.sources.filter(source => source.default).length;
         this.loaded = 0;
+        this.pathModelsOrigin = 'assets/models';
 
         this.inputButton = document.querySelector('#file-input');
 
@@ -53,15 +58,28 @@ export default class Resources extends EventEmitter {
         this.loaders.rgbeLoader = new RGBELoader();
     }
 
-    startLoading() {
+    async startLoading() {
         // Load each source
         for (const source of this.sources) {
             if (source.default && source.default === true) {
                 switch (source.type) {
                     case 'gltfModel':
-                        this.loaders.gltfLoader.load(source.path, file => {
+                        const pathModelsSource = `${this.pathModelsOrigin}/${source.name}/${source.name}.glb`;
+
+                        this.loaders.gltfLoader.load(pathModelsSource, file => {
                             this.sourceLoaded(source, file);
                         });
+
+                        const pathInfoSource = `${this.pathModelsOrigin}/${source.name}/info.json`;
+
+                        const [err, res] = await to(axios(pathInfoSource));
+
+                        if (err) {
+                            console.log('Info.json missing');
+                        } else {
+                            this.sourceLoaded({ name: 'info' }, res.data, true);
+                        }
+
                         break;
 
                     case 'hdrTexture':
@@ -91,10 +109,10 @@ export default class Resources extends EventEmitter {
         }
     }
 
-    sourceLoaded(source, file) {
+    sourceLoaded(source, file, isInfo = false) {
         this.items[source.name] = file;
 
-        this.loaded++;
+        if (!isInfo) this.loaded++;
 
         if (this.loaded === this.toLoad) {
             this.trigger('ready');

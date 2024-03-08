@@ -1,9 +1,6 @@
 import { DoubleSide, MeshStandardMaterial, Raycaster, Vector2 } from 'three';
 import Experience from '@/Experience.js';
-import {
-    SELECTABLE_LASER_GENIUS_MESHES,
-    RAYCASTER_MAX_DISTANCE,
-} from '../constants';
+import { RAYCASTER_MAX_DISTANCE } from '../constants';
 
 export default class Raycast {
     constructor() {
@@ -15,6 +12,7 @@ export default class Raycast {
         this.sizes = this.experience.sizes;
         this.canvas = this.experience.canvas;
         this.interactionEvents = this.experience.interactionEvents;
+        this.resources = this.experience.resources;
         this.bok = this.experience.bok;
         this.selectedMesh = null;
 
@@ -66,7 +64,7 @@ export default class Raycast {
             this.selectedMesh = intersects[meshCounter].object;
 
             const selectedCompatibleMeshes = Object.keys(
-                SELECTABLE_LASER_GENIUS_MESHES
+                this.resources.items.info?.bokInteraction
             );
             // find the first compatible mesh among the first N intersected
             while (

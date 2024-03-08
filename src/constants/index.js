@@ -7,10 +7,9 @@ export const ENV_BACKGROUND_TRANSPARENT = 'transparent';
 export const ENV_BACKGROUND_TEXTURE = 'texture';
 
 export const MOD_1 = 'laser_genius';
-export const MOD_2 = 'iqos';
-export const MOD_3 = 'glass';
-export const MOD_4 = 'lampadario';
-export const MOD_5 = 'fiat_500';
+export const MOD_2 = 'glass_holder';
+export const MOD_3 = 'lampadario';
+export const MOD_4 = 'fiat_500';
 
 export const HDR_1 = 'default';
 export const HDR_2 = 'graveyard';
@@ -25,56 +24,6 @@ export const DEBUG_EXPANDED_TAB = {
 };
 
 export const RAYCASTER_MAX_DISTANCE = 4;
-
-export const SELECTABLE_CAR_MESHES = {
-    GEO_Cofano_CAR_Livrea_0: {
-        id: 'GEO_Cofano_CAR_Livrea_0',
-        name: 'Leva di apertura del cofano motore',
-    }, // cofano
-    polymsh_SUB4_CAR_Livrea_0001_1: {
-        id: 'polymsh_SUB4_CAR_Livrea_0001_1',
-        name: 'Specchietto retrovisore esterno',
-    }, // specchietto conducente
-    GEO_damage_glass_8_DAMAGE_GLASS_0001_2: {
-        id: 'GEO_damage_glass_8_DAMAGE_GLASS_0001_2',
-        name: 'Specchietto retrovisore esterno',
-    }, // specchietto passeggero
-    Geometry107_CAR_Cerchione_0: {
-        id: 'Geometry107_CAR_Cerchione_0',
-        name: 'controllo della pressione dei pneumatici',
-    }, // cerchione Avanti - Destra
-    Geometry66_CAR_Cerchione_0: {
-        id: 'Geometry66_CAR_Cerchione_0',
-        name: 'controllo della pressione dei pneumatici',
-    }, // cerchione Avanti - Sinistra
-    Geometry71_CAR_Cerchione_0: {
-        id: 'Geometry71_CAR_Cerchione_0',
-        name: 'controllo della pressione dei pneumatici',
-    }, // cerchione Dietro - Sinistra
-    Geometry58_CAR_Cerchione_0: {
-        id: 'Geometry58_CAR_Cerchione_0',
-        name: 'controllo della pressione dei pneumatici',
-    }, // cerchione Dietro - Destra
-};
-
-export const SELECTABLE_LASER_GENIUS_MESHES = {
-    Monitor_interno: {
-        id: 'Monitor_interno',
-        name: 'Come ridurre il tempo di piercing',
-    }, // Monitor interno
-    Monitor_statistiche: {
-        id: 'Monitor_statistiche',
-        name: 'Procedure necessarie all\'accensione ed avvio della macchina',
-    }, // Monitor statistiche
-    Monitor_control: {
-        id: 'Monitor_control',
-        name: 'Tipi di materiali che si possono tagliare con il laser',
-    }, // Monitor control
-    Mandrino: {
-        id: 'Mandrino',
-        name: 'Pulizia della Testa del Cono sensore e del Tip',
-    }, // Mandrino
-};
 
 export const BACKEND_URL =
     'https://demoapi.itsb2b.net/api/QueryParameters/update';
