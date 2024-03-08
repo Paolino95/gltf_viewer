@@ -95,8 +95,9 @@ export default class Raycast {
                 // notify BOK of selected mesh
                 if (!this.debug.active) {
                     this.bok.sendMessage(
-                        SELECTABLE_LASER_GENIUS_MESHES[this.selectedMesh.name]
-                            .name
+                        this.resources.items.info?.bokInteraction[
+                            this.selectedMesh.name
+                        ].name
                     );
                 }
             } else {
