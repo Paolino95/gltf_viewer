@@ -37,7 +37,7 @@ export default class Resources extends EventEmitter {
         });
 
         // Input event
-        this.inputButton.addEventListener('change', e => {
+        this.inputButton?.addEventListener('change', e => {
             e.preventDefault();
 
             const blobData = this.handleFileInput(e);

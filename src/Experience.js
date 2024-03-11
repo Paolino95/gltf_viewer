@@ -21,7 +21,7 @@ import isTouchDevice from 'is-touch-device';
 
 class Experience {
     setup(data) {
-        const { canvas, container, controlsContainer } = data;
+        const { canvas, container, controlsContainer = undefined } = data;
 
         // Options
         this.canvas = canvas;
