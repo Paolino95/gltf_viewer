@@ -6,6 +6,7 @@ import {
     SpriteMaterial,
     TextureLoader,
     Sprite,
+    LoopOnce,
     AdditiveBlending,
 } from 'three';
 import { experience } from '@/Experience.js';
@@ -125,32 +126,7 @@ export default class Model {
             }
         }
 
-        this.animation.actions.current = Object.values(
-            this.animation.actions
-        )[0]
-            ? Object.values(this.animation.actions)[0]
-            : undefined;
-        // if (this.animation.actions.current) {
-        //     this.animation.actions.current.play();
-        // }
-
-        this.animation.actions.current.clampWhenFinished = true;
-        this.animation.actions.current.setLoop(1, 1);
-        setTimeout(() => {
-            this.animation.actions.current.play();
-        }, 800);
-
-        // Play the action
-        this.animation.play = name => {
-            const newAction = this.animation.actions[name];
-            const oldAction = this.animation.actions.current;
-
-            newAction.reset();
-            newAction.play();
-            newAction.crossFadeFrom(oldAction, 1);
-
-            this.animation.actions.current = newAction;
-        };
+        console.log(this.animation.actions);
 
         // Debug
         if (this.debug.active) {
@@ -167,6 +143,44 @@ export default class Model {
                 // this.debugFolder.addBinding(debugObject, animation.name);
             }
         }
+    }
+
+    // Play the action
+    play(name) {
+        const newAction = this.animation.actions[name];
+        const oldAction = this.animation.actions.current;
+
+        newAction.reset();
+        newAction.play();
+        newAction.crossFadeFrom(oldAction, 1);
+
+        this.animation.actions.current = newAction;
+    }
+
+    playForwardAnimation(name) {
+        this.animation.actions.current = this.animation.actions[name]
+            ? this.animation.actions[name]
+            : undefined;
+        this.animation.actions.current = this.animation.actions[name];
+        if (this.animation.actions.current) {
+            this.animation.actions.current.paused = false;
+            this.animation.actions.current.timeScale = 1;
+            this.animation.actions.current.clampWhenFinished = true;
+            this.animation.actions.current.setLoop(LoopOnce);
+            this.animation.actions.current.play(name);
+        }
+    }
+
+    playBackwardAnimation(name) {
+        this.animation.actions.current = this.animation.actions[name]
+            ? this.animation.actions[name]
+            : undefined;
+
+        this.animation.actions.current.paused = false;
+        this.animation.actions.current.timeScale = -1;
+        this.animation.actions.current.clampWhenFinished = true;
+        this.animation.actions.current.setLoop(LoopOnce);
+        this.animation.actions.current.play();
     }
 
     update() {

@@ -25,7 +25,5 @@
             "name": "Pulizia della Testa del Cono sensore e del Tip"
         }
     },
-    "animations": {
-        "Mandrino": {}
-    }
+    "animations": ["Mandrino", "Sportello", "Esplosione"]
 }

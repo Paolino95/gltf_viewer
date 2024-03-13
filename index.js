@@ -5,3 +5,5 @@ experience.setup({
     container: document.querySelector('#container'),
     controlsContainer: document.querySelector('#tweakContainer'),
 });
+
+window.experience = experience;

@@ -61,6 +61,9 @@ export default class Camera {
     setControls() {
         this.controls = new CameraControls(this.instance, this.canvas);
         this.controls.smoothTime = 0.8;
+        this.controls.maxPolarAngle = Math.PI / 2;
+        this.controls.minDistance = 4;
+        this.controls.maxDistance = 25;
         this.controls.azimuthRotateSpeed = 0.5;
         this.controls.draggingSmoothTime = 0.4;
     }
@@ -75,11 +78,10 @@ export default class Camera {
     }
 
     moveCameraOn() {
-
         // TEMP - ASSEGNAMENTO DEL RAYCASTER
-        // 
+        //
         // NEXT  -->  moveCameraOn( selectedMesh )  -->  la funzione moveCameraOn sarà chiamata solo con la mesh da inquadrare come argomento
-        //   
+        //
         this.raycaster = experience.raycaster;
         const intersects = this.raycaster.getIntersects();
 
@@ -87,13 +89,14 @@ export default class Camera {
 
         console.log('name', intersects[0].object.name);
         const object = intersects[0].object;
-        // 
+        //
         // TEMP - FINE
 
         const target = object.getWorldPosition(new Vector3());
 
-        const cameraOffsetDirection =
-            this.instance.getWorldDirection(new Vector3()).multiplyScalar(-1);
+        const cameraOffsetDirection = this.instance
+            .getWorldDirection(new Vector3())
+            .multiplyScalar(-1);
 
         const cameraDistance = 2.5;
 
