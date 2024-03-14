@@ -11,7 +11,7 @@ export default class Floor {
 
     addDirectionalLight() {
         const light = new DirectionalLight(0xffffff, 2);
-        light.position.set(2, 5, 2);
+        light.position.set(-2, 5, -2);
         light.lookAt(0, 0, 0);
         light.castShadow = true;
         light.shadow.mapSize.width = 1024;

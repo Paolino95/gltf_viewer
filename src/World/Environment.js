@@ -19,6 +19,7 @@ import {
     HDR_1,
     HDR_2,
     HDR_3,
+    HDR_4
 } from '@/constants';
 
 export default class Environment {
@@ -103,7 +104,7 @@ export default class Environment {
                 source.type === 'hdrTexture' &&
                 source.default &&
                 source.default === true &&
-                source.name === (HDR_1 || HDR_2 || HDR_3)
+                [HDR_1, HDR_2, HDR_3, HDR_4].includes(source.name)
             ) {
                 return {
                     name: source.name,
