@@ -4,8 +4,8 @@ export default [
     {
         name: HDR_1,
         type: 'hdrTexture',
-        path: 'assets/environment/graveyard.pathways_2k.hdr',
-        default: true,
+        path: 'assets/environment/graveyard_pathways_2k.hdr',
+        default: false,
     },
     {
         name: HDR_2,
@@ -17,7 +17,7 @@ export default [
         name: HDR_3,
         type: 'hdrTexture',
         path: 'assets/environment/industrial.hdr',
-        default: false,
+        default: true,
     },
     {
         name: MOD_1,

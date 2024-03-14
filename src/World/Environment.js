@@ -101,9 +101,8 @@ export default class Environment {
         for (const source of this.resources.sources) {
             if (
                 source.type === 'hdrTexture' &&
-                source.default &&
                 source.default === true &&
-                source.name === (HDR_1 || HDR_2 || HDR_3)
+                [HDR_1, HDR_2, HDR_3].includes(source.name)
             ) {
                 return {
                     name: source.name,

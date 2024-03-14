@@ -1,5 +1,5 @@
 import EventEmitter from './EventEmitter.js';
-
+import { size } from 'lodash-es';
 export default class Time extends EventEmitter {
     constructor() {
         super();
@@ -10,10 +10,15 @@ export default class Time extends EventEmitter {
         this.elapsed = 0;
         this.tick = 0;
         this.delta = 16;
+        this.callbacks = {};
 
-        window.requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
             this.updateTick();
         });
+    }
+
+    next() {
+        this.tick += 1;
     }
 
     updateTick() {
@@ -22,16 +27,38 @@ export default class Time extends EventEmitter {
         this.current = currentTime;
         this.elapsed = this.current - this.start;
 
-        this.tick = this.tick + 1;
+        this.next();
         this.trigger('tick');
+        console.log(this.tick);
 
-        window.requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
             this.updateTick();
         });
     }
 
-    // onNextTick(callback) {
-    //     this.tick = this.tick + 1;
+    hasCallbacks() {
+        return size(this.callbacks) > 0;
+    }
 
-    // }
+    onNextTick(callback) {
+        const nextTick = this.tick + 1;
+
+        if (!(nextTick in this.callbacks)) {
+            this.callbacks[nextTick] = [];
+        }
+
+        this.callbacks[nextTick].push(callback);
+    }
+
+    manageCallbacks() {
+        if (!(this.tick in this.callbacks)) return;
+
+        const callbacks = this.callbacks[this.tick];
+
+        callbacks.forEach(callback => {
+            callback();
+        });
+
+        delete this.callbacks[this.tick];
+    }
 }

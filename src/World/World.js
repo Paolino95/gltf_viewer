@@ -6,12 +6,13 @@ import Lights from './Lights.js';
 import EventEmitter from '../utils/EventEmitter.js';
 
 export default class World extends EventEmitter {
-    constructor() {
+    constructor(onSceneReady) {
         super();
 
         this.scene = experience.scene;
         this.resources = experience.resources;
         this.time = experience.time;
+        this.onSceneReady = onSceneReady;
 
         // Wait for resources
         this.resources.on('ready', () => {
@@ -21,9 +22,9 @@ export default class World extends EventEmitter {
             this.floor = new Floor();
             this.environment = new Environment();
 
-            // this.time.onNextTick(() => {
-            //     this.trigger('sceneReady')
-            // })
+            this.time.onNextTick(() => {
+                // this.onSceneReady();
+            });
         });
     }
 
