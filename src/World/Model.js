@@ -78,7 +78,7 @@ export default class Model {
 
     setModel() {
         this.model = this.resource.scene;
-        this.model.rotation.y = Math.PI;
+        // this.model.rotation.y = Math.PI;
         this.scene.add(this.model);
 
         this.model.traverse(child => {

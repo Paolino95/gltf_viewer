@@ -10,6 +10,7 @@ import {
     HDR_1,
     HDR_2,
     HDR_3,
+    HDR_4,
 } from '@/constants';
 
 export const postProcessingEffects = {
@@ -54,7 +55,7 @@ export const sceneParams = {
     backgroundColor: 'transparent',
     backgroundBlur: 0.5,
     backgroundIntensity: 1,
-    envMapIntensity: 1.3,
+    envMapIntensity: 0.6,
 };
 
 export const backgroundOptionsList = {
@@ -99,6 +100,10 @@ export const hdrList = {
     industrial: {
         id: HDR_3,
         text: 'industrial',
+    },
+    industrial_2: {
+        id: HDR_4,
+        text: 'industrial_2',
     },
 };
 

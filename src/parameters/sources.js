@@ -1,4 +1,13 @@
-import { MOD_1, MOD_2, MOD_3, MOD_4, HDR_1, HDR_2, HDR_3 } from '../constants';
+import {
+    MOD_1,
+    MOD_2,
+    MOD_3,
+    MOD_4,
+    HDR_1,
+    HDR_2,
+    HDR_3,
+    HDR_4,
+} from '../constants';
 
 export default [
     {
@@ -17,6 +26,12 @@ export default [
         name: HDR_3,
         type: 'hdrTexture',
         path: 'assets/environment/industrial.hdr',
+        default: true,
+    },
+    {
+        name: HDR_4,
+        type: 'hdrTexture',
+        path: 'assets/environment/industrial_2.hdr',
         default: true,
     },
     {

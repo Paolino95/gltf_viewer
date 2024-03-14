@@ -1,12 +1,57 @@
 {
     "annotations": {
-        "animations": [
-
-        ],
-        "infos": [
-
-        ]
+        "animations": [],
+        "infos": []
     },
+    "hotspots": [
+        {
+            "id": "Fixed",
+            "target": {
+                "type": "position",
+                "value": [
+                    0.25,
+                    1.2,
+                    1.2
+                ]
+            },
+            "userData": {
+                "color": "red",
+                "size": "40px"
+            }
+        },
+        {
+            "id": "Monitor_interno",
+            "target": {
+                "type": "mesh",
+                "value": "Monitor_interno"
+            },
+            "userData": {}
+        },
+        {
+            "id": "Monitor_statistiche",
+            "target": {
+                "type": "mesh",
+                "value": "Monitor_statistiche"
+            },
+            "userData": {}
+        },
+        {
+            "id": "Monitor_control",
+            "target": {
+                "type": "mesh",
+                "value": "Monitor_control"
+            },
+            "userData": {}
+        },
+        {
+            "id": "Mandrino",
+            "target": {
+                "type": "mesh",
+                "value": "Mandrino"
+            },
+            "userData": {}
+        }
+    ],
     "bokInteraction": {
         "Monitor_interno": {
             "id": "Monitor_interno",
@@ -25,5 +70,9 @@
             "name": "Pulizia della Testa del Cono sensore e del Tip"
         }
     },
-    "animations": ["Mandrino", "Sportello", "Esplosione"]
+    "animations": [
+        "Mandrino",
+        "Sportello",
+        "Esplosione"
+    ]
 }

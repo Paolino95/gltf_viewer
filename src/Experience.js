@@ -13,6 +13,7 @@ import Resources from '@/utils/Resources.js';
 import Helpers from '@/managers/Helpers';
 import Raycast from '@/managers/Raycaster.js';
 import Bok from '@/managers/Bok.js';
+import Hotspots from '@/managers/Hotspots.js';
 
 import sources from '@/parameters/sources.js';
 
@@ -21,7 +22,8 @@ import isTouchDevice from 'is-touch-device';
 
 class Experience {
     setup(data) {
-        const { canvas, container, controlsContainer = undefined } = data;
+        const { canvas, container, controlsContainer, callbacks } = data;
+        const { onHotspotsUpdated = () => {} } = callbacks;
 
         // Options
         this.canvas = canvas;
@@ -43,6 +45,7 @@ class Experience {
         this.helpers = new Helpers();
         this.bok = new Bok();
         this.raycaster = new Raycast();
+        this.hotspots = new Hotspots(onHotspotsUpdated);
 
         // Resize event
         this.sizes.on('resize', () => {
@@ -67,6 +70,7 @@ class Experience {
         this.camera.update();
         this.world.update();
         this.composer.update();
+        this.hotspots.update();
 
         this.time.manageCallbacks();
 
@@ -99,6 +103,7 @@ class Experience {
         this.renderer.instance.dispose();
         this.composer.instance.dispose();
         this.raycaster.instance.dispose();
+        this.hotspots.dispose();
 
         if (this.debug.active) this.debug.ui.destroy();
     }
