@@ -53,6 +53,11 @@ class Experience {
         this.time.on('tick', () => {
             this.update();
         });
+
+        // Wait for resources
+        this.resources.on('ready', () => {
+            console.log('Resources ready');
+        });
     }
 
     resize() {
@@ -66,12 +71,7 @@ class Experience {
 
         this.camera.update();
         this.world.update();
-
-        if (this.composer === null) {
-            this.renderer.update();
-        } else {
-            this.composer.update();
-        }
+        this.composer.update();
 
         if (this.debug.active) this.debug.fpsGraph.end();
     }

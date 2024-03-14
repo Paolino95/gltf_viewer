@@ -1,35 +1,37 @@
-import EventEmitter from './EventEmitter.js'
+import EventEmitter from './EventEmitter.js';
 
-export default class Time extends EventEmitter
-{
-    constructor()
-    {
-        super()
+export default class Time extends EventEmitter {
+    constructor() {
+        super();
 
         // Setup
-        this.start = Date.now()
-        this.current = this.start
-        this.elapsed = 0
-        this.delta = 16
+        this.start = Date.now();
+        this.current = this.start;
+        this.elapsed = 0;
+        this.tick = 0;
+        this.delta = 16;
 
-        window.requestAnimationFrame(() =>
-        {
-            this.tick()
-        })
+        window.requestAnimationFrame(() => {
+            this.updateTick();
+        });
     }
 
-    tick()
-    {
-        const currentTime = Date.now()
-        this.delta = currentTime - this.current
-        this.current = currentTime
-        this.elapsed = this.current - this.start
+    updateTick() {
+        const currentTime = Date.now();
+        this.delta = currentTime - this.current;
+        this.current = currentTime;
+        this.elapsed = this.current - this.start;
 
-        this.trigger('tick')
+        this.tick = this.tick + 1;
+        this.trigger('tick');
 
-        window.requestAnimationFrame(() =>
-        {
-            this.tick()
-        })
+        window.requestAnimationFrame(() => {
+            this.updateTick();
+        });
     }
+
+    // onNextTick(callback) {
+    //     this.tick = this.tick + 1;
+
+    // }
 }

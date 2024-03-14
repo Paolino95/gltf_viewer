@@ -85,9 +85,12 @@ export default class Camera {
         this.raycaster = experience.raycaster;
         const intersects = this.raycaster.getIntersects();
 
-        if (intersects.length === 0) return;
+        if (intersects.length === 0 || !intersects[0].object.name) {
+            // reset camera
+            this.controls.reset(true);
+            return;
+        }
 
-        console.log('name', intersects[0].object.name);
         const object = intersects[0].object;
         //
         // TEMP - FINE
