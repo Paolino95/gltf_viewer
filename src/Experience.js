@@ -75,7 +75,6 @@ class Experience {
         this.camera.update();
         this.world.update();
         this.composer.update();
-
         this.hotspots.update();
 
         if (this.debug.active) this.debug.fpsGraph.end();

@@ -33,20 +33,21 @@ const drawHotspots = hotspots => {
 };
 
 const drawHotspot = hotspot => {
-    const { name, coords, isInFront } = hotspot;
+    const { id, coords, isInFront, userData } = hotspot;
+    const { color = 'orange', size = '20px' } = userData;
 
     const hotspotElement = document.createElement('div');
 
-    hotspotElement.dataset.hotspot = name;
+    hotspotElement.dataset.hotspot = id;
     hotspotElement.classList.add('hotspot');
 
     hotspotElement.style.position = 'absolute';
     hotspotElement.style.left = `${coords.x}px`;
     hotspotElement.style.top = `${coords.y}px`;
     hotspotElement.style.transform = 'translate(-50%, -50%)';
-    hotspotElement.style.width = '20px';
-    hotspotElement.style.height = '20px';
-    hotspotElement.style.backgroundColor = 'orange';
+    hotspotElement.style.width = size;
+    hotspotElement.style.height = size;
+    hotspotElement.style.backgroundColor = color;
     hotspotElement.style.opacity = isInFront ? 0.75 : 0.15;
     hotspotElement.style.borderRadius = '50%';
     hotspotElement.style.pointerEvents = 'none';
