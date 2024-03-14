@@ -1,11 +1,11 @@
-import { MOD_1, MOD_2, MOD_3, MOD_4, HDR_1, HDR_2, HDR_3 } from '../constants';
+import { MOD_1, MOD_2, MOD_3, MOD_4, HDR_1, HDR_2, HDR_3, HDR_4 } from '../constants';
 
 export default [
     {
         name: HDR_1,
         type: 'hdrTexture',
         path: 'assets/environment/graveyard.pathways_2k.hdr',
-        default: true,
+        default: false,
     },
     {
         name: HDR_2,
@@ -18,6 +18,12 @@ export default [
         type: 'hdrTexture',
         path: 'assets/environment/industrial.hdr',
         default: false,
+    },
+    {
+        name: HDR_4,
+        type: 'hdrTexture',
+        path: 'assets/environment/industrial_2.hdr',
+        default: true,
     },
     {
         name: MOD_1,
