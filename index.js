@@ -10,15 +10,11 @@ experience.setup({
     controlsContainer,
     callbacks: {
         onHotspotsUpdated: hotspots => {
-            // console.log('hotspots updated', hotspots);
-
             clearHotspots();
             drawHotspots(hotspots);
         },
     },
 });
-
-window.experience = experience;
 
 const clearHotspots = () => {
     const hotspots = container.querySelectorAll('.hotspot');

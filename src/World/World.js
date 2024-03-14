@@ -23,7 +23,7 @@ export default class World extends EventEmitter {
             this.environment = new Environment();
 
             this.time.onNextTick(() => {
-                // this.onSceneReady();
+                this.onSceneReady();
             });
         });
     }
