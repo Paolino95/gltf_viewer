@@ -1,12 +1,20 @@
 {
     "annotations": {
-        "animations": [
-
-        ],
-        "infos": [
-
-        ]
+        "animations": [],
+        "infos": []
     },
+    "hotspots": [
+        {
+            "target": {
+                "type": "mesh",
+                "value": "Monitor_interno"
+            }
+        },
+        "Monitor_interno",
+        "Monitor_statistiche",
+        "Monitor_control",
+        "Mandrino"
+    ],
     "bokInteraction": {
         "Monitor_interno": {
             "id": "Monitor_interno",
