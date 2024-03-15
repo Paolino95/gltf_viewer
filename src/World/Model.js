@@ -126,7 +126,12 @@ export default class Model {
             }
         }
 
-        console.log(this.animation.actions);
+        this.animation.mixer.addEventListener('finished', e => {
+            console.log(e);
+            e.direction === 1
+                ? (this.animation.actions.current.timeScale = -1)
+                : (this.animation.actions.current.timeScale = 1);
+        });
 
         // Debug
         if (this.debug.active) {
@@ -157,27 +162,32 @@ export default class Model {
         this.animation.actions.current = newAction;
     }
 
-    playForwardAnimation(name) {
-        this.animation.actions.current = this.animation.actions[name]
-            ? this.animation.actions[name]
-            : undefined;
-        this.animation.actions.current = this.animation.actions[name];
+    playForwardAnimation() {
         if (this.animation.actions.current) {
             this.animation.actions.current.paused = false;
             this.animation.actions.current.timeScale = 1;
             this.animation.actions.current.clampWhenFinished = true;
             this.animation.actions.current.setLoop(LoopOnce);
-            this.animation.actions.current.play(name);
+            this.animation.actions.current.play();
         }
     }
 
-    playBackwardAnimation(name) {
+    playBackwardAnimation() {
+        if (this.animation.actions.current) {
+            this.animation.actions.current.paused = false;
+            this.animation.actions.current.timeScale = -1;
+            this.animation.actions.current.clampWhenFinished = true;
+            this.animation.actions.current.setLoop(LoopOnce);
+            this.animation.actions.current.play();
+        }
+    }
+
+    playAnimation(name) {
         this.animation.actions.current = this.animation.actions[name]
             ? this.animation.actions[name]
             : undefined;
 
         this.animation.actions.current.paused = false;
-        this.animation.actions.current.timeScale = -1;
         this.animation.actions.current.clampWhenFinished = true;
         this.animation.actions.current.setLoop(LoopOnce);
         this.animation.actions.current.play();

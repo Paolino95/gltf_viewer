@@ -5,21 +5,6 @@
     },
     "hotspots": [
         {
-            "id": "Fixed",
-            "target": {
-                "type": "position",
-                "value": [
-                    0.25,
-                    1.2,
-                    1.2
-                ]
-            },
-            "userData": {
-                "color": "red",
-                "size": "40px"
-            }
-        },
-        {
             "id": "Monitor_interno",
             "target": {
                 "type": "mesh",

@@ -10,9 +10,9 @@ export default class InteractionEvents extends EventEmitter {
             this.trigger('onPointerMove', [e]);
         });
 
-        window.addEventListener('dblclick', e => {
-            e.preventDefault();
-            this.trigger('onDoubleClick');
-        });
+        // window.addEventListener('dblclick', e => {
+        //     e.preventDefault();
+        //     this.trigger('onDoubleClick');
+        // });
     }
 }

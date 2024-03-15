@@ -42,7 +42,7 @@ export default class Camera {
         this.setControls();
 
         this.interactionEvents.on('onDoubleClick', () => {
-            this.moveCameraOn();
+            this.resetCamera();
         });
     }
 
@@ -55,7 +55,7 @@ export default class Camera {
         );
         // starting position
         this.instance.position.set(7, 1.5, -10);
-        this.instance.lookAt(0, 0, 0);
+        this.instance.lookAt(0, 1, 0);
     }
 
     setControls() {
@@ -117,5 +117,16 @@ export default class Camera {
             target.z,
             true
         );
+    }
+
+    resetCamera() {
+        this.raycaster = experience.raycaster;
+        const intersects = this.raycaster.getIntersects();
+
+        if (intersects.length === 0 || !intersects[0].object.name) {
+            // reset camera
+            this.controls.reset(true);
+            return;
+        }
     }
 }

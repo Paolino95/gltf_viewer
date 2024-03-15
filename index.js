@@ -16,6 +16,8 @@ experience.setup({
     },
 });
 
+window.experience = experience;
+
 const clearHotspots = () => {
     const hotspots = container.querySelectorAll('.hotspot');
 
@@ -50,3 +52,19 @@ const drawHotspot = hotspot => {
 
     container.appendChild(hotspotElement);
 };
+
+// {
+//     "id": "Fixed",
+//     "target": {
+//         "type": "position",
+//         "value": [
+//             0.25,
+//             1.2,
+//             1.2
+//         ]
+//     },
+//     "userData": {
+//         "color": "red",
+//         "size": "40px"
+//     }
+// },
