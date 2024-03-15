@@ -133,7 +133,8 @@ export default class Hotspots {
     update() {
         this.computeHotspots();
 
-        this.onHotspotsUpdated(this.hotspots);
+        const clonedHotspots = structuredClone(this.hotspots);
+        this.onHotspotsUpdated(clonedHotspots);
 
         this.i++;
     }
