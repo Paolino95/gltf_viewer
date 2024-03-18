@@ -80,26 +80,24 @@ export default class Raycast {
     }
 
     toggleHighlightMesh(meshName) {
-        const mesh = this.scene.getObjectByName(meshName);
+        this.restoreMeshMaterial();
 
-        // if old material is not null, give old mesh the old material
-        if (mesh.material === this.highlightMaterial) {
-            this.restoreMeshMaterial(mesh, this.lastMaterial);
-        } else {
-            // store old mesh
-            this.lastSelectedMesh = mesh;
-            // store old mesh material
-            this.lastMaterial = mesh.material;
-            // change new mesh material
-            this.highlightMesh(mesh);
-        }
+        const mesh = this.scene.getObjectByName(meshName);
+        this.highlightMesh(mesh);
     }
 
     highlightMesh(mesh) {
+        // store old data
+        this.lastSelectedMesh = mesh;
+        this.lastMaterial = mesh.material;
+
+        // change new mesh material
         mesh.material = this.highlightMaterial;
     }
 
-    restoreMeshMaterial(mesh, oldMaterial) {
-        mesh.material = oldMaterial;
+    restoreMeshMaterial() {
+        if (this.lastSelectedMesh) {
+            this.lastSelectedMesh.material = this.lastMaterial;
+        }
     }
 }

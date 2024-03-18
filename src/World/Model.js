@@ -157,7 +157,7 @@ export default class Model {
         this.animation.actions.current = this.animation.actions[name]
             ? this.animation.actions[name]
             : undefined;
-        this.animation.actions.current = this.animation.actions[name];
+
         if (this.animation.actions.current) {
             this.animation.actions.current.paused = false;
             this.animation.actions.current.timeScale = 1;
@@ -172,11 +172,13 @@ export default class Model {
             ? this.animation.actions[name]
             : undefined;
 
-        this.animation.actions.current.paused = false;
-        this.animation.actions.current.timeScale = -1;
-        this.animation.actions.current.clampWhenFinished = true;
-        this.animation.actions.current.setLoop(LoopOnce);
-        this.animation.actions.current.play();
+        if (this.animation.actions.current) {
+            this.animation.actions.current.paused = false;
+            this.animation.actions.current.timeScale = -1;
+            this.animation.actions.current.clampWhenFinished = true;
+            this.animation.actions.current.setLoop(LoopOnce);
+            this.animation.actions.current.play(name);
+        }
     }
 
     playAnimation(name) {
@@ -188,6 +190,14 @@ export default class Model {
         this.animation.actions.current.clampWhenFinished = true;
         this.animation.actions.current.setLoop(LoopOnce);
         this.animation.actions.current.play();
+    }
+
+    resetAnimation(name) {
+        const animation = this.animation.actions[name];
+
+        if (animation.timeScale === -1) {
+            this.playBackwardAnimation(name);
+        }
     }
 
     update() {
