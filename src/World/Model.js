@@ -15,7 +15,7 @@ import { DEBUG_EXPANDED_TAB, MOD_1, MOD_2, MOD_3 } from '@/constants';
 import { constructList } from '@/utils/functions';
 
 export default class Model {
-    constructor() {
+    constructor(onAnimationChange) {
         this.scene = experience.scene;
         this.resources = experience.resources;
         this.time = experience.time;
@@ -23,6 +23,8 @@ export default class Model {
 
         // Resource
         this.resource = this.defaultModel().model;
+
+        this.onAnimationChange = onAnimationChange;
 
         // Debug
         if (this.debug.active) {
@@ -127,10 +129,11 @@ export default class Model {
         }
 
         this.animation.mixer.addEventListener('finished', e => {
-            console.log(e);
+            this.onAnimationChange(e);
+
             e.direction === 1
-                ? (this.animation.actions.current.timeScale = -1)
-                : (this.animation.actions.current.timeScale = 1);
+                ? (this.animation.actions[e.action._clip.name].timeScale = -1)
+                : (this.animation.actions[e.action._clip.name].timeScale = 1);
         });
 
         // Debug
@@ -150,36 +153,30 @@ export default class Model {
         }
     }
 
-    // Play the action
-    play(name) {
-        const newAction = this.animation.actions[name];
-        const oldAction = this.animation.actions.current;
-
-        newAction.reset();
-        newAction.play();
-        newAction.crossFadeFrom(oldAction, 1);
-
-        this.animation.actions.current = newAction;
-    }
-
-    playForwardAnimation() {
+    playForwardAnimation(name) {
+        this.animation.actions.current = this.animation.actions[name]
+            ? this.animation.actions[name]
+            : undefined;
+        this.animation.actions.current = this.animation.actions[name];
         if (this.animation.actions.current) {
             this.animation.actions.current.paused = false;
             this.animation.actions.current.timeScale = 1;
             this.animation.actions.current.clampWhenFinished = true;
             this.animation.actions.current.setLoop(LoopOnce);
-            this.animation.actions.current.play();
+            this.animation.actions.current.play(name);
         }
     }
 
-    playBackwardAnimation() {
-        if (this.animation.actions.current) {
-            this.animation.actions.current.paused = false;
-            this.animation.actions.current.timeScale = -1;
-            this.animation.actions.current.clampWhenFinished = true;
-            this.animation.actions.current.setLoop(LoopOnce);
-            this.animation.actions.current.play();
-        }
+    playBackwardAnimation(name) {
+        this.animation.actions.current = this.animation.actions[name]
+            ? this.animation.actions[name]
+            : undefined;
+
+        this.animation.actions.current.paused = false;
+        this.animation.actions.current.timeScale = -1;
+        this.animation.actions.current.clampWhenFinished = true;
+        this.animation.actions.current.setLoop(LoopOnce);
+        this.animation.actions.current.play();
     }
 
     playAnimation(name) {

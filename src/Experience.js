@@ -23,8 +23,12 @@ import isTouchDevice from 'is-touch-device';
 class Experience {
     setup(data) {
         const { canvas, container, controlsContainer, callbacks } = data;
-        const { onHotspotsUpdated = () => {}, onSceneReady = () => {} } =
-            callbacks;
+        const {
+            onHotspotsUpdated = () => {},
+            onSceneReady = () => {},
+            onResetCamera = () => {},
+            onAnimationChange = () => {},
+        } = callbacks;
 
         // Options
         this.canvas = canvas;
@@ -39,9 +43,9 @@ class Experience {
         this.interactionEvents = new InteractionEvents();
         this.scene = new Scene();
         this.resources = new Resources(sources);
-        this.camera = new Camera();
+        this.camera = new Camera(onResetCamera);
         this.renderer = new Renderer();
-        this.world = new World(onSceneReady);
+        this.world = new World({ onSceneReady, onAnimationChange });
         this.composer = new Composer(PP_EFFECT_FXAA);
         this.helpers = new Helpers();
         this.bok = new Bok();

@@ -13,6 +13,15 @@ experience.setup({
             clearHotspots();
             drawHotspots(hotspots);
         },
+        onSceneReady: async () => {
+            console.log('Scene Ready');
+        },
+        onResetCamera: isCameraReset => {
+            console.log('isCameraReset', isCameraReset);
+        },
+        onAnimationChange: animationDataEvent => {
+            console.log('animationDataEvent', animationDataEvent);
+        },
     },
 });
 

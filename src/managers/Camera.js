@@ -29,12 +29,14 @@ const subsetOfTHREE = {
 CameraControls.install({ THREE: subsetOfTHREE });
 
 export default class Camera {
-    constructor() {
+    constructor(onResetCamera) {
         this.sizes = experience.sizes;
         this.scene = experience.scene;
         this.time = experience.time;
         this.interactionEvents = experience.interactionEvents;
         this.canvas = experience.canvas;
+
+        this.onResetCamera = onResetCamera;
 
         this.raycaster = null;
 
@@ -54,7 +56,7 @@ export default class Camera {
             100
         );
         // starting position
-        this.instance.position.set(7, 1.5, -10);
+        this.instance.position.set(-5, 3.5, -18);
         this.instance.lookAt(0, 1, 0);
     }
 
@@ -126,7 +128,10 @@ export default class Camera {
         if (intersects.length === 0 || !intersects[0].object.name) {
             // reset camera
             this.controls.reset(true);
+            this.onResetCamera(true);
             return;
         }
+
+        this.onResetCamera(false);
     }
 }

@@ -26,7 +26,7 @@ export default [
         name: HDR_3,
         type: 'hdrTexture',
         path: 'assets/environment/industrial.hdr',
-        default: true,
+        default: false,
     },
     {
         name: HDR_4,

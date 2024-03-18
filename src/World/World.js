@@ -6,8 +6,10 @@ import Lights from './Lights.js';
 import EventEmitter from '../utils/EventEmitter.js';
 
 export default class World extends EventEmitter {
-    constructor(onSceneReady) {
+    constructor(callbacks) {
         super();
+
+        const { onSceneReady, onAnimationChange } = callbacks;
 
         this.scene = experience.scene;
         this.resources = experience.resources;
@@ -18,7 +20,7 @@ export default class World extends EventEmitter {
         this.resources.on('ready', () => {
             // Setup
             this.lights = new Lights();
-            this.model = new Model();
+            this.model = new Model(onAnimationChange);
             this.floor = new Floor();
             this.environment = new Environment();
 

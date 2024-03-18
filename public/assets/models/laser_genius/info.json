@@ -5,6 +5,17 @@
     },
     "hotspots": [
         {
+            "id": "Maniglie_sportello",
+            "target": {
+                "type": "mesh",
+                "value": "Maniglie_sportello"
+            },
+            "userData": {
+                "color": "green",
+                "size": "20px"
+            }
+        },
+        {
             "id": "Monitor_interno",
             "target": {
                 "type": "mesh",
@@ -50,8 +61,8 @@
             "id": "Monitor_control",
             "name": "Tipi di materiali che si possono tagliare con il laser"
         },
-        "Mandrino": {
-            "id": "Mandrino",
+        "Mandrinocarter": {
+            "id": "Mandrinocarter",
             "name": "Pulizia della Testa del Cono sensore e del Tip"
         }
     },
