@@ -22,13 +22,16 @@ import isTouchDevice from 'is-touch-device';
 
 class Experience {
     setup(data) {
-        const { canvas, container, controlsContainer, callbacks } = data;
+        const { canvas, container, controlsContainer, callbacks, events } =
+            data;
         const {
             onHotspotsUpdated = () => {},
             onSceneReady = () => {},
             onResetCamera = () => {},
             onAnimationChange = () => {},
         } = callbacks;
+
+        const { pointerMove = true, doubleClick = false } = events;
 
         // Options
         this.canvas = canvas;
@@ -40,7 +43,10 @@ class Experience {
         this.sizes = new Sizes(this.canvasContainer);
         this.mouse = new Mouse(this.canvasContainer);
         this.time = new Time();
-        this.interactionEvents = new InteractionEvents();
+        this.interactionEvents = new InteractionEvents({
+            pointerMove,
+            doubleClick,
+        });
         this.scene = new Scene();
         this.resources = new Resources(sources);
         this.camera = new Camera(onResetCamera);

@@ -13,11 +13,18 @@ export default class Raycast {
         this.interactionEvents = experience.interactionEvents;
         this.resources = experience.resources;
         this.bok = experience.bok;
-        this.selectedMesh = null;
+        this.world = experience.world;
 
         // variables buffers
         this.lastSelectedMesh = null;
         this.lastMaterial = null;
+
+        this.highlightMaterial = new MeshStandardMaterial({
+            color: 0x00ff00,
+            transparent: true,
+            opacity: 0.5,
+            side: DoubleSide,
+        });
 
         this.setInstance();
 
@@ -41,14 +48,12 @@ export default class Raycast {
     }
 
     sendBok() {
-        // raycast to pick intersected meshes
-        this.instance.setFromCamera(this.mouse.pointer, this.camera.instance);
-        const intersects = this.instance.intersectObjects(this.scene.children);
-
+        const intersects = this.getIntersects();
+        console.log({ intersects });
         if (intersects.length > 0) {
             let meshCounter = 0;
             // take the first intersected mesh
-            this.selectedMesh = intersects[meshCounter].object;
+            let selectedMesh = intersects[meshCounter].object;
 
             const selectedCompatibleMeshes = Object.keys(
                 this.resources.items.info?.bokInteraction
@@ -57,60 +62,44 @@ export default class Raycast {
             while (
                 meshCounter < intersects.length - 1 &&
                 meshCounter < RAYCASTER_MAX_DISTANCE &&
-                selectedCompatibleMeshes.includes(this.selectedMesh.name) ===
-                    false
+                selectedCompatibleMeshes.includes(selectedMesh.name) === false
             ) {
                 meshCounter++;
-                this.selectedMesh = intersects[meshCounter].object;
+                selectedMesh = intersects[meshCounter].object;
+                console.log({ selectedMesh });
             }
 
             // if such a compatible mesh is found...
-            if (selectedCompatibleMeshes.includes(this.selectedMesh.name)) {
-                // if old material is not null, give old mesh the old material
-                if (this.lastMaterial !== null)
-                    this.restoreMeshMaterial(
-                        this.lastSelectedMesh,
-                        this.lastMaterial
-                    );
-                // store old mesh
-                this.lastSelectedMesh = intersects[meshCounter].object;
-                // store old mesh material
-                this.lastMaterial = intersects[meshCounter].object.material;
-                // change new mesh material
-                this.highlightMesh(intersects[meshCounter]);
-
-                // notify BOK of selected mesh
-                if (!this.debug.active) {
-                    this.bok.sendMessage(
-                        this.resources.items.info?.bokInteraction[
-                            this.selectedMesh.name
-                        ].name
-                    );
-                }
-            } else {
-                // if doubleclicked on no compatible mesh, restore material
-                if (this.lastMaterial !== null)
-                    this.lastSelectedMesh.material = this.lastMaterial;
+            if (selectedCompatibleMeshes.includes(selectedMesh.name)) {
+                this.bok.sendMessage(
+                    this.resources.items.info?.bokInteraction[selectedMesh.name]
+                        .name
+                );
             }
+        }
+    }
+
+    toggleHighlightMesh(meshName) {
+        const mesh = this.scene.getObjectByName(meshName);
+
+        // if old material is not null, give old mesh the old material
+        if (mesh.material === this.highlightMaterial) {
+            this.restoreMeshMaterial(mesh, this.lastMaterial);
         } else {
-            // if doubleclicked outside of 3d model, restore material
-            if (this.lastMaterial !== null)
-                this.lastSelectedMesh.material = this.lastMaterial;
+            // store old mesh
+            this.lastSelectedMesh = mesh;
+            // store old mesh material
+            this.lastMaterial = mesh.material;
+            // change new mesh material
+            this.highlightMesh(mesh);
         }
     }
 
     highlightMesh(mesh) {
-        mesh.object.material = new MeshStandardMaterial({
-            color: 0x00ff00,
-            transparent: true,
-            opacity: 0.4,
-            side: DoubleSide,
-        });
+        mesh.material = this.highlightMaterial;
     }
 
     restoreMeshMaterial(mesh, oldMaterial) {
         mesh.material = oldMaterial;
-
-        //  FUTURE UPGRADE: will be called when new page is opened (BOK call)
     }
 }

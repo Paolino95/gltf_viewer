@@ -6,7 +6,7 @@ import Lights from './Lights.js';
 import EventEmitter from '../utils/EventEmitter.js';
 
 export default class World extends EventEmitter {
-    constructor(callbacks) {
+    constructor(callbacks = {}) {
         super();
 
         const { onSceneReady, onAnimationChange } = callbacks;

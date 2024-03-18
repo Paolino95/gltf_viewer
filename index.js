@@ -23,6 +23,7 @@ experience.setup({
             console.log('animationDataEvent', animationDataEvent);
         },
     },
+    events: {},
 });
 
 window.experience = experience;
@@ -61,19 +62,3 @@ const drawHotspot = hotspot => {
 
     container.appendChild(hotspotElement);
 };
-
-// {
-//     "id": "Fixed",
-//     "target": {
-//         "type": "position",
-//         "value": [
-//             0.25,
-//             1.2,
-//             1.2
-//         ]
-//     },
-//     "userData": {
-//         "color": "red",
-//         "size": "40px"
-//     }
-// },

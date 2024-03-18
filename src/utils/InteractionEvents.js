@@ -1,18 +1,22 @@
 import EventEmitter from './EventEmitter.js';
 
 export default class InteractionEvents extends EventEmitter {
-    constructor() {
+    constructor(events) {
         super();
 
-        // Setup
-        window.addEventListener('pointermove', e => {
-            e.preventDefault();
-            this.trigger('onPointerMove', [e]);
-        });
+        const { pointerMove, doubleClick } = events;
 
-        // window.addEventListener('dblclick', e => {
-        //     e.preventDefault();
-        //     this.trigger('onDoubleClick');
-        // });
+        // Setup
+        if (pointerMove)
+            window.addEventListener('pointermove', e => {
+                e.preventDefault();
+                this.trigger('onPointerMove', [e]);
+            });
+
+        if (doubleClick)
+            window.addEventListener('dblclick', e => {
+                e.preventDefault();
+                this.trigger('onDoubleClick');
+            });
     }
 }
