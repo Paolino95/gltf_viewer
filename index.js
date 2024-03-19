@@ -8,6 +8,11 @@ experience.setup({
     canvas,
     container,
     controlsContainer,
+    options: {
+        assetsBaseUrl: 'assets',
+        useDracoCompression: true,
+        dracoDecoderPath: '../libs/draco/gltf/',
+    },
     callbacks: {
         onHotspotsUpdated: hotspots => {
             clearHotspots();

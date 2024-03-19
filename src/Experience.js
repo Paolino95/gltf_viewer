@@ -22,14 +22,23 @@ import isTouchDevice from 'is-touch-device';
 
 class Experience {
     setup(data) {
-        const { canvas, container, controlsContainer, callbacks, events } =
-            data;
+        const {
+            canvas,
+            container,
+            controlsContainer,
+            options,
+            callbacks,
+            events,
+        } = data;
         const {
             onHotspotsUpdated = () => {},
             onSceneReady = () => {},
             onResetCamera = () => {},
             onAnimationChange = () => {},
         } = callbacks;
+
+        const { assetsBaseUrl, useDracoCompression, dracoDecoderPath } =
+            options;
 
         const { pointerMove = true, doubleClick = false } = events;
 
@@ -48,7 +57,11 @@ class Experience {
             doubleClick,
         });
         this.scene = new Scene();
-        this.resources = new Resources(sources);
+        this.resources = new Resources({
+            assetsBaseUrl,
+            useDracoCompression,
+            dracoDecoderPath,
+        });
         this.camera = new Camera(onResetCamera);
         this.renderer = new Renderer();
         this.world = new World({ onSceneReady, onAnimationChange });
