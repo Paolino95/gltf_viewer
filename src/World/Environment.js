@@ -29,7 +29,8 @@ export default class Environment {
         this.debug = experience.debug;
 
         this.environmentMap = {};
-        this.environmentMap.texture = this.defaultEnvironmentMap().hdr;
+        this.environmentMap.texture =
+            this.resources.items[this.resources.hdrName];
 
         this.setBackgroundType(ENV_BACKGROUND_COLOR);
         this.setEnvironmentMap();

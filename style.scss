@@ -37,18 +37,6 @@ body {
   position: relative;
 }
 
-#instructions {
-  position: absolute;
-  z-index: 100;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: .2rem;
-  top: 0%;
-  left: 0%;
-  user-select: none;
-}
-
 #tweakContainer {
   width: 400px;
   position: absolute;

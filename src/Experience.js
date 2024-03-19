@@ -15,8 +15,6 @@ import Raycast from '@/managers/Raycaster.js';
 import Bok from '@/managers/Bok.js';
 import Hotspots from '@/managers/Hotspots.js';
 
-import sources from '@/parameters/sources.js';
-
 import { PP_EFFECT_FXAA } from '@/constants';
 import isTouchDevice from 'is-touch-device';
 
@@ -37,8 +35,13 @@ class Experience {
             onAnimationChange = () => {},
         } = callbacks;
 
-        const { assetsBaseUrl, useDracoCompression, dracoDecoderPath } =
-            options;
+        const {
+            assetsBaseUrl = 'assets',
+            useDracoCompression = true,
+            dracoDecoderPath = './libs/draco/gltf/',
+            hdr = 'default',
+            model = 'laser_genius',
+        } = options;
 
         const { pointerMove = true, doubleClick = false } = events;
 
@@ -61,6 +64,8 @@ class Experience {
             assetsBaseUrl,
             useDracoCompression,
             dracoDecoderPath,
+            hdr,
+            model,
         });
         this.camera = new Camera(onResetCamera);
         this.renderer = new Renderer();

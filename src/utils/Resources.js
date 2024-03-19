@@ -9,20 +9,32 @@ import axios from 'axios';
 import EventEmitter from './EventEmitter.js';
 
 export default class Resources extends EventEmitter {
-    constructor(sources) {
+    constructor(options) {
         super();
 
-        this.sources = sources;
+        const {
+            assetsBaseUrl,
+            useDracoCompression,
+            dracoDecoderPath,
+            hdr,
+            model,
+        } = options;
 
         this.items = {};
-        this.toLoad = this.sources.filter(source => source.default).length;
         this.loaded = 0;
-        this.pathModelsOrigin = 'assets/models';
-
         this.inputButton = document.querySelector('#file-input');
 
-        this.setLoaders();
-        this.startLoading();
+        //  Paths
+        this.assetsModelsUrl = `${assetsBaseUrl}/models`;
+        this.assetsHdrUrl = `${assetsBaseUrl}/hdrs`;
+
+        this.modelName = model;
+        this.hdrName = hdr;
+
+        this.setLoaders(useDracoCompression, dracoDecoderPath);
+
+        this.loadModel();
+        this.loadHdr();
 
         // Drag&Drop event
         window.addEventListener('drop', e => {
@@ -47,74 +59,49 @@ export default class Resources extends EventEmitter {
         });
     }
 
-    setLoaders() {
+    setLoaders(useDracoCompression, dracoDecoderPath) {
         this.loaders = {};
         this.loaders.gltfLoader = new GLTFLoader();
-        this.loaders.dracoLoader = new DRACOLoader();
-        this.loaders.dracoLoader.setDecoderPath('draco/');
-        this.loaders.gltfLoader.setDRACOLoader(this.loaders.dracoLoader);
+        if (useDracoCompression) {
+            this.loaders.dracoLoader = new DRACOLoader();
+            this.loaders.dracoLoader.setDecoderPath(dracoDecoderPath);
+            this.loaders.gltfLoader.setDRACOLoader(this.loaders.dracoLoader);
+        }
         this.loaders.textureLoader = new TextureLoader();
         this.loaders.cubeTextureLoader = new CubeTextureLoader();
         this.loaders.rgbeLoader = new RGBELoader();
     }
 
-    async startLoading() {
-        // Load each source
-        for (const source of this.sources) {
-            if (source.default && source.default === true) {
-                switch (source.type) {
-                    case 'gltfModel':
-                        const pathModelsSource = `${this.pathModelsOrigin}/${source.name}/${source.name}.glb`;
+    async loadModel() {
+        const pathModelsSource = `${this.assetsModelsUrl}/${this.modelName}/${this.modelName}.glb`;
+        this.loaders.gltfLoader.load(pathModelsSource, file => {
+            this.sourceLoaded(this.modelName, file);
+        });
 
-                        this.loaders.gltfLoader.load(pathModelsSource, file => {
-                            this.sourceLoaded(source, file);
-                        });
+        const pathInfoSource = `${this.assetsModelsUrl}/${this.modelName}/info.json`;
 
-                        const pathInfoSource = `${this.pathModelsOrigin}/${source.name}/info.json`;
+        const [err, res] = await to(axios(pathInfoSource));
 
-                        const [err, res] = await to(axios(pathInfoSource));
-
-                        if (err) {
-                            console.log('Info.json missing');
-                        } else {
-                            this.sourceLoaded({ name: 'info' }, res.data, true);
-                        }
-
-                        break;
-
-                    case 'hdrTexture':
-                        this.loaders.rgbeLoader.load(source.path, file => {
-                            this.sourceLoaded(source, file);
-                        });
-                        break;
-
-                    case 'texture':
-                        this.loaders.textureLoader.load(source.path, file => {
-                            this.sourceLoaded(source, file);
-                        });
-                        break;
-
-                    case 'cubeTexture':
-                        this.loaders.cubeTextureLoader.load(
-                            source.path,
-                            file => {
-                                this.sourceLoaded(source, file);
-                            }
-                        );
-                        break;
-                    default:
-                        break;
-                }
-            }
+        if (err) {
+            console.log('Info.json missing');
+        } else {
+            this.sourceLoaded('info', res.data, true);
         }
     }
 
-    sourceLoaded(source, file, isInfo = false) {
-        this.items[source.name] = file;
+    loadHdr() {
+        const pathHdrsSource = `${this.assetsHdrUrl}/${this.hdrName}/${this.hdrName}.hdr`;
+        this.loaders.rgbeLoader.load(pathHdrsSource, file => {
+            this.sourceLoaded(this.hdrName, file);
+        });
+    }
+
+    sourceLoaded(name, file, isInfo = false) {
+        this.items[name] = file;
 
         if (!isInfo) this.loaded++;
 
-        if (this.loaded === this.toLoad) {
+        if (this.loaded === 2) {
             this.trigger('ready');
         }
     }

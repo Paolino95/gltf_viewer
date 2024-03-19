@@ -9,9 +9,11 @@ experience.setup({
     container,
     controlsContainer,
     options: {
-        assetsBaseUrl: 'assets',
-        useDracoCompression: true,
-        dracoDecoderPath: '../libs/draco/gltf/',
+        // assetsBaseUrl: 'assets',
+        // useDracoCompression: false,
+        dracoDecoderPath: 'src/libs/draco/gltf/',
+        hdr: 'industrial',
+        model: 'laser_genius',
     },
     callbacks: {
         onHotspotsUpdated: hotspots => {
@@ -28,7 +30,9 @@ experience.setup({
             console.log('animationDataEvent', animationDataEvent);
         },
     },
-    events: {},
+    events: {
+        doubleClick: true,
+    },
 });
 
 window.experience = experience;

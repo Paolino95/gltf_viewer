@@ -22,7 +22,7 @@ export default class Model {
         this.debug = experience.debug;
 
         // Resource
-        this.resource = this.defaultModel().model;
+        this.resource = this.resources.items[this.resources.modelName];
 
         this.onAnimationChange = onAnimationChange;
 
@@ -60,22 +60,6 @@ export default class Model {
         this.resources.on('updateGlb', url => {
             this.updateModel(url);
         });
-    }
-
-    defaultModel() {
-        for (const source of this.resources.sources) {
-            if (
-                source.type === 'gltfModel' &&
-                source.default &&
-                source.default === true &&
-                source.name === (MOD_1 || MOD_2 || MOD_3)
-            ) {
-                return {
-                    name: source.name,
-                    model: this.resources.items[source.name],
-                };
-            }
-        }
     }
 
     setModel() {
