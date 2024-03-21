@@ -17,26 +17,25 @@ import {
     PP_EFFECT_NO_EFFECTS,
     PP_EFFECT_BLOOM,
     PP_EFFECT_FXAA,
-    DEBUG_EXPANDED_TAB,
 } from '@/constants';
 import { constructList } from '@/utils/functions';
 
-import { experience } from '@/Experience.js';
+import { gltfViewer } from '@/GltfViewer.js';
 
 export default class Composer {
     constructor(initialValue) {
-        this.canvas = experience.canvas;
-        this.scene = experience.scene;
-        this.sizes = experience.sizes;
-        this.camera = experience.camera.instance;
-        this.renderer = experience.renderer.instance;
-        this.debug = experience.debug;
+        this.canvas = gltfViewer.canvas;
+        this.scene = gltfViewer.scene;
+        this.sizes = gltfViewer.sizes;
+        this.camera = gltfViewer.camera.instance;
+        this.renderer = gltfViewer.renderer.instance;
+        this.debug = gltfViewer.debug;
 
         // Debug Folder
         if (this.debug.active) {
             this.debugFolder = this.debug.pane.addFolder({
                 title: 'Post Processing Effects',
-                expanded: DEBUG_EXPANDED_TAB['PP_EFFECTS_PARAMETERS'].expanded,
+                expanded: false,
             });
 
             this.effectsList = this.debugFolder

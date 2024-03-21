@@ -1,16 +1,17 @@
-import { experience } from '@/Experience.js';
+import { gltfViewer } from '@/GltfViewer.js';
 
 const canvas = document.querySelector('#container3D');
 const container = document.querySelector('#container');
 const controlsContainer = document.querySelector('#tweakContainer');
 
-experience.setup({
+gltfViewer.setup({
     canvas,
     container,
     controlsContainer,
     options: {
-        // assetsBaseUrl: 'assets',
-        // useDracoCompression: false,
+        assetsBaseUrl: 'assets',
+        useDracoCompression: true,
+        bokInterfaceClient: 'primaindustrie',
         dracoDecoderPath: 'src/libs/draco/gltf/',
         hdr: 'industrial',
         model: 'laser_genius',
@@ -35,7 +36,7 @@ experience.setup({
     },
 });
 
-window.experience = experience;
+window.gltfViewer = gltfViewer;
 
 const clearHotspots = () => {
     const hotspots = container.querySelectorAll('.hotspot');

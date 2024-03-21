@@ -4,29 +4,23 @@ import {
     MeshStandardMaterial,
     EquirectangularReflectionMapping,
 } from 'three';
-import { experience } from '@/Experience.js';
-import {
-    sceneParams,
-    backgroundOptionsList,
-    hdrList,
-} from '@/parameters/ui.js';
+import { gltfViewer } from '@/GltfViewer.js';
+import { backgroundOptionsList } from '@/parameters/ui.js';
 import { constructList } from '@/utils/functions';
 
 import {
     ENV_BACKGROUND_COLOR,
+    ENV_BACKGROUND_TRANSPARENT,
     ENV_BACKGROUND_TEXTURE,
-    DEBUG_EXPANDED_TAB,
-    HDR_1,
-    HDR_2,
-    HDR_3,
-    HDR_4,
+    ENV_MAP_INTENSITY,
+    DEFAULT_ENV_MAP_COLOR,
 } from '@/constants';
 
 export default class Environment {
     constructor() {
-        this.scene = experience.scene;
-        this.resources = experience.resources;
-        this.debug = experience.debug;
+        this.scene = gltfViewer.scene;
+        this.resources = gltfViewer.resources;
+        this.debug = gltfViewer.debug;
 
         this.environmentMap = {};
         this.environmentMap.texture =
@@ -39,22 +33,8 @@ export default class Environment {
         if (this.debug.active) {
             this.debugFolder = this.debug.pane.addFolder({
                 title: 'environment',
-                expanded: DEBUG_EXPANDED_TAB['ENVIRONMENT_PARAMETERS'].expanded,
+                expanded: false,
             });
-
-            this.modelList = this.debugFolder
-                .addBlade({
-                    view: 'list',
-                    label: 'Select Hdr',
-                    options: constructList(hdrList),
-                    value: this.defaultEnvironmentMap().name,
-                })
-                .on('change', async e => {
-                    const path = this.resources.sources.filter(
-                        source => source.name === e.value
-                    )[0].path;
-                    this.updateEnvironmentMap(path);
-                });
 
             this.debugFolder
                 .addBinding(this.environmentMap, 'intensity', {
@@ -99,23 +79,8 @@ export default class Environment {
         });
     }
 
-    defaultEnvironmentMap() {
-        for (const source of this.resources.sources) {
-            if (
-                source.type === 'hdrTexture' &&
-                source.default === true &&
-                [HDR_1, HDR_2, HDR_3, HDR_4].includes(source.name)
-            ) {
-                return {
-                    name: source.name,
-                    hdr: this.resources.items[source.name],
-                };
-            }
-        }
-    }
-
     setEnvironmentMap() {
-        this.environmentMap.intensity = sceneParams.envMapIntensity;
+        this.environmentMap.intensity = ENV_MAP_INTENSITY;
         this.environmentMap.texture.mapping = EquirectangularReflectionMapping;
 
         this.scene.environment = this.environmentMap.texture;
@@ -154,9 +119,9 @@ export default class Environment {
                 if (this.backgroundColorToggle)
                     this.backgroundColorToggle.hidden = false;
                 this.scene.background =
-                    sceneParams.backgroundColor == 'transparent'
+                    DEFAULT_ENV_MAP_COLOR === ENV_BACKGROUND_TRANSPARENT
                         ? null
-                        : new Color(sceneParams.backgroundColor);
+                        : new Color(ENV_BACKGROUND_COLOR);
                 break;
 
             case ENV_BACKGROUND_TEXTURE:

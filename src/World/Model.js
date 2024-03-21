@@ -9,17 +9,15 @@ import {
     LoopOnce,
     AdditiveBlending,
 } from 'three';
-import { experience } from '@/Experience.js';
-import { sceneParams, modelList } from '@/parameters/ui.js';
-import { DEBUG_EXPANDED_TAB, MOD_1, MOD_2, MOD_3 } from '@/constants';
-import { constructList } from '@/utils/functions';
+import { ENV_MAP_INTENSITY } from '@/constants';
+import { gltfViewer } from '@/GltfViewer.js';
 
 export default class Model {
     constructor(onAnimationChange) {
-        this.scene = experience.scene;
-        this.resources = experience.resources;
-        this.time = experience.time;
-        this.debug = experience.debug;
+        this.scene = gltfViewer.scene;
+        this.resources = gltfViewer.resources;
+        this.time = gltfViewer.time;
+        this.debug = gltfViewer.debug;
 
         // Resource
         this.resource = this.resources.items[this.resources.modelName];
@@ -30,22 +28,8 @@ export default class Model {
         if (this.debug.active) {
             this.debugFolder = this.debug.pane.addFolder({
                 title: 'Model Parameters',
-                expanded: DEBUG_EXPANDED_TAB['MODEL_PARAMETERS'].expanded,
+                expanded: false,
             });
-
-            this.modelList = this.debugFolder
-                .addBlade({
-                    view: 'list',
-                    label: 'Selected Model',
-                    options: constructList(modelList),
-                    value: this.defaultModel().name,
-                })
-                .on('change', e => {
-                    const path = this.resources.sources.filter(
-                        source => source.name === e.value
-                    )[0].path;
-                    this.updateModel(path);
-                });
 
             this.debugFolder
                 .addButton({ title: 'update Model' })
@@ -64,14 +48,13 @@ export default class Model {
 
     setModel() {
         this.model = this.resource.scene;
-        // this.model.rotation.y = Math.PI;
         this.scene.add(this.model);
 
         this.model.traverse(child => {
             if (child instanceof Mesh) {
                 child.castShadow = true;
                 child.receiveShadow = true;
-                child.material.envMapIntensity = sceneParams.envMapIntensity;
+                child.material.envMapIntensity = ENV_MAP_INTENSITY;
             }
         });
 
@@ -132,7 +115,7 @@ export default class Model {
                         this.animation.play(animation.name);
                 }
 
-                // this.debugFolder.addBinding(debugObject, animation.name);
+                this.debugFolder.addBinding(debugObject, animation.name);
             }
         }
     }
@@ -188,7 +171,7 @@ export default class Model {
         this.animation.mixer.update(this.time.delta * 0.001);
     }
 
-    // WIP - highlight of selectable meshes in the rendered model
+    // highlight of selectable meshes in the rendered model
     highlightSelectablesMeshes() {
         var spriteMaterial = new SpriteMaterial({
             map: new TextureLoader().load('assets/images/glow.png'),

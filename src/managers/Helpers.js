@@ -1,20 +1,19 @@
 import { AxesHelper } from 'three';
-import { experience } from '@/Experience.js';
+import { gltfViewer } from '@/GltfViewer.js';
 
 // Params
 import { helpersParams } from '@/parameters/ui';
-import { DEBUG_EXPANDED_TAB } from '@/constants';
 
 export default class Helpers {
     constructor() {
-        this.scene = experience.scene;
-        this.debug = experience.debug;
+        this.scene = gltfViewer.scene;
+        this.debug = gltfViewer.debug;
 
         // Debug Folder
         if (this.debug.active) {
             this.debugFolder = this.debug.pane.addFolder({
                 title: 'Helpers',
-                expanded: DEBUG_EXPANDED_TAB['HELPERS'].expanded,
+                expanded: false,
             });
 
             this.debugFolder

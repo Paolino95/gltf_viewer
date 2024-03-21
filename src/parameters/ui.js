@@ -3,14 +3,6 @@ import {
     PP_EFFECT_FXAA,
     ENV_BACKGROUND_COLOR,
     ENV_BACKGROUND_TEXTURE,
-    MOD_1,
-    MOD_2,
-    MOD_3,
-    MOD_4,
-    HDR_1,
-    HDR_2,
-    HDR_3,
-    HDR_4,
 } from '@/constants';
 
 export const postProcessingEffects = {
@@ -66,44 +58,6 @@ export const backgroundOptionsList = {
     texture: {
         id: ENV_BACKGROUND_TEXTURE,
         text: 'Texture',
-    },
-};
-
-export const modelList = {
-    LaserGenius: {
-        id: MOD_1,
-        text: 'LaserGenius',
-    },
-    glass: {
-        id: MOD_2,
-        text: 'Glass',
-    },
-    lampadario: {
-        id: MOD_3,
-        text: 'Lampadario',
-    },
-    Fiat: {
-        id: MOD_4,
-        text: 'Fiat 500',
-    },
-};
-
-export const hdrList = {
-    default: {
-        id: HDR_1,
-        text: 'Graveyard',
-    },
-    graveyard: {
-        id: HDR_2,
-        text: 'Default',
-    },
-    industrial: {
-        id: HDR_3,
-        text: 'industrial',
-    },
-    industrial_2: {
-        id: HDR_4,
-        text: 'industrial_2',
     },
 };
 

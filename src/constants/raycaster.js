@@ -1,0 +1,1 @@
+export const RAYCASTER_MAX_DISTANCE = 4;

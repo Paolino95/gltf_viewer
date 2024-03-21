@@ -1,10 +1,11 @@
 export default class Bok {
-    constructor() {
+    constructor(bokInterfaceClient) {
         // connection variables
+        this.bokInterfaceClient = bokInterfaceClient;
         this.hostUrl;
         this.host; // host will be received in base 64
-        this.token = 'null'; // custom received token parameter
-        this.fts = 'null';
+        this.token = null; // custom received token parameter
+        this.fts = null;
 
         this.catchHostCall();
     }
@@ -28,7 +29,7 @@ export default class Bok {
         this.host =
             searchParams.get('host') !== null
                 ? atob(searchParams.get('host'))
-                : window.location.origin + '/primaindustrie/';
+                : `${window.location.origin}/${this.bokInterfaceClient}/`;
         console.log('Host: ', this.host);
         console.log('Token: ', this.token);
     }

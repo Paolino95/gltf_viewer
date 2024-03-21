@@ -1,5 +1,24 @@
-import { experience } from '@/Experience.js';
+import { gltfViewer } from '@/GltfViewer.js';
 import CameraControls from 'camera-controls';
+import {
+    CAMERA_FOV,
+    CAMERA_ASPECT,
+    CAMERA_NEAR,
+    CAMERA_FAR,
+    CAMERA_POSITION_X,
+    CAMERA_POSITION_Y,
+    CAMERA_POSITION_Z,
+    CAMERA_SET_LOOT_AT_X,
+    CAMERA_SET_LOOT_AT_Y,
+    CAMERA_SET_LOOT_AT_Z,
+    CAMERA_CONTROLS_SMOOTH_TIME,
+    CAMERA_CONTROLS_MAX_POLAR_ANGLE,
+    CAMERA_CONTROLS_MIN_DISTANCE,
+    CAMERA_CONTROLS_MAX_DISTANCE,
+    CAMERA_CONTROLS_AZIMUTH_ROTATE_SPEED,
+    CAMERA_CONTROLS_DRAGGING_SMOOTH_TIME,
+    CAMERA_MAX_CAMERA_DISTANCE_MOVE_ON,
+} from '@/constants';
 
 import {
     Vector2,
@@ -30,11 +49,11 @@ CameraControls.install({ THREE: subsetOfTHREE });
 
 export default class Camera {
     constructor(onResetCamera) {
-        this.sizes = experience.sizes;
-        this.scene = experience.scene;
-        this.time = experience.time;
-        this.interactionEvents = experience.interactionEvents;
-        this.canvas = experience.canvas;
+        this.sizes = gltfViewer.sizes;
+        this.scene = gltfViewer.scene;
+        this.time = gltfViewer.time;
+        this.interactionEvents = gltfViewer.interactionEvents;
+        this.canvas = gltfViewer.canvas;
 
         this.onResetCamera = onResetCamera;
 
@@ -50,24 +69,33 @@ export default class Camera {
 
     setInstance() {
         this.instance = new PerspectiveCamera(
-            35,
+            CAMERA_FOV,
             this.sizes.width / this.sizes.height,
-            0.1,
-            100
+            CAMERA_ASPECT,
+            CAMERA_NEAR,
+            CAMERA_FAR
         );
         // starting position
-        this.instance.position.set(-5, 3.5, -18);
-        this.instance.lookAt(0, 1, 0);
+        this.instance.position.set(
+            CAMERA_POSITION_X,
+            CAMERA_POSITION_Y,
+            CAMERA_POSITION_Z
+        );
+        this.instance.lookAt(
+            CAMERA_SET_LOOT_AT_X,
+            CAMERA_SET_LOOT_AT_Y,
+            CAMERA_SET_LOOT_AT_Z
+        );
     }
 
     setControls() {
         this.controls = new CameraControls(this.instance, this.canvas);
-        this.controls.smoothTime = 0.8;
-        this.controls.maxPolarAngle = Math.PI / 2;
-        this.controls.minDistance = 4;
-        this.controls.maxDistance = 25;
-        this.controls.azimuthRotateSpeed = 0.5;
-        this.controls.draggingSmoothTime = 0.4;
+        this.controls.smoothTime = CAMERA_CONTROLS_SMOOTH_TIME;
+        this.controls.maxPolarAngle = CAMERA_CONTROLS_MAX_POLAR_ANGLE;
+        this.controls.minDistance = CAMERA_CONTROLS_MIN_DISTANCE;
+        this.controls.maxDistance = CAMERA_CONTROLS_MAX_DISTANCE;
+        this.controls.azimuthRotateSpeed = CAMERA_CONTROLS_AZIMUTH_ROTATE_SPEED;
+        this.controls.draggingSmoothTime = CAMERA_CONTROLS_DRAGGING_SMOOTH_TIME;
     }
 
     resize() {
@@ -84,7 +112,7 @@ export default class Camera {
         //
         // NEXT  -->  moveCameraOn( selectedMesh )  -->  la funzione moveCameraOn sarà chiamata solo con la mesh da inquadrare come argomento
         //
-        this.raycaster = experience.raycaster;
+        this.raycaster = gltfViewer.raycaster;
         const intersects = this.raycaster.getIntersects();
 
         if (intersects.length === 0 || !intersects[0].object.name) {
@@ -103,7 +131,7 @@ export default class Camera {
             .getWorldDirection(new Vector3())
             .multiplyScalar(-1);
 
-        const cameraDistance = 2.5;
+        const cameraDistance = CAMERA_MAX_CAMERA_DISTANCE_MOVE_ON;
 
         const position = new Vector3().addVectors(
             target,
@@ -122,7 +150,7 @@ export default class Camera {
     }
 
     resetCamera() {
-        this.raycaster = experience.raycaster;
+        this.raycaster = gltfViewer.raycaster;
         const intersects = this.raycaster.getIntersects();
 
         if (intersects.length === 0 || !intersects[0].object.name) {

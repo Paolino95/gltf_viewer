@@ -1,4 +1,4 @@
-import { experience } from '@/Experience.js';
+import { gltfViewer } from '@/GltfViewer.js';
 import Environment from './Environment.js';
 import Model from './Model.js';
 import Floor from './Floor.js';
@@ -11,9 +11,9 @@ export default class World extends EventEmitter {
 
         const { onSceneReady, onAnimationChange } = callbacks;
 
-        this.scene = experience.scene;
-        this.resources = experience.resources;
-        this.time = experience.time;
+        this.scene = gltfViewer.scene;
+        this.resources = gltfViewer.resources;
+        this.time = gltfViewer.time;
         this.onSceneReady = onSceneReady;
 
         // Wait for resources

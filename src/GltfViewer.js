@@ -18,7 +18,7 @@ import Hotspots from '@/managers/Hotspots.js';
 import { PP_EFFECT_FXAA } from '@/constants';
 import isTouchDevice from 'is-touch-device';
 
-class Experience {
+class GltfViewer {
     setup(data) {
         const {
             canvas,
@@ -36,6 +36,7 @@ class Experience {
         } = callbacks;
 
         const {
+            bokInterfaceClient = 'primaindustrie',
             assetsBaseUrl = 'assets',
             useDracoCompression = true,
             dracoDecoderPath = './libs/draco/gltf/',
@@ -72,7 +73,7 @@ class Experience {
         this.world = new World({ onSceneReady, onAnimationChange });
         this.composer = new Composer(PP_EFFECT_FXAA);
         this.helpers = new Helpers();
-        this.bok = new Bok();
+        this.bok = new Bok(bokInterfaceClient);
         this.raycaster = new Raycast();
         this.hotspots = new Hotspots(onHotspotsUpdated);
 
@@ -138,4 +139,4 @@ class Experience {
     }
 }
 
-export const experience = new Experience();
+export const gltfViewer = new GltfViewer();

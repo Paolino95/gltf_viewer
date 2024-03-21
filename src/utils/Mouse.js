@@ -1,14 +1,14 @@
 import { Vector2 } from 'three';
 import EventEmitter from './EventEmitter';
-import { experience } from '@/Experience.js';
+import { gltfViewer } from '@/GltfViewer.js';
 
 export default class Mouse extends EventEmitter {
     constructor(container) {
         super();
 
         this.pointer = new Vector2();
-        this.sizes = experience.sizes;
-        this.canvas = experience.canvas;
+        this.sizes = gltfViewer.sizes;
+        this.canvas = gltfViewer.canvas;
 
         this.canvasRect = this.canvas.getBoundingClientRect();
 

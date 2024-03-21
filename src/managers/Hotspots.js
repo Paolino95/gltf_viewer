@@ -1,16 +1,16 @@
 import { Vector2, Vector3 } from 'three';
 
-import { experience } from '@/Experience.js';
+import { gltfViewer } from '@/GltfViewer.js';
 
 export default class Hotspots {
     constructor(onHotspotsUpdated) {
         this.onHotspotsUpdated = onHotspotsUpdated;
 
-        this.camera = experience.camera;
-        this.scene = experience.scene;
-        this.sizes = experience.sizes;
-        this.raycaster = experience.raycaster;
-        this.resources = experience.resources;
+        this.camera = gltfViewer.camera;
+        this.scene = gltfViewer.scene;
+        this.sizes = gltfViewer.sizes;
+        this.raycaster = gltfViewer.raycaster;
+        this.resources = gltfViewer.resources;
 
         this.hotspots = [];
         this.i = 0;

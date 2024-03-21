@@ -15,20 +15,18 @@ import {
     VSMShadowMap,
     WebGLRenderer,
 } from 'three';
-import { experience } from '@/Experience.js';
+import { gltfViewer } from '@/GltfViewer.js';
 // import { OutlinePass } from 'three/addons/postprocessing/OutlinePass.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 
-import { DEBUG_EXPANDED_TAB } from '@/constants';
-
 export default class Renderer {
     constructor() {
-        this.canvas = experience.canvas;
-        this.sizes = experience.sizes;
-        this.scene = experience.scene;
-        this.camera = experience.camera;
-        this.debug = experience.debug;
-        this.raycaster = experience.raycaster;
+        this.canvas = gltfViewer.canvas;
+        this.sizes = gltfViewer.sizes;
+        this.scene = gltfViewer.scene;
+        this.camera = gltfViewer.camera;
+        this.debug = gltfViewer.debug;
+        this.raycaster = gltfViewer.raycaster;
 
         this.setInstance();
 
@@ -39,7 +37,7 @@ export default class Renderer {
         if (this.debug.active) {
             this.debugFolder = this.debug.pane.addFolder({
                 title: 'Renderer Parameters',
-                expanded: DEBUG_EXPANDED_TAB['RENDERER_PARAMETERS'].expanded,
+                expanded: false,
             });
 
             this.debugFolder

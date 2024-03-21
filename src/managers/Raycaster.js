@@ -1,19 +1,19 @@
 import { DoubleSide, MeshStandardMaterial, Raycaster } from 'three';
-import { experience } from '@/Experience.js';
-import { RAYCASTER_MAX_DISTANCE } from '../constants';
+import { gltfViewer } from '@/GltfViewer.js';
+import { RAYCASTER_MAX_DISTANCE } from '@/constants';
 
 export default class Raycast {
     constructor() {
-        this.camera = experience.camera;
-        this.debug = experience.debug;
-        this.scene = experience.scene;
-        this.sizes = experience.sizes;
-        this.canvas = experience.canvas;
-        this.mouse = experience.mouse;
-        this.interactionEvents = experience.interactionEvents;
-        this.resources = experience.resources;
-        this.bok = experience.bok;
-        this.world = experience.world;
+        this.camera = gltfViewer.camera;
+        this.debug = gltfViewer.debug;
+        this.scene = gltfViewer.scene;
+        this.sizes = gltfViewer.sizes;
+        this.canvas = gltfViewer.canvas;
+        this.mouse = gltfViewer.mouse;
+        this.interactionEvents = gltfViewer.interactionEvents;
+        this.resources = gltfViewer.resources;
+        this.bok = gltfViewer.bok;
+        this.world = gltfViewer.world;
 
         // variables buffers
         this.lastSelectedMesh = null;
@@ -49,7 +49,7 @@ export default class Raycast {
 
     sendBok() {
         const intersects = this.getIntersects();
-        console.log({ intersects });
+
         if (intersects.length > 0) {
             let meshCounter = 0;
             // take the first intersected mesh
@@ -66,7 +66,6 @@ export default class Raycast {
             ) {
                 meshCounter++;
                 selectedMesh = intersects[meshCounter].object;
-                console.log({ selectedMesh });
             }
 
             // if such a compatible mesh is found...

@@ -1,26 +1,46 @@
 import { DirectionalLight, AmbientLight } from 'three';
-import { experience } from '@/Experience.js';
+import { gltfViewer } from '@/GltfViewer.js';
+
+import {
+    DL_COLOR,
+    DL_INTENSITY,
+    DL_POSITION_X,
+    DL_POSITION_Y,
+    DL_POSITION_Z,
+    DL_LOOK_AT_X,
+    DL_LOOK_AT_Y,
+    DL_LOOK_AT_Z,
+    DL_MAP_SIZE_W,
+    DL_MAP_SIZE_H,
+    DL_SHADOW_CAMERA_RIGHT,
+    DL_SHADOW_CAMERA_LEFT,
+    DL_SHADOW_CAMERA_TOP,
+    DL_SHADOW_CAMERA_BOTTOM,
+    DL_SHADOW_BIAS,
+    AL_COLOR,
+    AL_INTENSITY,
+} from '@/constants';
 
 export default class Floor {
     constructor() {
-        this.scene = experience.scene;
+        this.scene = gltfViewer.scene;
 
         this.addDirectionalLight();
         this.addAmbientLight();
     }
 
     addDirectionalLight() {
-        const light = new DirectionalLight(0xffffff, 2);
-        light.position.set(-2, 5, -2);
-        light.lookAt(0, 0, 0);
+        const light = new DirectionalLight(DL_COLOR, DL_INTENSITY);
+        light.position.set(DL_POSITION_X, DL_POSITION_Y, DL_POSITION_Z);
+        light.lookAt(DL_LOOK_AT_X, DL_LOOK_AT_Y, DL_LOOK_AT_Z);
         light.castShadow = true;
-        light.shadow.mapSize.width = 1024;
-        light.shadow.mapSize.height = 1024;
-        light.shadow.camera.right = 10;
-        light.shadow.camera.left = -10;
-        light.shadow.camera.top = 10;
-        light.shadow.camera.bottom = -10;
-        light.shadow.bias = -0.0001;
+        light.shadow.mapSize.width = DL_MAP_SIZE_W;
+        light.shadow.mapSize.height = DL_MAP_SIZE_H;
+        light.shadow.camera.right = DL_SHADOW_CAMERA_RIGHT;
+        light.shadow.camera.left = DL_SHADOW_CAMERA_LEFT;
+        light.shadow.camera.top = DL_SHADOW_CAMERA_TOP;
+        light.shadow.camera.bottom = DL_SHADOW_CAMERA_BOTTOM;
+        light.shadow.bias = DL_SHADOW_BIAS;
 
         this.scene.add(light);
 
@@ -29,7 +49,7 @@ export default class Floor {
     }
 
     addAmbientLight() {
-        const light = new AmbientLight(0x040404, 1);
+        const light = new AmbientLight(AL_COLOR, AL_INTENSITY);
         this.scene.add(light);
     }
 }
