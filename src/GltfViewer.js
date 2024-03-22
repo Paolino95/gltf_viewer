@@ -1,19 +1,24 @@
 import { Scene, Mesh } from 'three';
 
+// Utils
 import Debug from '@/utils/Debug.js';
 import Sizes from '@/utils/Sizes.js';
 import Time from '@/utils/Time.js';
 import InteractionEvents from '@/utils/InteractionEvents.js';
 import Mouse from '@/utils/Mouse.js';
+import Resources from '@/utils/Resources.js';
+
+// Managers
 import Camera from '@/managers/Camera.js';
 import Renderer from '@/managers/Renderer.js';
+import Server from '@/managers/Server.js';
 import Composer from '@/managers/Composer.js';
-import World from '@/World/World.js';
-import Resources from '@/utils/Resources.js';
 import Helpers from '@/managers/Helpers';
 import Raycast from '@/managers/Raycaster.js';
 import Bok from '@/managers/Bok.js';
 import Hotspots from '@/managers/Hotspots.js';
+
+import World from '@/World/World.js';
 
 import { PP_EFFECT_FXAA } from '@/constants';
 import isTouchDevice from 'is-touch-device';
@@ -51,6 +56,7 @@ class GltfViewer {
         this.canvasContainer = container;
 
         // Setup
+        this.server = new Server();
         this.isTouch = isTouchDevice();
         this.debug = new Debug(controlsContainer);
         this.sizes = new Sizes(this.canvasContainer);
@@ -60,7 +66,7 @@ class GltfViewer {
             pointerMove,
             doubleClick,
         });
-        this.scene = new Scene();
+
         this.resources = new Resources({
             assetsBaseUrl,
             useDracoCompression,
@@ -68,6 +74,7 @@ class GltfViewer {
             hdr,
             model,
         });
+        this.scene = new Scene();
         this.camera = new Camera(onResetCamera);
         this.renderer = new Renderer();
         this.world = new World({ onSceneReady, onAnimationChange });

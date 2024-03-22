@@ -2,12 +2,9 @@ import { TextureLoader, CubeTextureLoader } from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
-
-import to from 'await-to-js';
-import axios from 'axios';
+import { gltfViewer } from '@/GltfViewer.js';
 
 import EventEmitter from './EventEmitter.js';
-
 export default class Resources extends EventEmitter {
     constructor(options) {
         super();
@@ -20,6 +17,7 @@ export default class Resources extends EventEmitter {
             model,
         } = options;
 
+        this.server = gltfViewer.server;
         this.items = {};
         this.loaded = 0;
         this.inputButton = document.querySelector('#file-input');
@@ -80,7 +78,7 @@ export default class Resources extends EventEmitter {
 
         const pathInfoSource = `${this.assetsModelsUrl}/${this.modelName}/info.json`;
 
-        const [err, res] = await to(axios(pathInfoSource));
+        const [err, res] = await this.server.axiosCall({ url: pathInfoSource });
 
         if (err) {
             console.log('Info.json missing');

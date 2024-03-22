@@ -39,7 +39,7 @@ export default class Environment {
             this.debugFolder
                 .addBinding(this.environmentMap, 'intensity', {
                     min: 0,
-                    max: 4,
+                    max: 3,
                     step: 0.1,
                 })
                 .on('change', this.updateMaterials);
@@ -53,17 +53,6 @@ export default class Environment {
                 })
                 .on('change', e => {
                     this.setBackgroundType(e.value);
-                    this.updateMaterials();
-                });
-
-            this.backgroundColorToggle = this.debugFolder
-                .addBinding(this.scene, 'background', {
-                    label: 'Background Color',
-                    color: { type: 'float' },
-                })
-                .on('change', e => {
-                    sceneParams.backgroundColor = e.value;
-                    this.scene.background = e.value;
                     this.updateMaterials();
                 });
 

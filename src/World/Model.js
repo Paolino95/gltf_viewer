@@ -1,28 +1,15 @@
-import {
-    Box3,
-    Vector3,
-    Mesh,
-    AnimationMixer,
-    SpriteMaterial,
-    TextureLoader,
-    Sprite,
-    LoopOnce,
-    AdditiveBlending,
-} from 'three';
+import { Mesh } from 'three';
 import { ENV_MAP_INTENSITY } from '@/constants';
 import { gltfViewer } from '@/GltfViewer.js';
 
 export default class Model {
-    constructor(onAnimationChange) {
+    constructor() {
         this.scene = gltfViewer.scene;
         this.resources = gltfViewer.resources;
-        this.time = gltfViewer.time;
         this.debug = gltfViewer.debug;
 
         // Resource
         this.resource = this.resources.items[this.resources.modelName];
-
-        this.onAnimationChange = onAnimationChange;
 
         // Debug
         if (this.debug.active) {
@@ -39,7 +26,6 @@ export default class Model {
         }
 
         this.setModel();
-        this.setAnimation();
 
         this.resources.on('updateGlb', url => {
             this.updateModel(url);
@@ -57,8 +43,6 @@ export default class Model {
                 child.material.envMapIntensity = ENV_MAP_INTENSITY;
             }
         });
-
-        // this.recenterModel(this.model);
     }
 
     updateModel = modelName => {
@@ -75,134 +59,6 @@ export default class Model {
             self.setModel();
         });
     };
-
-    setAnimation() {
-        this.animation = {};
-
-        // Mixer
-        this.animation.mixer = new AnimationMixer(this.model);
-
-        // Actions
-        this.animation.actions = {};
-        for (let i = 0; i < this.resource.animations.length; i++) {
-            const animation = this.resource.animations[i];
-
-            if (animation && !this.animation.actions[animation.name]) {
-                this.animation.actions[animation.name] =
-                    this.animation.mixer.clipAction(
-                        this.resource.animations[i]
-                    );
-            }
-        }
-
-        this.animation.mixer.addEventListener('finished', e => {
-            this.onAnimationChange(e);
-
-            e.direction === 1
-                ? (this.animation.actions[e.action._clip.name].timeScale = -1)
-                : (this.animation.actions[e.action._clip.name].timeScale = 1);
-        });
-
-        // Debug
-        if (this.debug.active) {
-            const debugObject = {};
-
-            for (let i = 0; i < this.resource.animations.length; i++) {
-                const animation = this.resource.animations[i];
-
-                if (animation && !debugObject[animation.name]) {
-                    debugObject[animation.name] = () =>
-                        this.animation.play(animation.name);
-                }
-
-                this.debugFolder.addBinding(debugObject, animation.name);
-            }
-        }
-    }
-
-    playForwardAnimation(name) {
-        this.animation.actions.current = this.animation.actions[name]
-            ? this.animation.actions[name]
-            : undefined;
-
-        if (this.animation.actions.current) {
-            this.animation.actions.current.paused = false;
-            this.animation.actions.current.timeScale = 1;
-            this.animation.actions.current.clampWhenFinished = true;
-            this.animation.actions.current.setLoop(LoopOnce);
-            this.animation.actions.current.play(name);
-        }
-    }
-
-    playBackwardAnimation(name) {
-        this.animation.actions.current = this.animation.actions[name]
-            ? this.animation.actions[name]
-            : undefined;
-
-        if (this.animation.actions.current) {
-            this.animation.actions.current.paused = false;
-            this.animation.actions.current.timeScale = -1;
-            this.animation.actions.current.clampWhenFinished = true;
-            this.animation.actions.current.setLoop(LoopOnce);
-            this.animation.actions.current.play(name);
-        }
-    }
-
-    playAnimation(name) {
-        this.animation.actions.current = this.animation.actions[name]
-            ? this.animation.actions[name]
-            : undefined;
-
-        this.animation.actions.current.paused = false;
-        this.animation.actions.current.clampWhenFinished = true;
-        this.animation.actions.current.setLoop(LoopOnce);
-        this.animation.actions.current.play();
-    }
-
-    resetAnimation(name) {
-        const animation = this.animation.actions[name];
-
-        if (animation.timeScale === -1) {
-            this.playBackwardAnimation(name);
-        }
-    }
-
-    update() {
-        this.animation.mixer.update(this.time.delta * 0.001);
-    }
-
-    // highlight of selectable meshes in the rendered model
-    highlightSelectablesMeshes() {
-        var spriteMaterial = new SpriteMaterial({
-            map: new TextureLoader().load('assets/images/glow.png'),
-            color: 0x00ff00,
-            transparent: false,
-            blending: AdditiveBlending,
-        });
-        var sprite = new Sprite(spriteMaterial);
-        sprite.scale.set(0.5, 0.5, 1.0);
-
-        this.scene.add(sprite);
-
-        let sprites = [];
-
-        this.model.traverse(object => {
-            if (
-                object.isMesh &&
-                Object.keys(this.resources.items.info?.bokInteraction).includes(
-                    object.name
-                )
-            ) {
-                console.log(object.name, object);
-
-                // NOT WORKING !!   -->   position is not retreived correctly?
-                var mySprite = new Sprite(spriteMaterial);
-                mySprite.position.copy(object.position);
-                this.scene.add(mySprite);
-                sprites.push(mySprite);
-            }
-        });
-    }
 
     recenterModel(modelScene) {
         const modelBox = new Box3().setFromObject(modelScene);

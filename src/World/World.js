@@ -3,6 +3,7 @@ import Environment from './Environment.js';
 import Model from './Model.js';
 import Floor from './Floor.js';
 import Lights from './Lights.js';
+import Animations from '../managers/Animations.js';
 import EventEmitter from '../utils/EventEmitter.js';
 
 export default class World extends EventEmitter {
@@ -20,17 +21,18 @@ export default class World extends EventEmitter {
         this.resources.on('ready', () => {
             // Setup
             this.lights = new Lights();
-            this.model = new Model(onAnimationChange);
+            this.model = new Model();
             this.floor = new Floor();
             this.environment = new Environment();
 
             this.time.onNextTick(() => {
                 this.onSceneReady();
+                this.animations = new Animations(onAnimationChange);
             });
         });
     }
 
     update() {
-        if (this.model) this.model.update();
+        if (this.animations) this.animations.update();
     }
 }

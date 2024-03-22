@@ -48,6 +48,10 @@ export default class Raycast {
     }
 
     sendBok() {
+        if (!this.resources.items.info) {
+            return;
+        }
+
         const intersects = this.getIntersects();
 
         if (intersects.length > 0) {
@@ -56,7 +60,7 @@ export default class Raycast {
             let selectedMesh = intersects[meshCounter].object;
 
             const selectedCompatibleMeshes = Object.keys(
-                this.resources.items.info?.bokInteraction
+                this.resources.items.info.bokInteraction
             );
             // find the first compatible mesh among the first N intersected
             while (
@@ -71,7 +75,7 @@ export default class Raycast {
             // if such a compatible mesh is found...
             if (selectedCompatibleMeshes.includes(selectedMesh.name)) {
                 this.bok.sendMessage(
-                    this.resources.items.info?.bokInteraction[selectedMesh.name]
+                    this.resources.items.info.bokInteraction[selectedMesh.name]
                         .name
                 );
             }
