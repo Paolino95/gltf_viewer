@@ -71,4 +71,6 @@ export {
     AL_INTENSITY,
 } from './lights';
 
+export { RESOURCES_MAX_PRIORITY } from './resources';
+
 export { RAYCASTER_MAX_DISTANCE } from './raycaster';

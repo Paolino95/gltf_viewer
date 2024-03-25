@@ -18,7 +18,7 @@ export default class World extends EventEmitter {
         this.onSceneReady = onSceneReady;
 
         // Wait for resources
-        this.resources.on('ready', () => {
+        this.resources.on('baseSceneReady', () => {
             // Setup
             this.lights = new Lights();
             this.model = new Model();

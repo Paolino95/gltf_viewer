@@ -11,6 +11,8 @@ export default class Model {
         // Resource
         this.resource = this.resources.items[this.resources.modelName];
 
+        console.log(this.resources.items, this.resources.modelName);
+
         // Debug
         if (this.debug.active) {
             this.debugFolder = this.debug.pane.addFolder({

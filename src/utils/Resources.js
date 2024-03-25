@@ -5,6 +5,8 @@ import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
 import { gltfViewer } from '@/GltfViewer.js';
 
 import EventEmitter from './EventEmitter.js';
+
+import { RESOURCES_MAX_PRIORITY } from '@/constants';
 export default class Resources extends EventEmitter {
     constructor(options) {
         super();
@@ -29,11 +31,6 @@ export default class Resources extends EventEmitter {
         this.modelName = model;
         this.hdrName = hdr;
 
-        this.setLoaders(useDracoCompression, dracoDecoderPath);
-
-        this.loadModel();
-        this.loadHdr();
-
         // Drag&Drop event
         window.addEventListener('drop', e => {
             e.preventDefault();
@@ -55,6 +52,13 @@ export default class Resources extends EventEmitter {
 
             this.inputButton.value = '';
         });
+
+        this.setLoaders(useDracoCompression, dracoDecoderPath);
+        this.setResources();
+
+        this.on('baseSceneReady', () => {
+            console.log('baseSceneReady');
+        });
     }
 
     setLoaders(useDracoCompression, dracoDecoderPath) {
@@ -70,12 +74,38 @@ export default class Resources extends EventEmitter {
         this.loaders.rgbeLoader = new RGBELoader();
     }
 
-    async loadModel() {
-        const pathModelsSource = `${this.assetsModelsUrl}/${this.modelName}/${this.modelName}.glb`;
-        this.loaders.gltfLoader.load(pathModelsSource, file => {
-            this.sourceLoaded(this.modelName, file);
-        });
+    async setResources() {
+        await this.loadModelsInfo();
 
+        this.loadHdr();
+
+        if (this.items.info) {
+            if (
+                this.items.info.multipleModel === true &&
+                this.items.info.models
+            ) {
+                const highPriorityModels = this.items.info.models.filter(
+                    model => model.priority === RESOURCES_MAX_PRIORITY
+                );
+
+                await this.loadModel(highPriorityModels);
+                this.trigger('baseSceneReady');
+
+                const lowerPriorityModels = this.items.info.models.filter(
+                    model => model.priority !== RESOURCES_MAX_PRIORITY
+                );
+
+                await this.loadModel(lowerPriorityModels);
+            } else {
+                this.loadModel();
+                this.trigger('baseSceneReady');
+            }
+        }
+
+        this.trigger('ready');
+    }
+
+    async loadModelsInfo() {
         const pathInfoSource = `${this.assetsModelsUrl}/${this.modelName}/info.json`;
 
         const [err, res] = await this.server.axiosCall({ url: pathInfoSource });
@@ -83,7 +113,29 @@ export default class Resources extends EventEmitter {
         if (err) {
             console.log('Info.json missing');
         } else {
-            this.sourceLoaded('info', res.data, true);
+            this.sourceLoaded('info', res.data);
+        }
+    }
+
+    async loadModel(models = undefined) {
+        let pathModelsSource = '';
+
+        if (!models) {
+            pathModelsSource = `${this.assetsModelsUrl}/${this.modelName}/${this.modelName}.glb`;
+
+            this.loaders.gltfLoader.load(pathModelsSource, file => {
+                this.sourceLoaded(this.modelName, file);
+            });
+
+            return;
+        }
+
+        for (const model in models) {
+            pathModelsSource = `${this.assetsModelsUrl}/${this.modelName}/${models[model].id}.glb`;
+            console.log(pathModelsSource);
+            this.loaders.gltfLoader.load(pathModelsSource, file => {
+                this.sourceLoaded(this.modelName, file);
+            });
         }
     }
 
@@ -94,14 +146,8 @@ export default class Resources extends EventEmitter {
         });
     }
 
-    sourceLoaded(name, file, isInfo = false) {
+    sourceLoaded(name, file) {
         this.items[name] = file;
-
-        if (!isInfo) this.loaded++;
-
-        if (this.loaded === 2) {
-            this.trigger('ready');
-        }
     }
 
     handleFileInput = e => {

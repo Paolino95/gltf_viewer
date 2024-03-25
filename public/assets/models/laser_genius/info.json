@@ -3,6 +3,16 @@
         "animations": [],
         "infos": []
     },
+    "models" : [
+        {
+            "id": "Esterno",
+            "priority": 0
+        },
+        {
+            "id": "Interno",
+            "priority": 1
+        }
+    ],
     "hotspots": [
         {
             "id": "Maniglie_sportello",
