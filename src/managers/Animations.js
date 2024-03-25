@@ -13,14 +13,21 @@ export default class Animations {
 
         // Resource
         this.resource = this.resources.items[this.resources.modelName];
-        this.models = gltfViewer.world;
+        this.model = gltfViewer.world.model;
         this.setAnimations();
+
+        this.animation.mixer.addEventListener('finished', e => {
+            this.onAnimationChange(e);
+
+            e.direction === 1
+                ? (this.animation.actions[e.action._clip.name].timeScale = -1)
+                : (this.animation.actions[e.action._clip.name].timeScale = 1);
+        });
     }
 
     setAnimations() {
         // Mixer
-        console.log(this.models);
-        this.animation.mixer = new AnimationMixer(this.models.model);
+        this.animation.mixer = new AnimationMixer(this.model.model);
 
         // Actions
         this.animation.actions = {};
@@ -34,14 +41,6 @@ export default class Animations {
                     );
             }
         }
-
-        this.animation.mixer.addEventListener('finished', e => {
-            this.onAnimationChange(e);
-
-            e.direction === 1
-                ? (this.animation.actions[e.action._clip.name].timeScale = -1)
-                : (this.animation.actions[e.action._clip.name].timeScale = 1);
-        });
 
         // Debug
         if (this.debug.active) {
