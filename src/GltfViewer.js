@@ -84,10 +84,10 @@ class GltfViewer {
             onAnimationChange,
         });
         this.composer = new Composer(PP_EFFECT_FXAA);
-        this.helpers = new Helpers();
         this.bok = new Bok(bokInterfaceClient);
         this.raycaster = new Raycast();
         this.hotspots = new Hotspots(onHotspotsUpdated);
+        this.helpers = new Helpers();
 
         // Resize event
         this.sizes.on('resize', () => {
@@ -113,6 +113,7 @@ class GltfViewer {
         this.world.update();
         this.composer.update();
         this.hotspots.update();
+        this.helpers.update();
 
         this.time.manageCallbacks();
 
