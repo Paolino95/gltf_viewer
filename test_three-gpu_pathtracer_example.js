@@ -88,9 +88,6 @@ async function init() {
             return generator.generate(gltf.scene);
         })
         .then(result => {
-            console.log({ result });
-            scene.add(result.scene);
-
             const { bvh, textures, materials } = result;
             const geometry = bvh.geometry;
             const material = pathTracer.material;
@@ -155,13 +152,4 @@ function animate() {
     renderer.autoClear = true;
 
     samplesEl.innerText = `Samples: ${Math.floor(pathTracer.samples)}`;
-}
-
-function recenterModel(modelScene) {
-    const modelBox = new THREE.Box3().setFromObject(modelScene);
-    const boxCenter = modelBox.getCenter(new THREE.Vector3());
-
-    modelScene.position.x += modelScene.position.x - boxCenter.x;
-    modelScene.position.y += modelScene.position.y - boxCenter.y;
-    modelScene.position.z += modelScene.position.z - boxCenter.z;
 }

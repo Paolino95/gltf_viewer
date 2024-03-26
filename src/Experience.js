@@ -44,7 +44,7 @@ export default class Experience {
         this.pathTracer = new PathTracer();
         this.helpers = new Helpers();
 
-        this.rendererInUse = RENDERER_COMPOSER;
+        this.rendererInUse = RENDERER_PATH_TRACER;
 
         // Resize event
         this.sizes.on('resize', () => {

@@ -87,8 +87,6 @@ export default class Model {
 
             const result = this.generator.generate(this.model);
 
-            this.scene.add(result.scene);
-
             const { bvh, textures, materials } = result;
             const geometry = bvh.geometry;
             const material = this.pathTracer.instance.material;
@@ -123,7 +121,7 @@ export default class Model {
             });
         }
 
-        this.recenterModel(this.model);
+        // this.recenterModel(this.model);
     }
 
     updateModel = modelName => {
