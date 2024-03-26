@@ -24,6 +24,9 @@ gltfViewer.setup({
         onSceneReady: async () => {
             console.log('Scene Ready');
         },
+        onBaseSceneReady: async () => {
+            console.log('Base Scene Ready');
+        },
         onResetCamera: isCameraReset => {
             console.log('isCameraReset', isCameraReset);
         },

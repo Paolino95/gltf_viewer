@@ -2,16 +2,16 @@ import { Mesh } from 'three';
 import { ENV_MAP_INTENSITY } from '@/constants';
 import { gltfViewer } from '@/GltfViewer.js';
 
+import { RESOURCES_MAX_PRIORITY } from '@/constants';
+
 export default class Model {
     constructor() {
         this.scene = gltfViewer.scene;
         this.resources = gltfViewer.resources;
         this.debug = gltfViewer.debug;
+        this.world = gltfViewer.world;
 
-        // Resource
-        this.resource = this.resources.items[this.resources.modelName];
-
-        console.log(this.resources.items, this.resources.modelName);
+        this.resource = [];
 
         // Debug
         if (this.debug.active) {
@@ -27,18 +27,89 @@ export default class Model {
                 });
         }
 
-        this.setModel();
-
         this.resources.on('updateGlb', url => {
-            this.updateModel(url);
+            this.updateModels(url);
+        });
+
+        this.world.on('baseSceneReady', () => {
+            if (
+                !this.resources.items.info ||
+                !this.resources.items.info.multipleModel
+            ) {
+                this.resource.push(
+                    this.resources.items[this.resources.modelName]
+                );
+                this.setModels(this.resource);
+                return;
+            }
+
+            this.computeHighPriorityModelResources();
+            this.resources.loadModel(this.resources.lowerPriorityModels);
+        });
+
+        this.world.on('ready', () => {
+            if (
+                this.resources.items.info &&
+                this.resources.items.info.multipleModel
+            ) {
+                this.computeLowerPriorityModelResources();
+                return;
+            }
         });
     }
 
-    setModel() {
-        this.model = this.resource.scene;
-        this.scene.add(this.model);
+    computeHighPriorityModelResources() {
+        const resource = [];
 
-        this.model.traverse(child => {
+        if (
+            !this.resources.items.info ||
+            !this.resources.items.info.multipleModel
+        ) {
+            resource.push(this.resources.items[this.resources.modelName]);
+            this.resource.push(this.resources.items[this.resources.modelName]);
+            this.setModels(resource);
+            return;
+        }
+
+        const highPriorityModels = this.resources.items.info.models.filter(
+            model => model.priority === RESOURCES_MAX_PRIORITY
+        );
+
+        for (const model in highPriorityModels) {
+            const id = highPriorityModels[model].id;
+
+            this.resource.push(this.resources.items[id]);
+            resource.push(this.resources.items[id]);
+        }
+
+        this.setModels(resource);
+        return;
+    }
+
+    computeLowerPriorityModelResources() {
+        const resource = [];
+
+        const lowerPriorityModels = this.resources.items.info.models.filter(
+            model => model.priority !== RESOURCES_MAX_PRIORITY
+        );
+
+        for (const model in lowerPriorityModels) {
+            const id = lowerPriorityModels[model].id;
+
+            this.resource.push(this.resources.items[id]);
+            resource.push(this.resources.items[id]);
+        }
+
+        this.setModels(resource);
+        return;
+    }
+
+    setModels(resource) {
+        resource.forEach(model => {
+            this.scene.add(model.scene);
+        });
+
+        this.scene.traverse(child => {
             if (child instanceof Mesh) {
                 child.castShadow = true;
                 child.receiveShadow = true;
@@ -47,7 +118,7 @@ export default class Model {
         });
     }
 
-    updateModel = modelName => {
+    updateModels = modelName => {
         const self = this;
 
         this.scene.traverse(function (child) {
@@ -58,7 +129,7 @@ export default class Model {
 
         this.resources.loaders.gltfLoader.load(modelName, function (gltf) {
             self.resource = gltf;
-            self.setModel();
+            self.setModels();
         });
     };
 

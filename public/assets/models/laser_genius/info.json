@@ -3,6 +3,7 @@
         "animations": [],
         "infos": []
     },
+    "multipleModel": true,
     "models" : [
         {
             "id": "Esterno",

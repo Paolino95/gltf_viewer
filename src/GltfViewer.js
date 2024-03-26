@@ -35,6 +35,7 @@ class GltfViewer {
         } = data;
         const {
             onHotspotsUpdated = () => {},
+            onBaseSceneReady = () => {},
             onSceneReady = () => {},
             onResetCamera = () => {},
             onAnimationChange = () => {},
@@ -77,7 +78,11 @@ class GltfViewer {
         this.scene = new Scene();
         this.camera = new Camera(onResetCamera);
         this.renderer = new Renderer();
-        this.world = new World({ onSceneReady, onAnimationChange });
+        this.world = new World({
+            onSceneReady,
+            onBaseSceneReady,
+            onAnimationChange,
+        });
         this.composer = new Composer(PP_EFFECT_FXAA);
         this.helpers = new Helpers();
         this.bok = new Bok(bokInterfaceClient);

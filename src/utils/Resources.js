@@ -20,8 +20,12 @@ export default class Resources extends EventEmitter {
         } = options;
 
         this.server = gltfViewer.server;
+
         this.items = {};
+        this.baseLength = 2;
+        this.totalLength = 2;
         this.loaded = 0;
+
         this.inputButton = document.querySelector('#file-input');
 
         //  Paths
@@ -30,6 +34,8 @@ export default class Resources extends EventEmitter {
 
         this.modelName = model;
         this.hdrName = hdr;
+        this.highPriorityModels = [];
+        this.lowerPriorityModels = [];
 
         // Drag&Drop event
         window.addEventListener('drop', e => {
@@ -54,11 +60,7 @@ export default class Resources extends EventEmitter {
         });
 
         this.setLoaders(useDracoCompression, dracoDecoderPath);
-        this.setResources();
-
-        this.on('baseSceneReady', () => {
-            console.log('baseSceneReady');
-        });
+        this.setBaseResources();
     }
 
     setLoaders(useDracoCompression, dracoDecoderPath) {
@@ -74,9 +76,8 @@ export default class Resources extends EventEmitter {
         this.loaders.rgbeLoader = new RGBELoader();
     }
 
-    async setResources() {
+    async setBaseResources() {
         await this.loadModelsInfo();
-
         this.loadHdr();
 
         if (this.items.info) {
@@ -84,25 +85,30 @@ export default class Resources extends EventEmitter {
                 this.items.info.multipleModel === true &&
                 this.items.info.models
             ) {
-                const highPriorityModels = this.items.info.models.filter(
+                this.highPriorityModels = this.items.info.models.filter(
                     model => model.priority === RESOURCES_MAX_PRIORITY
                 );
 
-                await this.loadModel(highPriorityModels);
-                this.trigger('baseSceneReady');
-
-                const lowerPriorityModels = this.items.info.models.filter(
+                this.lowerPriorityModels = this.items.info.models.filter(
                     model => model.priority !== RESOURCES_MAX_PRIORITY
                 );
 
-                await this.loadModel(lowerPriorityModels);
+                this.baseLength += this.highPriorityModels.length;
+                this.totalLength =
+                    this.totalLength +
+                    this.highPriorityModels.length +
+                    this.lowerPriorityModels.length;
+
+                await this.loadModel(this.highPriorityModels);
             } else {
+                this.baseLength += 1;
+                this.totalLength += 1;
                 this.loadModel();
-                this.trigger('baseSceneReady');
             }
+            return;
         }
 
-        this.trigger('ready');
+        this.loadModel();
     }
 
     async loadModelsInfo() {
@@ -132,9 +138,9 @@ export default class Resources extends EventEmitter {
 
         for (const model in models) {
             pathModelsSource = `${this.assetsModelsUrl}/${this.modelName}/${models[model].id}.glb`;
-            console.log(pathModelsSource);
+
             this.loaders.gltfLoader.load(pathModelsSource, file => {
-                this.sourceLoaded(this.modelName, file);
+                this.sourceLoaded(models[model].id, file);
             });
         }
     }
@@ -148,6 +154,17 @@ export default class Resources extends EventEmitter {
 
     sourceLoaded(name, file) {
         this.items[name] = file;
+
+        this.loaded++;
+
+        if (this.loaded === this.baseLength) {
+            this.trigger('baseResourceSceneReady');
+        }
+
+        if (this.loaded === this.totalLength) {
+            this.trigger('totalResourceSceneReady');
+            return;
+        }
     }
 
     handleFileInput = e => {

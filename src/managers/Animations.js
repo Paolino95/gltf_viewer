@@ -5,6 +5,7 @@ export default class Animations {
     constructor(onAnimationChange) {
         this.scene = gltfViewer.scene;
         this.resources = gltfViewer.resources;
+        this.model = gltfViewer.world.model;
         this.debug = gltfViewer.debug;
         this.time = gltfViewer.time;
 
@@ -12,56 +13,68 @@ export default class Animations {
         this.onAnimationChange = onAnimationChange;
 
         // Resource
-        this.resource = this.resources.items[this.resources.modelName];
-        this.model = gltfViewer.world.model;
+        this.resource = this.model.resource;
         this.setAnimations();
-
-        this.animation.mixer.addEventListener('finished', e => {
-            this.onAnimationChange(e);
-
-            e.direction === 1
-                ? (this.animation.actions[e.action._clip.name].timeScale = -1)
-                : (this.animation.actions[e.action._clip.name].timeScale = 1);
-        });
     }
 
     setAnimations() {
-        // Mixer
-        this.animation.mixer = new AnimationMixer(this.model.model);
-
         // Actions
         this.animation.actions = {};
-        for (let i = 0; i < this.resource.animations.length; i++) {
-            const animation = this.resource.animations[i];
+        this.animation.mixers = [];
 
-            if (animation && !this.animation.actions[animation.name]) {
-                this.animation.actions[animation.name] =
-                    this.animation.mixer.clipAction(
-                        this.resource.animations[i]
+        this.resource.forEach(model => {
+            // Mixer
+            const mixer = new AnimationMixer(model.scene);
+
+            mixer.addEventListener('finished', e => {
+                this.onAnimationChange(e);
+
+                e.direction === 1
+                    ? (this.animation.actions[e.action._clip.name].timeScale =
+                          -1)
+                    : (this.animation.actions[
+                          e.action._clip.name
+                      ].timeScale = 1);
+            });
+
+            this.animation.mixers.push(mixer);
+
+            for (let i = 0; i < model.animations.length; i++) {
+                const animation = model.animations[i];
+
+                if (animation && !this.animation.actions[animation.name]) {
+                    this.animation.actions[animation.name] = mixer.clipAction(
+                        model.animations[i]
                     );
+                }
             }
-        }
+        });
 
         // Debug
-        if (this.debug.active) {
+        if (
+            this.debug.active &&
+            Object.keys(this.animation.actions).length > 0
+        ) {
             this.animationFolder = this.debug.pane.addFolder({
                 title: 'Animations',
                 expanded: false,
             });
 
-            for (let j = 0; j < this.resource.animations.length; j++) {
-                const animation = this.resource.animations[j];
+            this.resource.forEach(model => {
+                for (let j = 0; j < model.animations.length; j++) {
+                    const animation = model.animations[j];
 
-                const animationFolder = this.animationFolder.addFolder({
-                    title: animation.name,
-                });
-                animationFolder
-                    .addButton({ title: 'play' })
-                    .on('click', () => this.playAnimation(animation.name));
-                animationFolder
-                    .addButton({ title: 'pause' })
-                    .on('click', () => this.pausedAnimation());
-            }
+                    const animationFolder = this.animationFolder.addFolder({
+                        title: animation.name,
+                    });
+                    animationFolder
+                        .addButton({ title: 'play' })
+                        .on('click', () => this.playAnimation(animation.name));
+                    animationFolder
+                        .addButton({ title: 'pause' })
+                        .on('click', () => this.pausedAnimation());
+                }
+            });
 
             this.animationFolder
                 .addButton({ title: 'Reset Animations' })
@@ -132,6 +145,8 @@ export default class Animations {
     }
 
     update() {
-        this.animation.mixer.update(this.time.delta * 0.001);
+        for (const mixer of this.animation.mixers) {
+            mixer.update(this.time.delta * 0.001);
+        }
     }
 }
